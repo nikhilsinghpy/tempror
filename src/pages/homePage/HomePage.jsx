@@ -8,6 +8,8 @@ import ResultCard from "@/components/custom-component/card/result-card";
 import { CrouselCs } from "@/components/custom-component/crouselcs/crousel-cs";
 import { CarouselItem } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
+import DoctorCard from "@/components/custom-component/card/doctor-card";
+import ReviewCard from "@/components/custom-component/card/review-card";
 const heroData = [
   {
     id: 1,
@@ -109,8 +111,8 @@ const serviceData = [
 
 export default function HomePage() {
   return (
-    <div className="space-y-8">
-      <div className="h-[calc(100vh-80px)]">
+    <div className="space-y-12">
+      <div className="md:h-[calc(100vh-80px)]">
         <HeroSection heroData={heroData} />
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-7xl mx-auto p-4">
           {ratingData.map((item, index) => (
@@ -119,7 +121,7 @@ export default function HomePage() {
         </div>
       </div>
       <div>
-        <p className="text-2xl font-semibold text-center max-w-4xl mx-auto mb-10 px-4">
+        <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-10 px-4">
           Leading with Experience and Excellence – Your Trusted Healthcare
           Partner, Proven Worldwide
         </p>
@@ -129,23 +131,85 @@ export default function HomePage() {
           ))}
         </div>
       </div>
-      <div>
-        <p className="text-2xl font-semibold text-center max-w-4xl mx-auto mb-10 px-4">
+      <div className="max-w-7xl mx-auto">
+        <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-10 px-4">
           See the Transformation: Real Results from Our Hair Transplant
           Procedure
         </p>
+        <CrouselCs autoPlayEnabled={true}>
+          {Array.from({ length: 5 }).map((_, index) => (
+            <CarouselItem
+              key={index}
+              className="basis-1/2 md:basis-1/3 lg:basis-1/4 py-4"
+            >
+              <div className="p-2 border rounded-md shadow-md ">
+                <img
+                  src="https://facesurgeon.in/wp-content/uploads/2020/03/hair-transplantation-in-india.jpg"
+                  alt="demo"
+                  className="rounded-md"
+                />
+              </div>
+            </CarouselItem>
+          ))}
+        </CrouselCs>
+      </div>
+      <div className="max-w-7xl mx-auto">
+        <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-10 px-4">
+          Inside Our Clinic: The Ultimate Hair Transplant Experience
+        </p>
         <CrouselCs>
           {Array.from({ length: 5 }).map((_, index) => (
-            <CarouselItem key={index} className="w-full">
-              <div className="p-2">
-                <Card className="h-[400px] md:h-[500px] w-full rounded-2xl shadow-lg overflow-hidden bg-gradient-to-r from-purple-500 to-sky-600">
-                  <CardContent className="flex h-full w-full items-center justify-center p-0 ">
-                    <span className="text-4xl md:text-6xl font-bold text-white">
-                      Slide {index + 1}
-                    </span>
-                  </CardContent>
-                </Card>
-              </div>
+            <CarouselItem key={index} className="lg:basis-1/3 py-4">
+              <Card className="p-0 md:min-h-[300px] overflow-hidden">
+                <CardContent className="p-0 h-full">
+                  <div className="relative w-full h-full">
+                    <iframe
+                      className="w-full md:min-h-[300px]"
+                      src="https://www.youtube-nocookie.com/embed/Y_29eVU2eyo?si=0WyzBIJD32RIWXDS"
+                      title="YouTube video player"
+                      frameborder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerpolicy="strict-origin-when-cross-origin"
+                      allowfullscreen
+                    ></iframe>
+                  </div>
+                </CardContent>
+              </Card>
+            </CarouselItem>
+          ))}
+        </CrouselCs>
+      </div>
+      <div className="max-w-7xl mx-auto">
+        <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-10 px-4">
+          Meet Our Expert Doctors and Dedicated Clinic Team
+        </p>
+        <CrouselCs>
+          {Array.from({ length: 5 }).map((_, index) => (
+            <CarouselItem key={index} className="lg:basis-1/3 py-4">
+              <DoctorCard
+                name="Dr. Ananya Sharma"
+                specialty="Cardiologist"
+                hospital="City Heart Institute"
+                rating={4.9}
+                reviewsCount={342}
+                experienceYears={12}
+                location="Rohini, Delhi"
+                avatarUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRripLcqGUKIBfgbtmux6U1UY9UkgezqzJzFw&s"
+                bio={`Dr. Ananya Sharma is a senior cardiologist with 12+ years of experience in interventional cardiology. She focuses on patient-centred care and minimally invasive procedures.`}
+                onBook={() => console.log("Booked appointment with Dr. Ananya")}
+              />
+            </CarouselItem>
+          ))}
+        </CrouselCs>
+      </div>
+      <div className="max-w-7xl mx-auto">
+        <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-10 px-4">
+          Trusted by Thousands of Patients From Around the India
+        </p>
+        <CrouselCs autoScrollenabled={true}>
+          {Array.from({ length: 5 }).map((_, index) => (
+            <CarouselItem key={index} className="lg:basis-1/3 py-4">
+              <ReviewCard />
             </CarouselItem>
           ))}
         </CrouselCs>

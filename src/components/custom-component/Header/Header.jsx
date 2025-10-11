@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  CircleCheckIcon,
-  CircleHelpIcon,
-  CircleIcon,
-  User2,
-} from "lucide-react";
-
+import { User2 } from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -17,6 +11,16 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 const menuData = [
   {
@@ -29,19 +33,19 @@ const menuData = [
     links: [
       {
         title: "Rohini Belleza Branch",
-        href: "Branch/Rohini-Belleza-Branch",
+        href: "branch/rohini-belleza-branch",
         description:
           "Our main and first branch, specializing in advanced hair transplants.",
       },
       {
         title: "Lucknow Belleza Branch",
-        href: "Branch/Lucknow-Belleza-Branch",
+        href: "branch/lucknow-belleza-branch",
         description:
           "Our newly opened branch offering expert hair transplant services.",
       },
       {
         title: "Jaipur Belleza Branch",
-        href: "Branch/Jaipur-Belleza-Branch",
+        href: "branch/jaipur-belleza-branch",
         description:
           "Our upcoming branch, expanding expert hair transplant services to Jaipur.",
       },
@@ -89,13 +93,13 @@ const menuData = [
 export default function Header() {
   const [login, setLogin] = useState(true);
   return (
-    <header className="fixed w-full z-50 top-0 flex items-center justify-between bg-white border-b py-4 px-8">
+    <header className="fixed w-full z-50 top-0 flex items-center justify-between bg-white border-b py-4 px-4 md:px-8">
       <img
         src="https://res.cloudinary.com/dge7jibik/image/upload/v1759558896/mainlogo_Black_ewt8d1.png"
         alt="paras parivar"
         className="w-42 h-full"
       />
-      <NavigationMenu viewport={false}>
+      <NavigationMenu viewport={false} className="hidden md:flex">
         <NavigationMenuList>
           {menuData.map((item, index) =>
             item.simpleLink ? (
@@ -133,12 +137,60 @@ export default function Header() {
       </NavigationMenu>
 
       {login ? (
-        <Button variant="default" size={"icon"}>
+        <Button variant="default" size={"icon"} className={"hidden md:flex"}>
           <User2 />
         </Button>
       ) : (
-        <Button variant="default">Login</Button>
+        <Button variant="default" className={"hidden md:flex"}>
+          Login
+        </Button>
       )}
+
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button variant="outline" className={"md:hidden"}>
+            Open
+          </Button>
+        </SheetTrigger>
+        <SheetContent>
+          <SheetHeader>
+            <SheetTitle>Belleza</SheetTitle>
+            <SheetDescription>
+              Leading with Experience and Excellence
+            </SheetDescription>
+          </SheetHeader>
+          <div className="px-4 py-6 w-full space-y-4 flex flex-col  max-h-[95vh] overflow-y-auto">
+            {menuData.map((item, index) =>
+              item.simpleLink ? (
+                <Link
+                  key={index}
+                  to={item.href}
+                  className="border p-2 rounded-sm hover:bg-slate-100"
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <div key={index}>
+                  <p className="text-[12px] text-accent-foreground font-semibold mb-2">
+                    {item.label}
+                  </p>
+                  <div className="flex flex-col gap-2">
+                    {item.links.map((link, index) => (
+                      <Link
+                        to={link.href}
+                        key={index}
+                        className="border p-2 rounded-sm hover:bg-slate-100"
+                      >
+                        {link.title}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )
+            )}
+          </div>
+        </SheetContent>
+      </Sheet>
     </header>
   );
 }

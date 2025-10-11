@@ -1,5 +1,6 @@
 import HomeLayout from "@/components/layout/HomeLayout";
 import Login from "@/pages/authPages/Login";
+import BranchPage from "@/pages/BranchPage/BranchPage";
 import HomePage from "@/pages/homePage/HomePage";
 import { createBrowserRouter } from "react-router-dom";
 
@@ -9,6 +10,7 @@ export const router = createBrowserRouter([
     element: <HomeLayout />,
     children: [
       { index: true, element: <HomePage /> },
+      { path: "branch/:slug", element: <BranchPage /> },
       {
         path: "*",
         element: (

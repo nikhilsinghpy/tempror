@@ -28,10 +28,8 @@ export function CrouselCs({ children, autoScrollenabled, autoPlayEnabled }) {
         className="w-full"
       >
         <CarouselContent>
-          {/* example useage Mention below */}
           {children}
         </CarouselContent>
-        {/* Navigation arrows */}
         <CarouselPrevious className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 rounded-sm shadow-2xl bg-white/80 hover:bg-white" />
         <CarouselNext className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 rounded-sm shadow-2xl bg-white/80 hover:bg-white" />
       </Carousel>
