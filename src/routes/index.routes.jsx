@@ -1,4 +1,5 @@
 import HomeLayout from "@/components/layout/HomeLayout";
+import HRManagementDashboardLayout from "@/components/layout/HRManagementDashboardLayout";
 import Login from "@/pages/authPages/Login";
 import BranchPage from "@/pages/BranchPage/BranchPage";
 import HomePage from "@/pages/homePage/HomePage";
@@ -11,6 +12,21 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: "branch/:slug", element: <BranchPage /> },
+      {
+        path: "*",
+        element: (
+          <div className="h-screen w-full justify-center flex items-center ">
+            404
+          </div>
+        ),
+      },
+    ],
+  },
+  {
+    path: "/hr-management",
+    element: <HRManagementDashboardLayout />,
+    children: [
+      { index: true, element: <HomePage /> },
       {
         path: "*",
         element: (
