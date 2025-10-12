@@ -112,16 +112,14 @@ const serviceData = [
 export default function HomePage() {
   return (
     <div className="space-y-12">
-      <div className="md:h-[calc(100vh-80px)]">
-        <HeroSection heroData={heroData} />
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-7xl mx-auto p-4">
-          {ratingData.map((item, index) => (
-            <RatingCard ratingData={item} key={index} />
-          ))}
-        </div>
+      <HeroSection heroData={heroData} />
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-7xl mx-auto p-4">
+        {ratingData.map((item, index) => (
+          <RatingCard ratingData={item} key={index} />
+        ))}
       </div>
       <div>
-        <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-10 px-4">
+        <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-4 px-4">
           Leading with Experience and Excellence – Your Trusted Healthcare
           Partner, Proven Worldwide
         </p>
@@ -131,8 +129,8 @@ export default function HomePage() {
           ))}
         </div>
       </div>
-      <div className="max-w-7xl mx-auto">
-        <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-10 px-4">
+      <div className="max-w-7xl mx-auto px-4">
+        <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-4 px-4">
           See the Transformation: Real Results from Our Hair Transplant
           Procedure
         </p>
@@ -153,34 +151,30 @@ export default function HomePage() {
           ))}
         </CrouselCs>
       </div>
-      <div className="max-w-7xl mx-auto">
-        <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-10 px-4">
+      <div className="max-w-7xl mx-auto px-4">
+        <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-4 px-4">
           Inside Our Clinic: The Ultimate Hair Transplant Experience
         </p>
-        <CrouselCs>
+        <CrouselCs autoPlayEnabled={true}>
           {Array.from({ length: 5 }).map((_, index) => (
             <CarouselItem key={index} className="lg:basis-1/3 py-4">
-              <Card className="p-0 md:min-h-[300px] overflow-hidden">
-                <CardContent className="p-0 h-full">
-                  <div className="relative w-full h-full">
-                    <iframe
-                      className="w-full md:min-h-[300px]"
-                      src="https://www.youtube-nocookie.com/embed/Y_29eVU2eyo?si=0WyzBIJD32RIWXDS"
-                      title="YouTube video player"
-                      frameborder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      referrerpolicy="strict-origin-when-cross-origin"
-                      allowfullscreen
-                    ></iframe>
-                  </div>
-                </CardContent>
-              </Card>
+              <div className=" w-full h-full p-4">
+                <iframe
+                  className="w-full h-full aspect-video rounded-md"
+                  src="https://www.youtube-nocookie.com/embed/Y_29eVU2eyo?si=0WyzBIJD32RIWXDS"
+                  title="YouTube video player"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allowfullscreen
+                ></iframe>
+              </div>
             </CarouselItem>
           ))}
         </CrouselCs>
       </div>
-      <div className="max-w-7xl mx-auto">
-        <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-10 px-4">
+      <div className="max-w-7xl mx-auto px-4">
+        <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-4 px-4">
           Meet Our Expert Doctors and Dedicated Clinic Team
         </p>
         <CrouselCs>
@@ -203,7 +197,7 @@ export default function HomePage() {
         </CrouselCs>
       </div>
       <div className="max-w-7xl mx-auto">
-        <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-10 px-4">
+        <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-4 px-4">
           Trusted by Thousands of Patients From Around the India
         </p>
         <CrouselCs autoScrollenabled={true}>

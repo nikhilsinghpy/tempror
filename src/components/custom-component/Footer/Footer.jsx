@@ -7,6 +7,7 @@ import {
   Phone,
   Mail,
 } from "lucide-react";
+import logo from "../../../assets/images/logo.webp";
 const menuData = [
   {
     label: "Branch",
@@ -81,7 +82,7 @@ export default function Footer() {
           {/* Logo & About */}
           <div>
             <img
-              src="/path-to-logo.svg"
+              src={logo}
               alt="Belleza Rohini Logo"
               className="h-12 mb-4"
             />
