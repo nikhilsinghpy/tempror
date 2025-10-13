@@ -131,50 +131,6 @@ export default function HomePage() {
       </div>
       <div className="max-w-7xl mx-auto px-4">
         <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-4 px-4">
-          See the Transformation: Real Results from Our Hair Transplant
-          Procedure
-        </p>
-        <CrouselCs autoPlayEnabled={true}>
-          {Array.from({ length: 5 }).map((_, index) => (
-            <CarouselItem
-              key={index}
-              className="basis-1/2 md:basis-1/3 lg:basis-1/4 py-4"
-            >
-              <div className="p-2 border rounded-md shadow-md ">
-                <img
-                  src="https://facesurgeon.in/wp-content/uploads/2020/03/hair-transplantation-in-india.jpg"
-                  alt="demo"
-                  className="rounded-md"
-                />
-              </div>
-            </CarouselItem>
-          ))}
-        </CrouselCs>
-      </div>
-      <div className="max-w-7xl mx-auto px-4">
-        <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-4 px-4">
-          Inside Our Clinic: The Ultimate Hair Transplant Experience
-        </p>
-        <CrouselCs autoPlayEnabled={true}>
-          {Array.from({ length: 5 }).map((_, index) => (
-            <CarouselItem key={index} className="lg:basis-1/3 py-4">
-              <div className=" w-full h-full p-4">
-                <iframe
-                  className="w-full h-full aspect-video rounded-md"
-                  src="https://www.youtube-nocookie.com/embed/Y_29eVU2eyo?si=0WyzBIJD32RIWXDS"
-                  title="YouTube video player"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerpolicy="strict-origin-when-cross-origin"
-                  allowfullscreen
-                ></iframe>
-              </div>
-            </CarouselItem>
-          ))}
-        </CrouselCs>
-      </div>
-      <div className="max-w-7xl mx-auto px-4">
-        <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-4 px-4">
           Meet Our Expert Doctors and Dedicated Clinic Team
         </p>
         <CrouselCs>
@@ -194,6 +150,73 @@ export default function HomePage() {
               />
             </CarouselItem>
           ))}
+        </CrouselCs>
+      </div>
+      <div className="max-w-7xl mx-auto px-4">
+        <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-4 px-4">
+          See the Transformation: Real Results from Our Hair Transplant
+          Procedure
+        </p>
+        <CrouselCs autoPlayEnabled={true}>
+          {Array.from({ length: 5 }).map((_, index) => (
+            <CarouselItem
+              key={index}
+              className="basis-1 md:basis-1/3 lg:basis-1/4 py-4"
+            >
+              <div className="p-2 border rounded-md shadow-md ">
+                <img
+                  src="https://facesurgeon.in/wp-content/uploads/2020/03/hair-transplantation-in-india.jpg"
+                  alt="demo"
+                  className="rounded-md"
+                />
+              </div>
+            </CarouselItem>
+          ))}
+        </CrouselCs>
+      </div>
+      <div className="max-w-7xl mx-auto px-4">
+        <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-4 px-4">
+          Inside Our Clinic: The Ultimate Hair Transplant Experience
+        </p>
+        <CrouselCs autoPlayEnabled={true}>
+          <CarouselItem
+              className="basis-full sm:basis-1/2 py-4"
+            >
+              <Card className="h-full p-0">
+                <CardContent className="p-2 border rounded-md shadow-md h-full">
+                  <div className="aspect-video w-full overflow-hidden rounded-md">
+                    <iframe
+                      src="https://www.youtube.com/embed/0OKHba2DKAM?si=cSG3DI4Ek-qITpjM"
+                      title={`YouTube video `}
+                      className="w-full h-full"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                </CardContent>
+              </Card>
+            </CarouselItem>
+            <CarouselItem
+              className="basis-full sm:basis-1/2 py-4"
+            >
+              <Card className="h-full p-0">
+                <CardContent className="p-2 border rounded-md shadow-md h-full">
+                  <div className="aspect-video w-full overflow-hidden rounded-md">
+                    <iframe
+                      src="https://www.youtube.com/embed/C4SMKd0OsoY?si=4mECqyHqpD7EKP8N"
+                      title={`YouTube video `}
+                      className="w-full h-full"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                </CardContent>
+              </Card>
+            </CarouselItem>
         </CrouselCs>
       </div>
       <div className="max-w-7xl mx-auto">
