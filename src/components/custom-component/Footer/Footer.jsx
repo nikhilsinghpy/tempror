@@ -7,7 +7,7 @@ import {
   Phone,
   Mail,
 } from "lucide-react";
-import logo from "../../../assets/images/logo.webp";
+import logo from "../../../assets/images/logo.png";
 const menuData = [
   {
     label: "Branch",
@@ -81,11 +81,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Logo & About */}
           <div>
-            <img
-              src={logo}
-              alt="Belleza Rohini Logo"
-              className="h-12 mb-4"
-            />
+            <img src={logo} alt="Belleza Rohini Logo" className="h-12 mb-4" />
             <p className="text-gray-600 text-sm leading-relaxed">
               <strong>Belleza Rohini</strong> — Delhi’s top Hair Transplant
               Clinic, specializing in <strong>FUE, DHI</strong> &amp;{" "}

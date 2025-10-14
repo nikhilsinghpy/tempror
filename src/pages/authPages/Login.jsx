@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../../assets/images/logo.webp";
+import logo from "../../assets/images/logo.png";
 import { Button } from "@/components/ui/button";
 import {
   Card,

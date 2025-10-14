@@ -3,6 +3,7 @@ import HRManagementDashboardLayout from "@/components/layout/HRManagementDashboa
 import Login from "@/pages/authPages/Login";
 import BranchPage from "@/pages/BranchPage/BranchPage";
 import HomePage from "@/pages/homePage/HomePage";
+import ContactUs from "@/pages/utilityPages/ContactUs";
 import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
@@ -11,6 +12,7 @@ export const router = createBrowserRouter([
     element: <HomeLayout />,
     children: [
       { index: true, element: <HomePage /> },
+      { path: "contact-us", element: <ContactUs /> },
       { path: "branch/:slug", element: <BranchPage /> },
       {
         path: "*",

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import {  MenuIcon, User2 } from "lucide-react";
-import logo from "../../../assets/images/logo.webp";
+import { MenuIcon, User2 } from "lucide-react";
+import logo from "../../../assets/images/logo.png";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -85,7 +85,7 @@ const menuData = [
   },
   {
     label: "Contact",
-    href: "/Contact",
+    href: "/contact-us",
     simpleLink: true,
   },
 ];
@@ -93,11 +93,7 @@ export default function Header() {
   const [login, setLogin] = useState(true);
   return (
     <header className="fixed w-full z-50 top-0 flex items-center justify-between bg-white border-b py-4 px-4 md:px-8">
-      <img
-        src={logo}
-        alt="paras parivar"
-        className="w-28 h-full"
-      />
+      <img src={logo} alt="paras parivar" className="w-28 h-full" />
       <NavigationMenu viewport={false} className="hidden md:flex">
         <NavigationMenuList>
           {menuData.map((item, index) =>
