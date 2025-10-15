@@ -1,0 +1,89 @@
+import { useState, useRef } from "react";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import logo from "@/assets/images/logo.png";
+
+export default function VerifyOtp() {
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const inputRefs = useRef([]);
+
+  // Handle OTP input change
+  const handleChange = (index, value) => {
+    if (!/^[0-9]?$/.test(value)) return;
+
+    const newOtp = [...otp];
+    newOtp[index] = value;
+    setOtp(newOtp);
+
+    // Auto-focus next input
+    if (value && index < 5) {
+      inputRefs.current[index + 1].focus();
+    }
+  };
+
+  // Handle backspace navigation
+  const handleKeyDown = (index, e) => {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
+      inputRefs.current[index - 1].focus();
+    }
+  };
+
+  // Submit handler
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const enteredOtp = otp.join("");
+    console.log("Entered OTP:", enteredOtp);
+  };
+
+  return (
+    <div className="flex flex-col min-h-screen items-center justify-center">
+      <img src={logo} alt="logo" className="w-32 h-full mb-4" />
+      <Card className="w-full max-w-sm">
+        <CardHeader>
+          <CardTitle>Verify OTP</CardTitle>
+          <CardDescription>
+            Enter the 6-digit code sent to your registered email or phone number
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit}>
+            <div className="flex justify-between gap-2">
+              {otp.map((digit, index) => (
+                <Input
+                  key={index}
+                  type="text"
+                  maxLength={1}
+                  value={digit}
+                  onChange={(e) => handleChange(index, e.target.value)}
+                  onKeyDown={(e) => handleKeyDown(index, e)}
+                  ref={(el) => (inputRefs.current[index] = el)}
+                  className="w-10 h-12 text-center text-lg font-medium"
+                  required
+                />
+              ))}
+            </div>
+            <Button type="submit" className="w-full mt-6">
+              Verify
+            </Button>
+          </form>
+        </CardContent>
+        <CardFooter className="flex flex-col gap-2">
+          <Button variant="outline" className="w-full">
+            Resend OTP
+          </Button>
+          <p className="text-sm text-muted-foreground text-center">
+            Didn’t receive the code? Try again after 30 seconds.
+          </p>
+        </CardFooter>
+      </Card>
+    </div>
+  );
+}

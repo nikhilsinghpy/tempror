@@ -179,44 +179,40 @@ export default function HomePage() {
           Inside Our Clinic: The Ultimate Hair Transplant Experience
         </p>
         <CrouselCs autoPlayEnabled={true}>
-          <CarouselItem
-              className="basis-full sm:basis-1/2 py-4"
-            >
-              <Card className="h-full p-0">
-                <CardContent className="p-2 border rounded-md shadow-md h-full">
-                  <div className="aspect-video w-full overflow-hidden rounded-md">
-                    <iframe
-                      src="https://www.youtube.com/embed/0OKHba2DKAM?si=cSG3DI4Ek-qITpjM"
-                      title={`YouTube video `}
-                      className="w-full h-full"
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      referrerPolicy="strict-origin-when-cross-origin"
-                      allowFullScreen
-                    ></iframe>
-                  </div>
-                </CardContent>
-              </Card>
-            </CarouselItem>
-            <CarouselItem
-              className="basis-full sm:basis-1/2 py-4"
-            >
-              <Card className="h-full p-0">
-                <CardContent className="p-2 border rounded-md shadow-md h-full">
-                  <div className="aspect-video w-full overflow-hidden rounded-md">
-                    <iframe
-                      src="https://www.youtube.com/embed/C4SMKd0OsoY?si=4mECqyHqpD7EKP8N"
-                      title={`YouTube video `}
-                      className="w-full h-full"
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      referrerPolicy="strict-origin-when-cross-origin"
-                      allowFullScreen
-                    ></iframe>
-                  </div>
-                </CardContent>
-              </Card>
-            </CarouselItem>
+          <CarouselItem className="basis-full sm:basis-1/2 py-4">
+            <Card className="h-full p-0">
+              <CardContent className="p-2 border rounded-md shadow-md h-full">
+                <div className="aspect-video w-full overflow-hidden rounded-md">
+                  <iframe
+                    src="https://www.youtube.com/embed/0OKHba2DKAM?si=cSG3DI4Ek-qITpjM"
+                    title={`YouTube video `}
+                    className="w-full h-full"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              </CardContent>
+            </Card>
+          </CarouselItem>
+          <CarouselItem className="basis-full sm:basis-1/2 py-4">
+            <Card className="h-full p-0">
+              <CardContent className="p-2 border rounded-md shadow-md h-full">
+                <div className="aspect-video w-full overflow-hidden rounded-md">
+                  <iframe
+                    src="https://www.youtube.com/embed/C4SMKd0OsoY?si=4mECqyHqpD7EKP8N"
+                    title={`YouTube video `}
+                    className="w-full h-full"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              </CardContent>
+            </Card>
+          </CarouselItem>
         </CrouselCs>
       </div>
       <div className="max-w-7xl mx-auto">

@@ -18,9 +18,9 @@ export default function Login() {
       <img src={logo} alt="logo" className="w-32 h-full mb-4" />
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle>Login to your Employee account</CardTitle>
+          <CardTitle>Login to your account</CardTitle>
           <CardDescription>
-            Enter your email below to login to your Employee account
+            Enter your email below to login to your account
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -39,7 +39,7 @@ export default function Login() {
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
                   <a
-                    href="#"
+                    href="/auth/forgot-password"
                     className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                   >
                     Forgot your password?
@@ -54,6 +54,15 @@ export default function Login() {
           <Button type="submit" className="w-full">
             Login
           </Button>
+          <p className="text-sm text-muted-foreground text-center">
+            Don&apos;t have an account?
+            <a
+              href="/auth/sign-up"
+              className="underline underline-offset-4 hover:text-primary"
+            >
+              Sign Up
+            </a>
+          </p>
         </CardFooter>
       </Card>
     </div>

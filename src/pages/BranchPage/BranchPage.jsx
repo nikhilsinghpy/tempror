@@ -1,5 +1,6 @@
 import DoctorCard from "@/components/custom-component/card/doctor-card";
 import { CrouselCs } from "@/components/custom-component/crouselcs/crousel-cs";
+import HeroSectionNonAnimate from "@/components/custom-component/HeroSection/hero-section-nonAnimate";
 import { Button } from "@/components/ui/button";
 import { CarouselItem } from "@/components/ui/carousel";
 import { ArrowRight, MapPin, Phone } from "lucide-react";
@@ -8,60 +9,20 @@ import React from "react";
 export default function BranchPage() {
   return (
     <div className="p-2 space-y-12">
-      <section>
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-8 items-center py-8">
-            <div>
-              {/* Content */}
-              <p className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2 py-1 text-xs text-slate-700">
-                <MapPin className="h-4 w-4" />
-                Jaipur
-              </p>
-              <h1 className="mt-4 text-3xl sm:text-5xl font-semibold tracking-tight text-slate-900">
-                Belleza Jaipur Branch
-              </h1>
-              <p className="mt-4 text-slate-600 text-[12px] md:text-sm">
-                Transform your look at Belleza Clinic, Jaipur! Experts in Hair,
-                Beard, and Eyebrow & Eyelash Transplants, blending advanced
-                technology with world-class results.
-              </p>
-              <div className="mt-6 flex items-center gap-3">
-                <a
-                  href="#"
-                  className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2.5 text-sm font-medium hover:bg-slate-800"
-                >
-                  Book an Appointment
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </a>
-              </div>
-              <div className="mt-6 flex flex-col sm:flex-row items-start sm:items-center gap-4 text-sm text-slate-600">
-                <span className="inline-flex items-center gap-2">
-                  <MapPin className="h-4 w-4 " />
-                  Shop 12, Rohini Sector 5, Delhi, India
-                </span>
-                <span className="inline-flex items-center gap-2">
-                  <Phone className="h-4 w-4" />
-                  +91 98765 43210
-                </span>
-              </div>
-            </div>
-
-            <div className="relative">
-              {/* Image */}
-              <div className="aspect-[4/3] overflow-hidden rounded-xl border border-slate-200 bg-slate-100">
-                <img
-                  src={
-                    "https://images.unsplash.com/photo-1522071820081-009f5f766356?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-                  }
-                  alt="Lifestyle product banner"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
+      <HeroSectionNonAnimate
+        heroImage="https://images.unsplash.com/photo-1522071820081-009f5f766356?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
+        title="Belleza Jaipur Branch"
+        intro="Transform your look at Belleza Clinic, Jaipur! Experts in Hair, Beard, and Eyebrow & Eyelash Transplants, blending advanced technology with world-class results."
+        CTA={{
+          href: "#",
+          text: "Book an Appointment",
+        }}
+        badge={{ icon: MapPin, text: "Jaipur" }}
+        contact={[
+          { icon: MapPin, text: "Shop 12, Rohini Sector 5, Delhi, India" },
+          { icon: Phone, text: "+91 98765 43210" },
+        ]}
+      />
       <div className="max-w-7xl mx-auto">
         <p className="text-md md:text-2xl font-semibold text-start mb-10 px-4">
           Top Doctors From Belleza Jaipur

@@ -1,5 +1,5 @@
 import React from "react";
-import { Bell, MapPin, MessageSquare, Phone } from "lucide-react";
+import { Bell, MapPin, MessageSquare, Phone, Smile } from "lucide-react";
 import vectorbg from "../../assets/images/vectorbg.jpg";
 // import logo from "../../assets/images/logo.png";
 import ServiceCard from "@/components/custom-component/card/service-card";
@@ -71,78 +71,86 @@ const accordionData = [
 
 export default function ContactUs() {
   return (
-    <div className="p-4 space-y-8">
+    <div className="p-4 space-y-12">
+      {/* Hero Section */}
       <div
-        className="w-full min-h-[50vh] rounded-lg flex flex-col justify-center items-center gap-4"
+        className="w-full min-h-[60vh] rounded-2xl flex flex-col justify-center items-center gap-6 text-center text-white relative overflow-hidden"
         style={{
           backgroundImage: `url(${vectorbg})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
-        {/* <img src={logo} alt="logo" className="w-28 h-auto object-contain" /> */}
-        <p className="text-2xl sm:text-3xl md:text-6xl capitalize font-bold">
-          Connect To Our{" "}
+        {/* Optional Decorative Overlay */}
+        <div className="absolute inset-0 bg-black/10"></div>
+        <p className="relative text-3xl sm:text-4xl md:text-6xl font-extrabold capitalize">
+          Connect To Our <br />
           <span className="text-primary underline">Friendly Team</span>
         </p>
-        <p className="text-md sm:text-lg md:text-xl font-light">
+        <p className="relative text-md sm:text-lg md:text-xl font-light max-w-2xl">
           Let us help you with your queries. We're here to support you every
           step of the way.
         </p>
       </div>
 
-      <div className="max-w-7xl mx-auto grid grid-cols-4 gap-2">
+      {/* Services Cards */}
+      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         {data.map((item, index) => (
           <ServiceCard serviceData={item} key={index} />
         ))}
       </div>
 
-      <div>
-        <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-4 px-4">
+      {/* FAQ Section */}
+      <div className="max-w-4xl mx-auto">
+        <p className="text-2xl md:text-3xl font-semibold text-center mb-6 px-4">
           Frequently Asked Questions
         </p>
-        <div className="max-w-xl mx-auto py-6">
-          <Accordion type="single" collapsible>
-            {accordionData.map((item) => (
-              <AccordionItem key={item.value} value={item.value}>
-                <AccordionTrigger className="font-bold px-2">
-                  {item.trigger}
-                </AccordionTrigger>
-                <AccordionContent>{item.content}</AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
+        <Accordion type="single" collapsible>
+          {accordionData.map((item) => (
+            <AccordionItem key={item.value} value={item.value}>
+              <AccordionTrigger className="font-bold text-gray-900 px-2">
+                {item.trigger}
+              </AccordionTrigger>
+              <AccordionContent className="text-gray-700 px-2 mt-1">
+                {item.content}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
       </div>
 
-      <Card className="max-w-4xl mx-auto">
-        <CardContent>
-          <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-4 px-4">
-            Fell Free To Contact Us : )
+      {/* Contact Form */}
+      <Card className="max-w-4xl mx-auto rounded-2xl shadow-lg overflow-hidden">
+        <CardContent className="space-y-6">
+          <p className="text-2xl md:text-3xl font-semibold text-center mb-4 px-4">
+            Feel Free To Contact Us <Smile />
           </p>
-          <div className="space-y-4">
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="name">Name</Label>
-              <Input id="name" type={"text"} placeholder="John Doe" />
+              <Input id="name" type="text" placeholder="John Doe" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="phone">Phone</Label>
-              <Input id="phone" type={"tel"} placeholder="+91  0000-0000" />
+              <Input id="phone" type="tel" placeholder="+91 0000-0000" />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 sm:col-span-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type={"email"} placeholder="m@example.com" />
+              <Input id="email" type="email" placeholder="m@example.com" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="lookingfor">Looking For</Label>
               <Select>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Theme" />
+                  <SelectValue placeholder="Select Service" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="light">Light</SelectItem>
-                  <SelectItem value="dark">Dark</SelectItem>
-                  <SelectItem value="system">System</SelectItem>
+                  <SelectItem value="hair-transplant">
+                    Hair Transplant
+                  </SelectItem>
+                  <SelectItem value="skin-care">Skin Care</SelectItem>
+                  <SelectItem value="consultation">Consultation</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -150,23 +158,24 @@ export default function ContactUs() {
               <Label htmlFor="branch">Nearest Branch To Visit</Label>
               <Select>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Theme" />
+                  <SelectValue placeholder="Select Branch" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="light">Light</SelectItem>
-                  <SelectItem value="dark">Dark</SelectItem>
-                  <SelectItem value="system">System</SelectItem>
+                  <SelectItem value="rohini">Rohini</SelectItem>
+                  <SelectItem value="delhi">Delhi</SelectItem>
+                  <SelectItem value="gurgaon">Gurgaon</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+            <div className="space-y-2 sm:col-span-2">
+              <Label htmlFor="message">Message</Label>
               <Textarea placeholder="Type your message here." />
             </div>
           </div>
         </CardContent>
-        <CardFooter className={"flex items-center justify-center"}>
-          <Button>Submit</Button>
+
+        <CardFooter className="flex justify-center">
+          <Button className="px-8 py-3 text-lg font-semibold">Submit</Button>
         </CardFooter>
       </Card>
     </div>

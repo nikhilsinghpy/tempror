@@ -32,19 +32,19 @@ const menuData = [
     links: [
       {
         title: "Rohini Belleza Branch",
-        href: "branch/rohini-belleza-branch",
+        href: "/branch/rohini-belleza-branch",
         description:
           "Our main and first branch, specializing in advanced hair transplants.",
       },
       {
         title: "Lucknow Belleza Branch",
-        href: "branch/lucknow-belleza-branch",
+        href: "/branch/lucknow-belleza-branch",
         description:
           "Our newly opened branch offering expert hair transplant services.",
       },
       {
         title: "Jaipur Belleza Branch",
-        href: "branch/jaipur-belleza-branch",
+        href: "/branch/jaipur-belleza-branch",
         description:
           "Our upcoming branch, expanding expert hair transplant services to Jaipur.",
       },
@@ -55,19 +55,19 @@ const menuData = [
     links: [
       {
         title: "Hair Transplant",
-        href: "Services/Hair-Transplant",
+        href: "/services/hair-transplant",
         description:
           "We offer advanced hair transplant treatments for natural results.",
       },
       {
         title: "Beard Transplant",
-        href: "Services/Beard-Transplant",
+        href: "/services/beard-transplant",
         description:
           "Get a fuller, well-defined beard with our expert transplant services.",
       },
       {
         title: "Eyebrow Transplant",
-        href: "Services/Eyebrow-Transplant",
+        href: "/services/eyebrow-transplant",
         description:
           "Enhance your look with precise and natural eyebrow transplants.",
       },
@@ -75,12 +75,12 @@ const menuData = [
   },
   {
     label: "Results",
-    href: "/Results",
+    href: "/results",
     simpleLink: true,
   },
   {
     label: "About",
-    href: "/About",
+    href: "about-us",
     simpleLink: true,
   },
   {
@@ -103,7 +103,7 @@ export default function Header() {
                   asChild
                   className={navigationMenuTriggerStyle()}
                 >
-                  <Link href={item.href}>{item.label}</Link>
+                  <Link to={item.href}>{item.label}</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
             ) : (
