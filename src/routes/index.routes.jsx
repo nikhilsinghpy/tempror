@@ -36,7 +36,6 @@ export const router = createBrowserRouter([
     path: "/hr-management",
     element: <HRManagementDashboardLayout />,
     children: [
-      { index: true, element: <HomePage /> },
       {
         path: "*",
         element: (
@@ -48,7 +47,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "auth",
+    path: "/auth",
     children: [
       { path: "login", element: <Login /> },
       { path: "sign-up", element: <SignUp /> },
