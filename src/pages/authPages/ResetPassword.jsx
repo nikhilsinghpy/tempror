@@ -11,6 +11,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/images/logo.png";
+import { toast } from "sonner";
+import { postHandler } from "@/services/api.services";
 
 export default function ResetPassword() {
   const [formData, setFormData] = useState({
@@ -27,17 +29,24 @@ export default function ResetPassword() {
   // Handle submit
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const { password, confirmPassword } = formData;
-
     if (password !== confirmPassword) {
-      console.error("Passwords do not match!");
-      alert("Passwords do not match!");
+      toast.error("Passwords do not match");
       return;
     }
-
-    console.log("New Password Set:", password);
-    // Here you can call your API, e.g., resetPasswordAPI({ password })
+    try {
+      const response = postHandler(
+        "/auth/reset-password",
+        {
+          newPassword: password,
+        },
+        {
+          Authorization: `Bearer ${localStorage.getItem("verification_token")}`,
+        }
+      );
+    } catch (error) {
+      toast.error(error.message || "Something went wrong!");
+    }
   };
 
   return (

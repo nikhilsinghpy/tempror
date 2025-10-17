@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../../assets/images/logo.png";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,8 +11,58 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
+import { postHandler } from "@/services/api.services";
+import { getValidPhone } from "@/utils/validatePhone.utils";
 
 export default function Login() {
+  // Step 1: State for phone and password
+  const [formData, setFormData] = useState({
+    phone: "",
+    password: "",
+  });
+
+  // Step 2: Handle input change
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    let newValue = value;
+    if (id === "phone") {
+      newValue = value.replace(/\D/g, "");
+    }
+    setFormData({
+      ...formData,
+      [id]: newValue,
+    });
+  };
+
+  // Step 3: Handle form submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // Check for empty fields
+      for (let key in formData) {
+        if (!formData[key]?.trim()) {
+          throw new Error(`Please enter ${key}`);
+        }
+      }
+      // Validate phone
+      const validPhone = getValidPhone(formData.phone);
+      if (!validPhone) {
+        throw new Error("Please enter a valid phone number");
+      }
+      // Prepare payload
+      const newPayload = {
+        phone: validPhone,
+        password: formData.password,
+      };
+      const response = await postHandler("/auth/login", newPayload);
+      toast.success("Login successful!");
+    } catch (error) {
+      console.error("Login error:", error);
+      toast.error(error.message || "Something went wrong!");
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen items-center justify-center">
       <img src={logo} alt="logo" className="w-32 h-full mb-4" />
@@ -20,21 +70,26 @@ export default function Login() {
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Enter your phone number and password to login
           </CardDescription>
         </CardHeader>
+
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="phone">Phone Number</Label>
                 <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
+                  id="phone"
+                  type="tel"
+                  placeholder="Enter phone number eg: 1234567890"
                   required
+                  min="10"
+                  value={formData.phone}
+                  onChange={handleChange}
                 />
               </div>
+
               <div className="grid gap-2">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
@@ -45,17 +100,26 @@ export default function Login() {
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="********"
+                  required
+                  value={formData.password}
+                  onChange={handleChange}
+                />
               </div>
             </div>
+
+            <Button type="submit" className="w-full mt-6">
+              Login
+            </Button>
           </form>
         </CardContent>
+
         <CardFooter className="flex-col gap-2">
-          <Button type="submit" className="w-full">
-            Login
-          </Button>
           <p className="text-sm text-muted-foreground text-center">
-            Don&apos;t have an account?
+            Don&apos;t have an account?{" "}
             <a
               href="/auth/sign-up"
               className="underline underline-offset-4 hover:text-primary"

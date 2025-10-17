@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Card,
   CardHeader,
@@ -10,8 +11,36 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/images/logo.png";
+import { toast } from "sonner";
+import { getValidPhone } from "@/utils/validatePhone.utils";
+import { postHandler } from "@/services/api.services";
 
 export default function ForgotPassword() {
+  // Step 1: State for phone
+  const [phone, setPhone] = useState("");
+
+  // Step 2: Handle input change
+  const handleChange = (e) => {
+    setPhone(e.target.value);
+  };
+
+  // Step 3: Handle form submit
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    try {
+      // Validate phone
+      const validPhone = getValidPhone(phone);
+      if (!validPhone) {
+        throw new Error("Please enter a valid phone number");
+      }
+      const response = postHandler("/auth/forgot-password", {
+        phone: validPhone,
+      });
+    } catch (error) {
+      toast.error(error.message || "Something went wrong!");
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen items-center justify-center">
       <img src={logo} alt="logo" className="w-32 h-full mb-4" />
@@ -23,8 +52,9 @@ export default function ForgotPassword() {
             password
           </CardDescription>
         </CardHeader>
+
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="phone">Phone</Label>
@@ -33,15 +63,19 @@ export default function ForgotPassword() {
                   type="tel"
                   placeholder="+91 9876543210"
                   required
+                  value={phone}
+                  onChange={handleChange}
                 />
               </div>
+
+              <Button type="submit" className="w-full mt-4">
+                Send OTP
+              </Button>
             </div>
           </form>
         </CardContent>
+
         <CardFooter className="flex flex-col gap-2">
-          <Button type="submit" className="w-full">
-            Send OTP
-          </Button>
           <p className="text-sm text-muted-foreground text-center">
             Remember your password?{" "}
             <a

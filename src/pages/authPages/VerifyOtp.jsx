@@ -10,6 +10,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/images/logo.png";
+import { toast } from "sonner";
+import { postHandler } from "@/services/api.services";
 
 export default function VerifyOtp() {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
@@ -40,7 +42,17 @@ export default function VerifyOtp() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const enteredOtp = otp.join("");
-    console.log("Entered OTP:", enteredOtp);
+    try {
+      const response = postHandler(
+        "/auth/verify-otp",
+        { otp: enteredOtp },
+        {
+          Authorization: `Bearer ${localStorage.getItem("verification_token")}`,
+        }
+      );
+    } catch (error) {
+      toast.error(error.message || "Something went wrong!");
+    }
   };
 
   return (
@@ -70,7 +82,11 @@ export default function VerifyOtp() {
                 />
               ))}
             </div>
-            <Button type="submit" className="w-full mt-6">
+            <Button
+              type="submit"
+              className="w-full mt-6"
+              disabled={otp.join("").length < 6}
+            >
               Verify
             </Button>
           </form>

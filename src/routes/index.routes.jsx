@@ -1,3 +1,5 @@
+import NotFound from "@/components/custom-component/NotFound/NotFound";
+import AuthLayout from "@/components/layout/AuthLayout";
 import HomeLayout from "@/components/layout/HomeLayout";
 import HRManagementDashboardLayout from "@/components/layout/HRManagementDashboardLayout";
 import ForgotPassword from "@/pages/authPages/ForgotPassword";
@@ -22,32 +24,17 @@ export const router = createBrowserRouter([
       { path: "about-us", element: <AboutUs /> },
       { path: "results", element: <ResultPage /> },
       { path: "branch/:slug", element: <BranchPage /> },
-      {
-        path: "*",
-        element: (
-          <div className="h-screen w-full justify-center flex items-center ">
-            404
-          </div>
-        ),
-      },
+      { path: "*", element: <NotFound /> },
     ],
   },
   {
     path: "/hr-management",
     element: <HRManagementDashboardLayout />,
-    children: [
-      {
-        path: "*",
-        element: (
-          <div className="h-screen w-full justify-center flex items-center ">
-            404
-          </div>
-        ),
-      },
-    ],
+    children: [{ path: "*", element: <NotFound /> }],
   },
   {
     path: "/auth",
+    element: <AuthLayout />,
     children: [
       { path: "login", element: <Login /> },
       { path: "sign-up", element: <SignUp /> },
