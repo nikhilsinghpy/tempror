@@ -14,9 +14,11 @@ import { Label } from "@/components/ui/label";
 import { postHandler } from "@/services/api.services";
 import { getValidPhone } from "@/utils/validatePhone.utils";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
   // Step 1: State for all form fields
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -61,8 +63,11 @@ export default function SignUp() {
     await toast.promise(postHandler("/user/register", payload), {
       loading: "Registering user...",
       success: (response) => {
-        console.log("Register Response:", response);
-
+        localStorage.setItem(
+          "verificationToken",
+          response.data.verificationToken
+        );
+        navigate("/auth/verify-otp");
         return response.message;
       },
       error: (err) => err.message || "Something went wrong!",

@@ -14,8 +14,10 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { postHandler } from "@/services/api.services";
 import { getValidPhone } from "@/utils/validatePhone.utils";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const navigate = useNavigate();
   // Step 1: State for phone and password
   const [formData, setFormData] = useState({
     phone: "",
@@ -38,29 +40,43 @@ export default function Login() {
   // Step 3: Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      // Check for empty fields
-      for (let key in formData) {
-        if (!formData[key]?.trim()) {
-          throw new Error(`Please enter ${key}`);
-        }
+    for (let key in formData) {
+      if (!formData[key]?.trim()) {
+        throw new Error(`Please enter ${key}`);
       }
-      // Validate phone
-      const validPhone = getValidPhone(formData.phone);
-      if (!validPhone) {
-        throw new Error("Please enter a valid phone number");
-      }
-      // Prepare payload
-      const newPayload = {
-        phone: validPhone,
-        password: formData.password,
-      };
-      const response = await postHandler("/auth/login", newPayload);
-      toast.success("Login successful!");
-    } catch (error) {
-      console.error("Login error:", error);
-      toast.error(error.message || "Something went wrong!");
     }
+    const validPhone = getValidPhone(formData.phone);
+    if (!validPhone) {
+      throw new Error("Please enter a valid phone number");
+    }
+    const newPayload = {
+      phone: validPhone,
+      password: formData.password,
+    };
+    toast.promise(
+      postHandler(
+        "/auth/login/web",
+        newPayload,
+        {
+          "Content-Type": "application/json",
+        },
+        {
+          withCredentials: true,
+        }
+      ),
+      {
+        loading: "Logging in...",
+        success: (response) => {
+          localStorage.setItem("accessToken", response.data.accessToken);
+          navigate("/");
+          return response.message;
+        },
+        error: (error) => error.message || "Something went wrong!",
+      },
+      {
+        duration: 3000,
+      }
+    );
   };
 
   return (

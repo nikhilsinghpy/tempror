@@ -13,8 +13,10 @@ import { Button } from "@/components/ui/button";
 import logo from "@/assets/images/logo.png";
 import { toast } from "sonner";
 import { postHandler } from "@/services/api.services";
+import { useNavigate } from "react-router-dom";
 
 export default function ResetPassword() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     password: "",
     confirmPassword: "",
@@ -27,26 +29,33 @@ export default function ResetPassword() {
   };
 
   // Handle submit
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const { password, confirmPassword } = formData;
     if (password !== confirmPassword) {
       toast.error("Passwords do not match");
       return;
     }
-    try {
-      const response = postHandler(
+    toast.promise(
+      postHandler(
         "/auth/reset-password",
         {
           newPassword: password,
         },
         {
-          Authorization: `Bearer ${localStorage.getItem("verification_token")}`,
+          Authorization: `Bearer ${localStorage.getItem("verificationToken")}`,
         }
-      );
-    } catch (error) {
-      toast.error(error.message || "Something went wrong!");
-    }
+      ),
+      {
+        loading: "Resetting password...",
+        success: (response) => {
+          localStorage.removeItem("verificationToken");
+          navigate("/auth/login");
+          return response.message;
+        },
+        error: (error) => error.message || "Something went wrong!",
+      }
+    );
   };
 
   return (

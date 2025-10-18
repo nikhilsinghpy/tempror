@@ -1,6 +1,15 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { MenuIcon, User2 } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  BadgeCheck,
+  Bell,
+  ChevronsUpDown,
+  CreditCard,
+  LogOut,
+  MenuIcon,
+  Sparkles,
+  User2,
+} from "lucide-react";
 import logo from "../../../assets/images/logo.png";
 import {
   NavigationMenu,
@@ -16,10 +25,23 @@ import {
   Sheet,
   SheetContent,
   SheetDescription,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useIsMobile } from "@/hooks/use-mobile";
+import usericon from "../../../assets/images/userricon.jpg";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const menuData = [
   {
@@ -90,7 +112,17 @@ const menuData = [
   },
 ];
 export default function Header() {
+  const navigate = useNavigate();
   const [login, setLogin] = useState(true);
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      setLogin(true);
+    } else {
+      setLogin(false);
+    }
+  }, []);
   return (
     <header className="fixed w-full z-50 top-0 flex items-center justify-between bg-white border-b py-4 px-4 md:px-8">
       <img src={logo} alt="paras parivar" className="w-28 h-full" />
@@ -132,11 +164,15 @@ export default function Header() {
       </NavigationMenu>
 
       {login ? (
-        <Button variant="default" size={"icon"} className={"hidden md:flex"}>
-          <User2 />
-        </Button>
+        <div className="hidden md:flex">
+          <UserDropdownMenu />
+        </div>
       ) : (
-        <Button variant="default" className={"hidden md:flex"}>
+        <Button
+          variant="default"
+          className={"hidden md:flex"}
+          onClick={() => navigate("/auth/login")}
+        >
           Login
         </Button>
       )}
@@ -147,14 +183,14 @@ export default function Header() {
             <MenuIcon className="h-4 w-4" />
           </Button>
         </SheetTrigger>
-        <SheetContent>
+        <SheetContent className={"gap-0"}>
           <SheetHeader>
             <SheetTitle>Belleza</SheetTitle>
-            <SheetDescription>
+            <SheetDescription className={"text-xs"}>
               Leading with Experience and Excellence
             </SheetDescription>
           </SheetHeader>
-          <div className="px-4 py-6 w-full space-y-4 flex flex-col  max-h-[95vh] overflow-y-auto">
+          <div className="px-4 py-6 w-full space-y-4 flex flex-col border-y  max-h-[90vh] overflow-y-auto">
             {menuData.map((item, index) =>
               item.simpleLink ? (
                 <Link
@@ -184,8 +220,86 @@ export default function Header() {
               )
             )}
           </div>
+          <SheetFooter>
+            {login ? (
+              <UserDropdownMenu />
+            ) : (
+              <Button variant="default" onClick={() => navigate("/auth/login")}>
+                Login
+              </Button>
+            )}
+          </SheetFooter>
         </SheetContent>
       </Sheet>
     </header>
+  );
+}
+
+function UserDropdownMenu() {
+  const isMobile = useIsMobile();
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className={"!p-0"}>
+          <Avatar>
+            <AvatarImage src={usericon} alt={"user"} />
+            <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+          </Avatar>
+          <div className="grid flex-1 text-left text-sm leading-tight">
+            <span className="truncate font-medium">Paras Parivar</span>
+            <span className="truncate text-xs">parasParivar@gmail.com</span>
+          </div>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+        side={isMobile ? "top" : "bottom"}
+        align="end"
+        sideOffset={4}
+      >
+        <DropdownMenuLabel className="p-0 font-normal">
+          <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+            <Avatar className="h-8 w-8 rounded-lg">
+              <AvatarImage src={usericon} alt={"user"} />
+              <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+            </Avatar>
+            <div className="grid flex-1 text-left text-sm leading-tight">
+              <span className="truncate font-medium">{"Paras Parivar"}</span>
+              <span className="truncate text-xs">
+                {" "}
+                {"parasParivar@gmail.com"}
+              </span>
+            </div>
+          </div>
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem>
+            <Sparkles />
+            Upgrade to Pro
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem>
+            <BadgeCheck />
+            Account
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <CreditCard />
+            Billing
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Bell />
+            Notifications
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+          <LogOut />
+          Log out
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

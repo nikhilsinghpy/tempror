@@ -14,9 +14,11 @@ import logo from "@/assets/images/logo.png";
 import { toast } from "sonner";
 import { getValidPhone } from "@/utils/validatePhone.utils";
 import { postHandler } from "@/services/api.services";
+import { useNavigate } from "react-router-dom";
 
 export default function ForgotPassword() {
   // Step 1: State for phone
+  const navigate = useNavigate();
   const [phone, setPhone] = useState("");
 
   // Step 2: Handle input change
@@ -25,20 +27,27 @@ export default function ForgotPassword() {
   };
 
   // Step 3: Handle form submit
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      // Validate phone
-      const validPhone = getValidPhone(phone);
-      if (!validPhone) {
-        throw new Error("Please enter a valid phone number");
-      }
-      const response = postHandler("/auth/forgot-password", {
-        phone: validPhone,
-      });
-    } catch (error) {
-      toast.error(error.message || "Something went wrong!");
+    const validPhone = getValidPhone(phone);
+    if (!validPhone) {
+      throw new Error("Please enter a valid phone number");
     }
+    await toast.promise(
+      postHandler("/auth/register/FORGET_PASSWORD", { phone: validPhone }),
+      {
+        loading: "Sending OTP...",
+        success: (response) => {
+          localStorage.setItem(
+            "verificationToken",
+            response.data.verificationToken
+          );
+          navigate("/auth/verify-otp");
+          return response.message;
+        },
+        error: (error) => error.message || "Something went wrong!",
+      }
+    );
   };
 
   return (
