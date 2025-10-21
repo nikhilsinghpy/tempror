@@ -18,7 +18,7 @@ import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
   {
-    path: "/h",
+    path: "/",
     element: <HomeLayout />,
     children: [
       { index: true, element: <HomePage /> },
@@ -45,9 +45,5 @@ export const router = createBrowserRouter([
       { path: "reset-password", element: <ResetPassword /> },
     ],
   },
-  {
-    path: "/",
-    element: <UserLayout />,
-    children: [{ index: true, element: <AboutUs /> }],
-  },
+  
 ]);
