@@ -1,8 +1,9 @@
 import NotFound from "@/components/custom-component/NotFound/NotFound";
+import AdminLayout from "@/components/layout/AdminLayout";
 import AuthLayout from "@/components/layout/AuthLayout";
 import HomeLayout from "@/components/layout/HomeLayout";
 import HRManagementDashboardLayout from "@/components/layout/HRManagementDashboardLayout";
-import UserLayout from "@/components/layout/UserLayout";
+import AdminHomePage from "@/pages/AdminPages/AdminHomePage";
 import ForgotPassword from "@/pages/authPages/ForgotPassword";
 import Login from "@/pages/authPages/Login";
 import ResetPassword from "@/pages/authPages/ResetPassword";
@@ -10,7 +11,6 @@ import SignUp from "@/pages/authPages/SignUp";
 import VerifyOtp from "@/pages/authPages/VerifyOtp";
 import BranchPage from "@/pages/BranchPage/BranchPage";
 import HomePage from "@/pages/homePage/HomePage";
-import UserHomePage from "@/pages/UserDashboard/UserHomePage";
 import AboutUs from "@/pages/utilityPages/AboutUs";
 import ContactUs from "@/pages/utilityPages/ContactUs";
 import ResultPage from "@/pages/utilityPages/ResultPage";
@@ -35,6 +35,14 @@ export const router = createBrowserRouter([
     children: [{ path: "*", element: <NotFound /> }],
   },
   {
+    path: "/admin",
+    element: <AdminLayout />,
+    children: [
+      { path: "*", element: <AdminHomePage /> },
+      { path: "*", element: <NotFound /> },
+    ],
+  },
+  {
     path: "/auth",
     element: <AuthLayout />,
     children: [
@@ -45,5 +53,4 @@ export const router = createBrowserRouter([
       { path: "reset-password", element: <ResetPassword /> },
     ],
   },
-  
 ]);

@@ -3,12 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   BadgeCheck,
   Bell,
-  ChevronsUpDown,
   CreditCard,
   LogOut,
   MenuIcon,
   Sparkles,
-  User2,
 } from "lucide-react";
 import logo from "../../../assets/images/logo.png";
 import {
@@ -40,8 +38,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useIsMobile } from "@/hooks/use-mobile";
-import usericon from "../../../assets/images/userricon.jpg";
+import usericon from "../../../assets/images/usericon.jpg";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useUser } from "@/hooks/use-user";
+import { toast } from "sonner";
+import { postHandler } from "@/services/api.services";
 
 const menuData = [
   {
@@ -113,16 +114,13 @@ const menuData = [
 ];
 export default function Header() {
   const navigate = useNavigate();
-  const [login, setLogin] = useState(true);
-
+  const [login, setLogin] = useState(false);
+  const { user } = useUser();
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    if (token) {
+    if (user) {
       setLogin(true);
-    } else {
-      setLogin(false);
     }
-  }, []);
+  }, [user]);
   return (
     <header className="fixed w-full z-50 top-0 flex items-center justify-between bg-white border-b py-4 px-4 md:px-8">
       <img src={logo} alt="paras parivar" className="w-28 h-full" />
@@ -165,7 +163,7 @@ export default function Header() {
 
       {login ? (
         <div className="hidden md:flex">
-          <UserDropdownMenu />
+          <UserDropdownMenu user={user} />
         </div>
       ) : (
         <Button
@@ -222,7 +220,7 @@ export default function Header() {
           </div>
           <SheetFooter>
             {login ? (
-              <UserDropdownMenu />
+              <UserDropdownMenu user={user} />
             ) : (
               <Button variant="default" onClick={() => navigate("/auth/login")}>
                 Login
@@ -235,8 +233,24 @@ export default function Header() {
   );
 }
 
-function UserDropdownMenu() {
+function UserDropdownMenu({ user }) {
+  const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const handleLogout = () => {
+    try {
+      toast.promise(postHandler("/auth/logout"), {
+        loading: "Logging out...",
+        success: (response) => {
+          localStorage.removeItem("accessToken");
+          navigate("/auth/login");
+          return response.message;
+        },
+        error: (error) => error.message || "Something went wrong!",
+      });
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -246,8 +260,10 @@ function UserDropdownMenu() {
             <AvatarFallback className="rounded-lg">CN</AvatarFallback>
           </Avatar>
           <div className="grid flex-1 text-left text-sm leading-tight">
-            <span className="truncate font-medium">Paras Parivar</span>
-            <span className="truncate text-xs">parasParivar@gmail.com</span>
+            <span className="truncate font-medium">{`${user?.name.first} ${user?.name.last}`}</span>
+            <span className="truncate text-xs">
+              {user?.email || "loading..."}
+            </span>
           </div>
         </Button>
       </DropdownMenuTrigger>
@@ -295,7 +311,7 @@ function UserDropdownMenu() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={handleLogout}>
           <LogOut />
           Log out
         </DropdownMenuItem>

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { postHandler } from "@/services/api.services";
+import { getHandler, postHandler } from "@/services/api.services";
 
 export function useUser() {
   const [user, setUser] = useState(null);
@@ -12,19 +12,12 @@ export function useUser() {
         setUser(null);
         return;
       }
-      const response = await postHandler(
-        "/user/me",
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          withCredentials: true,
-        }
-      );
-      setUser(response.data?.user || null);
+      const response = await getHandler("/user/me", {
+        Authorization: `Bearer ${token}`,
+      });
+      setUser(response.data || null);
     } catch (error) {
-      console.error("Fetch user error:", error);
+      console.error("Fetch user error:", error.message);
       if (error?.response?.data?.message === "TokenExpiredError") {
         try {
           const response = await postHandler(
@@ -35,7 +28,7 @@ export function useUser() {
           const newToken = response.data?.accessToken;
           if (newToken) {
             localStorage.setItem("accessToken", newToken);
-            const retry = await postHandler(
+            const retry = await getHandler(
               "/user/me",
               {},
               {
@@ -64,8 +57,6 @@ export function useUser() {
   // --- 4️⃣ Run on mount + react to token changes
   useEffect(() => {
     fetchUser();
-
-    // Listen for token changes (e.g. logout or login from another tab)
     const handleStorageChange = (event) => {
       if (event.key === "accessToken") {
         fetchUser();
