@@ -3,7 +3,12 @@ import AdminLayout from "@/components/layout/AdminLayout";
 import AuthLayout from "@/components/layout/AuthLayout";
 import HomeLayout from "@/components/layout/HomeLayout";
 import HRManagementDashboardLayout from "@/components/layout/HRManagementDashboardLayout";
-import AdminHomePage from "@/pages/AdminPages/AdminHomePage";
+import AppointmentsAdmin from "@/pages/AdminPages/Appointments.admin";
+import ClientListPageAdmin from "@/pages/AdminPages/ClientListPage.admin";
+import ClientPayemntPageAdmin from "@/pages/AdminPages/ClientPayemntPage.admin";
+import ClientPRPPageAdmin from "@/pages/AdminPages/ClientPRPPage.admin";
+import AdminHomePage from "@/pages/AdminPages/HomePage.admin";
+import QueryListAdmin from "@/pages/AdminPages/QueryList.admin";
 import ForgotPassword from "@/pages/authPages/ForgotPassword";
 import Login from "@/pages/authPages/Login";
 import ResetPassword from "@/pages/authPages/ResetPassword";
@@ -38,7 +43,12 @@ export const router = createBrowserRouter([
     path: "/admin",
     element: <AdminLayout />,
     children: [
-      { path: "*", element: <AdminHomePage /> },
+      { index: true, element: <AdminHomePage /> },
+      { path: "clients", element: <ClientListPageAdmin /> },
+      { path: "clients-prp", element: <ClientPRPPageAdmin /> },
+      { path: "clients-payment-schedule", element: <ClientPayemntPageAdmin /> },
+      { path: "appointments", element: <AppointmentsAdmin /> },
+      { path: "queries", element: <QueryListAdmin /> },
       { path: "*", element: <NotFound /> },
     ],
   },

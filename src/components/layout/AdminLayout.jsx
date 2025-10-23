@@ -3,9 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
@@ -21,22 +19,29 @@ const navItemData = [
   {
     label: "Manage Client",
     navitems: [
-      { label: "Client List ", link: "/admin/client-list" },
-      { label: "Client PRP ", link: "/admin/client-prp" },
+      { label: "Clients List ", link: "/admin/clients" },
+      { label: "Client PRP ", link: "/admin/clients-prp" },
       {
         label: "Client Payment & Schedule ",
-        link: "/admin/client-payment-schedule",
+        link: "/admin/clients-payment-schedule",
       },
-      { label: "Client Payment", link: "/admin/client-payment" },
     ],
   },
   {
     label: "Manage Appointment",
-    navitems: [{ label: "Appointment", link: "/admin/manage-appointment" }],
+    navitems: [
+      {
+        label: "Today's Appointment",
+        link: `/admin/appointments?date=${
+          new Date().toISOString().split("T")[0]
+        }`,
+      },
+      { label: "Appointment", link: "/admin/appointments" },
+    ],
   },
   {
-    label: "Contact",
-    navitems: [{ label: "Contact-List", link: "/admin/contact-list" }],
+    label: "Query",
+    navitems: [{ label: "Query-List", link: "/admin/queries" }],
   },
   {
     label: "Manage Doctor",
@@ -85,7 +90,7 @@ export default function AdminLayout() {
     <SidebarProvider>
       <AppSidebar sidebarData={navItemData} user={user} />
       <SidebarInset>
-        <header className="sticky top-0 flex border-b h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+        <header className="bg-white z-50 sticky top-0 flex border-b h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
             <Separator
@@ -102,14 +107,12 @@ export default function AdminLayout() {
                     >
                       {path}
                     </BreadcrumbItem>
-                    {
-                      index !== paths.length - 1 && (
-                        <BreadcrumbSeparator
-                          key={index}
-                          className="cursor-not-allowed"
-                        />
-                      )
-                    }
+                    {index !== paths.length - 1 && (
+                      <BreadcrumbSeparator
+                        key={index}
+                        className="cursor-not-allowed"
+                      />
+                    )}
                   </>
                 ))}
               </BreadcrumbList>
