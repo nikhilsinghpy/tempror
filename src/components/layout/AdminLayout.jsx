@@ -100,11 +100,8 @@ export default function AdminLayout() {
             <Breadcrumb>
               <BreadcrumbList>
                 {paths.map((path, index) => (
-                  <>
-                    <BreadcrumbItem
-                      key={index}
-                      className={"cursor-not-allowed capitalize"}
-                    >
+                  <div key={index} className="flex items-center gap-3">
+                    <BreadcrumbItem className={"cursor-not-allowed capitalize"}>
                       {path}
                     </BreadcrumbItem>
                     {index !== paths.length - 1 && (
@@ -113,7 +110,7 @@ export default function AdminLayout() {
                         className="cursor-not-allowed"
                       />
                     )}
-                  </>
+                  </div>
                 ))}
               </BreadcrumbList>
             </Breadcrumb>

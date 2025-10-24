@@ -131,6 +131,58 @@ const appointmentdata = [
     status: "Pending",
   },
 ];
+const filters = [
+  {
+    key: "treatmentType",
+    label: "Treatment Type",
+    values: [
+      "Hair Transplant",
+      "Beard Transplant",
+      "Eyebrow Transplant",
+      "PRP Therapy",
+      "Hair Restoration",
+    ],
+  },
+  {
+    key: "doctor",
+    label: "Doctor / Specialist",
+    values: ["Dr. A. Mehta", "Dr. R. Singh", "Dr. K. Patel"],
+  },
+  {
+    key: "graftCount",
+    label: "Graft Count",
+    values: [
+      "Up to 1000 Grafts",
+      "1000 - 2000 Grafts",
+      "2000 - 3000 Grafts",
+      "3000+ Grafts",
+    ],
+  },
+  {
+    key: "appointmentDate",
+    label: "Appointment Date",
+    values: ["Today", "Tomorrow", "This Week", "Next Week"],
+  },
+  {
+    key: "timeSlot",
+    label: "Preferred Time Slot",
+    values: [
+      "Morning (9 AM - 12 PM)",
+      "Afternoon (12 PM - 4 PM)",
+      "Evening (4 PM - 8 PM)",
+    ],
+  },
+  {
+    key: "paymentStatus",
+    label: "Payment Status",
+    values: ["Paid", "Pending", "Cancelled"],
+  },
+  {
+    key: "appointmentStatus",
+    label: "Appointment Status",
+    values: ["Confirmed", "Completed", "Cancelled", "Rescheduled"],
+  },
+];
 
 export default function AdminHomePage() {
   return (
@@ -142,7 +194,7 @@ export default function AdminHomePage() {
         ))}
       </div>
       <div className="flex flex-col md:flex-row gap-2">
-        <div className="w-1/2">
+        <div className="w-full md:w-1/2">
           <ChartPieSimple
             chartData={chartData}
             chartConfig={chartConfig}
@@ -154,12 +206,13 @@ export default function AdminHomePage() {
             footerDesc="Showing the calculated values for the last months"
           />
         </div>
-        <div className="w-1/2">
+        <div className="w-full md:w-1/2">
           <h1 className="text-lg font-bold mb-2 ">Upcoming Appointments</h1>
           <TableCs
             data={appointmentdata}
             columns={appointmentcolumns}
             rowsPerPage={6}
+            filters={filters}
           />
         </div>
       </div>

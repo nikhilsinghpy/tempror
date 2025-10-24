@@ -9,11 +9,47 @@ import {
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Menu } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Checkbox } from "@/components/ui/checkbox";
 
-export default function TableCs({ data = [], columns = [], rowsPerPage = 5 }) {
+export default function TableCs({
+  data = [],
+  columns = [],
+  rowsPerPage = 5,
+  filters = [],
+}) {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
+  const [selectedFilters, setSelectedFilters] = useState({});
+
+  const handleChange = (key, value, checked) => {
+    setSelectedFilters((prev) => {
+      const current = new Set(prev[key] || []);
+      if (checked) {
+        current.add(value);
+      } else {
+        current.delete(value);
+      }
+      return { ...prev, [key]: Array.from(current) };
+    });
+  };
+
+  const hasFilter = (key, value) => {
+    if (!selectedFilters[key]) return false;
+    return selectedFilters[key].includes(value);
+  };
+
+  const handleReset = () => setSelectedFilters({});
 
   // 🔍 Filter data based on search query
   const filteredData = useMemo(() => {
@@ -49,6 +85,47 @@ export default function TableCs({ data = [], columns = [], rowsPerPage = 5 }) {
           }}
           className="w-1/3"
         />
+
+        {filters.length > 0 && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="icon">
+                <Menu className="h-5 w-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel>Select Filter</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {filters.map(({ key, label, values }) => (
+                <DropdownMenuSub key={key}>
+                  <DropdownMenuSubTrigger className="capitalize">
+                    {label}
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent className="p-2">
+                    <div className="flex flex-col gap-2">
+                      {values.map((val) => (
+                        <label
+                          key={val}
+                          className="flex items-center gap-2 text-sm capitalize"
+                        >
+                          <Checkbox
+                            id={`${key}-${val}`}
+                            checked={hasFilter(key, val)}
+                            onCheckedChange={(checked) =>
+                              handleChange(key, val, checked)
+                            }
+                          />
+                          {val}
+                        </label>
+                      ))}
+                    </div>
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
+              ))}
+              <Button className="mt-2 w-full" onClick={handleReset}>Clear Filters</Button>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
 
       {/* 📋 Table */}

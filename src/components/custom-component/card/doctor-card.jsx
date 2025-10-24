@@ -87,13 +87,6 @@ export default function DoctorCard({
           </div>
 
           <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => alert(`Viewing ${name}`)}
-            >
-              View
-            </Button>
             <Button onClick={onBook} size="sm">
               Book
             </Button>
