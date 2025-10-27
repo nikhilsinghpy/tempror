@@ -39,19 +39,20 @@ export default function HeroSection({ heroData }) {
                   {current.description}
                 </p>
                 <div className="mt-6 flex items-center gap-3">
-                  <a
-                    href="#"
-                    className="inline-flex items-center justify-center rounded-md bg-slate-900 text-white px-4 py-2.5 text-sm font-medium hover:bg-slate-800"
-                  >
-                    {current.cta1}
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </a>
-                  <a
-                    href="#"
-                    className="inline-flex items-center justify-center rounded-md border border-slate-300 bg-white text-slate-900 px-4 py-2.5 text-sm font-medium hover:bg-slate-50"
-                  >
-                    {current.cta2}
-                  </a>
+                  {current.cta.map((item, index) => (
+                    <a
+                      href={item.href}
+                      key={index}
+                      className={`inline-flex border items-center justify-center rounded-md  px-4 py-2.5 text-sm font-medium ${
+                        item.varient === "primary"
+                          ? "bg-slate-900 text-white hover:bg-slate-800"
+                          : "bg-white text-slate-900 hover:bg-slate-200"
+                      }`}
+                    >
+                      {item.title}
+                      <item.icon className="ml-2 h-4 w-4" />
+                    </a>
+                  ))}
                 </div>
                 <div className="mt-6 flex items-center gap-6 text-sm text-slate-600">
                   <span className="inline-flex items-center gap-2">

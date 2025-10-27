@@ -14,7 +14,7 @@ export default function CallToAction() {
       <Button
         className={"bg-primary-foreground text-white"}
         onClick={() => {
-          window.location.href = "/contact-us";
+          window.location.href = "/book-appointment";
         }}
       >
         Book Appointment

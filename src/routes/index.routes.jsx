@@ -4,12 +4,14 @@ import AuthLayout from "@/components/layout/AuthLayout";
 import HomeLayout from "@/components/layout/HomeLayout";
 import HRManagementDashboardLayout from "@/components/layout/HRManagementDashboardLayout";
 import AppointmentsAdmin from "@/pages/AdminPages/Appointments.admin";
+import BranchPageAdmin from "@/pages/AdminPages/BranchPage.admin";
 import ClientListPageAdmin from "@/pages/AdminPages/ClientListPage.admin";
 import ClientPayemntPageAdmin from "@/pages/AdminPages/ClientPayemntPage.admin";
 import ClientPRPPageAdmin from "@/pages/AdminPages/ClientPRPPage.admin";
 import DoctorPageAdmin from "@/pages/AdminPages/DoctorPage.admin";
 import HeroSectionAdmin from "@/pages/AdminPages/HeroSection.admin";
 import AdminHomePage from "@/pages/AdminPages/HomePage.admin";
+import ManageReviewAdmin from "@/pages/AdminPages/ManageReview.admin";
 import PostClinicVideoPageAdmin from "@/pages/AdminPages/PostClinicVideoPage.admin";
 import PostResultAdmin from "@/pages/AdminPages/PostResult.admin";
 import QueryListAdmin from "@/pages/AdminPages/QueryList.admin";
@@ -21,6 +23,7 @@ import VerifyOtp from "@/pages/authPages/VerifyOtp";
 import BranchPage from "@/pages/BranchPage/BranchPage";
 import HomePage from "@/pages/homePage/HomePage";
 import AboutUs from "@/pages/utilityPages/AboutUs";
+import AppointmentPage from "@/pages/utilityPages/AppointmentPage";
 import ContactUs from "@/pages/utilityPages/ContactUs";
 import ResultPage from "@/pages/utilityPages/ResultPage";
 import { createBrowserRouter } from "react-router-dom";
@@ -35,6 +38,7 @@ export const router = createBrowserRouter([
       { path: "about-us", element: <AboutUs /> },
       { path: "results", element: <ResultPage /> },
       { path: "branch/:slug", element: <BranchPage /> },
+      { path: "book-appointment", element: <AppointmentPage /> },
       { path: "*", element: <NotFound /> },
     ],
   },
@@ -60,6 +64,11 @@ export const router = createBrowserRouter([
         path: "manage-website/post-clinic-video",
         element: <PostClinicVideoPageAdmin />,
       },
+      {
+        path: "manage-website/post-review",
+        element: <ManageReviewAdmin />,
+      },
+      { path: "manage-branch", element: <BranchPageAdmin /> },
       { path: "*", element: <NotFound /> },
     ],
   },

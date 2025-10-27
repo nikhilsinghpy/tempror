@@ -123,7 +123,9 @@ export default function Header() {
   }, [user]);
   return (
     <header className="fixed w-full z-50 top-0 flex items-center justify-between bg-white border-b py-4 px-4 md:px-8">
-      <img src={logo} alt="paras parivar" className="w-28 h-full" />
+      <Link to={"/"}>
+        <img src={logo} alt="paras parivar" className="w-28 h-full" />
+      </Link>
       <NavigationMenu viewport={false} className="hidden md:flex">
         <NavigationMenuList>
           {menuData.map((item, index) =>

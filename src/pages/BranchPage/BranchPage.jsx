@@ -40,7 +40,9 @@ export default function BranchPage() {
                 location="Rohini, Delhi"
                 avatarUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRripLcqGUKIBfgbtmux6U1UY9UkgezqzJzFw&s"
                 bio={`Dr. Ananya Sharma is a senior cardiologist with 12+ years of experience in interventional cardiology. She focuses on patient-centred care and minimally invasive procedures.`}
-                onBook={() => console.log("Booked appointment with Dr. Ananya")}
+                onClick={() => {
+                  window.location.href = "/book-appointment";
+                }}
               />
             </CarouselItem>
           ))}

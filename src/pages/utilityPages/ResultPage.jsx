@@ -62,7 +62,7 @@ export default function ResultPage() {
         title="Transform Your Hair, Transform Your Confidence"
         intro="Real results from real patients — witness the artistry of our advanced hair transplant techniques."
         CTA={{
-          href: "/contact-us",
+          href: "/book-appointment",
           text: "Book an Appointment",
         }}
         badge={{ icon: Star, text: "4.8/5" }}

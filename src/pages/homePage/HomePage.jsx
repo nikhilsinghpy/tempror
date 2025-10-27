@@ -2,14 +2,20 @@ import React from "react";
 import homeimg1 from "../../assets/images/homepage1.jpg";
 import HeroSection from "@/components/custom-component/HeroSection/hero-section";
 import RatingCard from "@/components/custom-component/card/rating-card";
-import { Anchor, MessageCircle, UserCheck, UserPlus } from "lucide-react";
+import {
+  Anchor,
+  ArrowRight,
+  MessageCircle,
+  UserCheck,
+  UserPlus,
+} from "lucide-react";
 import ServiceCard from "@/components/custom-component/card/service-card";
-import ResultCard from "@/components/custom-component/card/result-card";
 import { CrouselCs } from "@/components/custom-component/crouselcs/crousel-cs";
 import { CarouselItem } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
 import DoctorCard from "@/components/custom-component/card/doctor-card";
 import ReviewCard from "@/components/custom-component/card/review-card";
+import { Button } from "@/components/ui/button";
 const heroData = [
   {
     id: 1,
@@ -17,8 +23,20 @@ const heroData = [
     title: "Restore Your Confidence with Hair Transplant",
     description:
       "Our advanced hair transplant techniques provide natural-looking results with minimal downtime. Regain your hair and your self-esteem.",
-    cta1: "Book a Free Consultation",
-    cta2: "Learn More",
+    cta: [
+      {
+        title: "Schedule an Appointment",
+        href: "/book-appointment",
+        icon: ArrowRight,
+        varient: "primary",
+      },
+      {
+        title: "Explore Treatment",
+        href: "/book-appointment",
+        icon: MessageCircle,
+        varient: "outline",
+      },
+    ],
     image: "https://www.bellezarohini.com/image-new/1.jpg",
   },
   {
@@ -27,8 +45,20 @@ const heroData = [
     title: "Achieve a Fuller Beard with Precision",
     description:
       "Get the beard you’ve always wanted. Our expert beard transplant services are tailored for density and symmetry.",
-    cta1: "Schedule an Appointment",
-    cta2: "Explore Treatment",
+    cta: [
+      {
+        title: "Schedule an Appointment",
+        href: "/book-appointment",
+        icon: ArrowRight,
+        varient: "primary",
+      },
+      {
+        title: "Explore Treatment",
+        href: "/book-appointment",
+        icon: MessageCircle,
+        varient: "outline",
+      },
+    ],
     image:
       "https://www.bellezarohini.com/doctor/hair-transplant-doctor%20(2).JPG",
   },
@@ -38,8 +68,20 @@ const heroData = [
     title: "Perfect Your Look with Eyebrow Restoration",
     description:
       "Enhance your facial features with fuller, natural-looking eyebrows through our safe and effective eyebrow transplant procedure.",
-    cta1: "Get Started Today",
-    cta2: "See Before & After",
+    cta: [
+      {
+        title: "Schedule an Appointment",
+        href: "/book-appointment",
+        icon: ArrowRight,
+        varient: "primary",
+      },
+      {
+        title: "Explore Treatment",
+        href: "/book-appointment",
+        icon: MessageCircle,
+        varient: "outline",
+      },
+    ],
     image: homeimg1,
   },
 ];
@@ -105,7 +147,7 @@ const serviceData = [
     subtitle: "In the Healthcare Industry",
     description:
       "With 15 years of medical expertise, we combine innovation with trust to deliver exceptional outcomes.",
-    icon: Anchor,
+    icon: ArrowRight,
   },
 ];
 
@@ -146,7 +188,9 @@ export default function HomePage() {
                 location="Rohini, Delhi"
                 avatarUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRripLcqGUKIBfgbtmux6U1UY9UkgezqzJzFw&s"
                 bio={`Dr. Ananya Sharma is a senior cardiologist with 12+ years of experience in interventional cardiology. She focuses on patient-centred care and minimally invasive procedures.`}
-                onBook={() => console.log("Booked appointment with Dr. Ananya")}
+                onBook={() => {
+                  window.location.href = "/book-appointment";
+                }}
               />
             </CarouselItem>
           ))}
@@ -174,6 +218,65 @@ export default function HomePage() {
           ))}
         </CrouselCs>
       </div>
+      <section>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 items-center">
+          <div className="flex justify-center lg:justify-end">
+            <img
+              src="https://media.istockphoto.com/id/1496720417/photo/high-five-for-being-such-a-brave-little-boy.jpg?s=612x612&w=0&k=20&c=jrhbbPCEEN5Z3nSmTdu6fBC84v0kFuuJ8L4l2reghn4="
+              alt="Doctors"
+              className="rounded-xl shadow-lg object-cover w-full "
+            />
+          </div>
+          <div>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+              Why Choose Us
+            </h2>
+            <p className="text-gray-500 mb-6">
+              We provide expert care with modern facilities and a compassionate
+              team, ensuring personalized treatment for every patient.
+            </p>
+
+            <div className="grid sm:grid-cols-2 gap-4 mb-6 py-4">
+              <div>
+                <h3 className="font-semibold text-gray-900">Primary Care</h3>
+                <p className="text-gray-500 text-sm">
+                  Far far away, behind the word mountains, far from the
+                  countries Vokalia.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-900">Lab Test</h3>
+                <p className="text-gray-500 text-sm">
+                  Far far away, behind the word mountains, far from the
+                  countries Vokalia.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-900">Symptom Check</h3>
+                <p className="text-gray-500 text-sm">
+                  Far far away, behind the word mountains, far from the
+                  countries Vokalia.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-900">Heart Rate</h3>
+                <p className="text-gray-500 text-sm">
+                  Far far away, behind the word mountains, far from the
+                  countries Vokalia.
+                </p>
+              </div>
+            </div>
+
+            <Button
+              onClick={() => {
+                window.location.href = "/book-appointment";
+              }}
+            >
+              Book Appointment <ArrowRight />
+            </Button>
+          </div>
+        </div>
+      </section>
       <div className="max-w-7xl mx-auto px-4">
         <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-4 px-4">
           Inside Our Clinic: The Ultimate Hair Transplant Experience
@@ -215,6 +318,7 @@ export default function HomePage() {
           </CarouselItem>
         </CrouselCs>
       </div>
+
       <div className="max-w-7xl mx-auto">
         <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-4 px-4">
           Trusted by Thousands of Patients From Around the India

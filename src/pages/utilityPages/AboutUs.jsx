@@ -152,8 +152,21 @@ export default function AboutUs() {
             whole Game of Personality
           </p>
           <div className="flex flex-col md:flex-row md:gap-4 gap-2">
-            <Button>Book an Appointment</Button>
-            <Button variant={"outline"}>Request a Call</Button>
+            <Button
+              onClick={() => {
+                window.location.href = "/book-appointment";
+              }}
+            >
+              Book an Appointment
+            </Button>
+            <Button
+              variant={"outline"}
+              onClick={() => {
+                window.location.href = "/contact-us";
+              }}
+            >
+              Request a Call
+            </Button>
           </div>
         </div>
         <img
@@ -281,7 +294,9 @@ export default function AboutUs() {
                 location="Rohini, Delhi"
                 avatarUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRripLcqGUKIBfgbtmux6U1UY9UkgezqzJzFw&s"
                 bio={`Dr. Ananya Sharma is a senior cardiologist with 12+ years of experience in interventional cardiology. She focuses on patient-centred care and minimally invasive procedures.`}
-                onBook={() => console.log("Booked appointment with Dr. Ananya")}
+                onBook={() => {
+                  window.location.href = "/book-appointment";
+                }}
               />
             </CarouselItem>
           ))}

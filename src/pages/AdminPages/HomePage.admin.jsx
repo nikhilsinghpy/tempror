@@ -188,7 +188,7 @@ export default function AdminHomePage() {
   return (
     <div className="p-4 w-full space-y-4">
       <h1 className="text-2xl font-bold ">Admin Home Page</h1>
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         {stats.map((item, index) => (
           <StatusCard key={index} item={item} />
         ))}

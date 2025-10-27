@@ -63,16 +63,6 @@ const navItemData = [
     ],
   },
   {
-    label: "Manage Services",
-    navitems: [
-      { label: "Services", link: "/admin/manage-services" },
-      {
-        label: "Services Treatments Process",
-        link: "/admin/manage-services/services-treatments-process",
-      },
-    ],
-  },
-  {
     label: "Manage Branch",
     navitems: [{ label: "Branch", link: "/admin/manage-branch" }],
   },
