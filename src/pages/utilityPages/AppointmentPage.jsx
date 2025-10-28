@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AppointmentForm from "@/components/custom-component/forms/appointment-from";
 import vectorbg from "../../assets/images/vectorbg.jpg";
 import {
@@ -7,6 +7,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "@/hooks/use-user";
 
 const accordionData = [
   {
@@ -42,6 +44,13 @@ const accordionData = [
 ];
 
 export default function AppointmentPage() {
+  const navigate = useNavigate();
+  const { user } = useUser();
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  }, [user]);
   return (
     <div className="p-4 space-y-12">
       <div
