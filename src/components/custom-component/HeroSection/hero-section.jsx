@@ -18,7 +18,7 @@ export default function HeroSection({ heroData }) {
   return (
     <section className="relative">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-8 items-center py-8">
+        <div className="grid lg:grid-cols-2 gap-8 items-center">
           <div>
             <AnimatePresence mode="wait">
               <motion.div

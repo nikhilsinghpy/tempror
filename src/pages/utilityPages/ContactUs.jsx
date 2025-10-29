@@ -21,6 +21,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { postHandler } from "@/services/api.services";
 
 const data = [
   {
@@ -110,6 +111,7 @@ const accordionData = [
 ];
 
 export default function ContactUs() {
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -128,7 +130,7 @@ export default function ContactUs() {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const missingFields = [];
     for (let key in formData) {
       if (!formData[key] || formData[key].trim() === "") {
@@ -144,8 +146,25 @@ export default function ContactUs() {
       );
       return;
     }
-
-    console.log("Form submitted successfully:", formData);
+    setLoading(true);
+    await toast.promise(postHandler("/contact/create", formData), {
+      loading: "Sending message...",
+      success: (response) => {
+        setFormData({
+          name: "",
+          phone: "",
+          email: "",
+          branch: "",
+          lookingFor: "",
+          message: "",
+        });
+        setLoading(false);
+        return response.message;
+      },
+      error: (error) =>
+        error.message || "Something went wrong! Please try again later.",
+    });
+    setLoading(false);
   };
 
   return (
@@ -289,6 +308,7 @@ export default function ContactUs() {
           <Button
             className="px-8 py-3 text-lg font-semibold"
             onClick={handleSubmit}
+            disabled={loading}
           >
             Submit
           </Button>

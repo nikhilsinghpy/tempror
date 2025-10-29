@@ -48,7 +48,7 @@ export default function AppointmentPage() {
   const { user } = useUser();
   useEffect(() => {
     if (!user) {
-      navigate("/login");
+      navigate("/auth/login");
     }
   }, [user]);
   return (

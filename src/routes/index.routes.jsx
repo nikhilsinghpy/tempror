@@ -26,6 +26,9 @@ import AboutUs from "@/pages/utilityPages/AboutUs";
 import AppointmentPage from "@/pages/utilityPages/AppointmentPage";
 import ContactUs from "@/pages/utilityPages/ContactUs";
 import ResultPage from "@/pages/utilityPages/ResultPage";
+import BeardTransplantPage from "@/pages/utilityPages/servicePages/BeardTransplantPage";
+import EyebrowTransplantPage from "@/pages/utilityPages/servicePages/EyebrowTransplantPage";
+import HairTransplantPage from "@/pages/utilityPages/servicePages/HairTransplantPage";
 import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
@@ -39,6 +42,14 @@ export const router = createBrowserRouter([
       { path: "results", element: <ResultPage /> },
       { path: "branch/:slug", element: <BranchPage /> },
       { path: "book-appointment", element: <AppointmentPage /> },
+      {
+        path: "services",
+        children: [
+          { path: "hair-transplant", element: <HairTransplantPage /> },
+          { path: "beard-transplant", element: <BeardTransplantPage /> },
+          { path: "eyebrow-transplant", element: <EyebrowTransplantPage /> },
+        ],
+      },
       { path: "*", element: <NotFound /> },
     ],
   },

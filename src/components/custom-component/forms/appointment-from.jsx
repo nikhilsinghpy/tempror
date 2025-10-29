@@ -10,8 +10,11 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { postHandler } from "@/services/api.services";
 
 export default function AppointmentForm() {
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: {
       first: "",
@@ -56,7 +59,30 @@ export default function AppointmentForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    setLoading(true);
+    toast.promise(postHandler("/appointment/create", formData), {
+      loading: "Submitting form...",
+      success: (response) => {
+        setFormData({
+          name: {
+            first: "",
+            last: "",
+          },
+          phone: "",
+          email: "",
+          city: "",
+          state: "",
+          message: "",
+          lookingFor: "",
+          date: "",
+          time: "",
+        });
+        setLoading(false);
+        return response.message;
+      },
+      error: (error) => error.message || "Something went wrong!",
+    });
+    setLoading(false);
   };
 
   return (
@@ -199,7 +225,7 @@ export default function AppointmentForm() {
 
       {/* Submit Button */}
       <div className="pt-4 flex items-center justify-center">
-        <Button type="submit" >
+        <Button type="submit" disabled={loading}>
           Submit Appointment
         </Button>
       </div>

@@ -14,7 +14,7 @@ export default function HomeLayout() {
           duration: 5000,
           unstyled: true,
           className:
-            "flex items-center gap-2 rounded-md shadow-lg p-4 border min-w-[250px] sm:min-w-[300px] md:min-w-[350px] lg:min-w-[400px] max-w-[90vw] mx-auto",
+            "flex items-center bg-white gap-2 rounded-md shadow-lg p-4 border min-w-[250px] sm:min-w-[300px] md:min-w-[350px] lg:min-w-[400px] max-w-[90vw] mx-auto",
           classNames: {
             error: "text-red-600 bg-white border-red-600 ",
             success: "text-green-600 bg-white border-green-600 ",

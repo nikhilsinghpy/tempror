@@ -8,7 +8,12 @@ import {
 import AutoScroll from "embla-carousel-auto-scroll";
 import Autoplay from "embla-carousel-autoplay";
 
-export function CrouselCs({ children, autoScrollenabled, autoPlayEnabled }) {
+export function CrouselCs({
+  children,
+  autoScrollenabled,
+  autoPlayEnabled,
+  isButtonEnabled = true,
+}) {
   if (autoPlayEnabled && autoScrollenabled) {
     throw new Error(
       "AutoPlay and AutoScroll can't be enabled at the same time"
@@ -27,13 +32,14 @@ export function CrouselCs({ children, autoScrollenabled, autoPlayEnabled }) {
         ]}
         className="w-full"
       >
-        <CarouselContent>
-          {children}
-        </CarouselContent>
-        <CarouselPrevious className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 rounded-sm shadow-2xl bg-white/80 hover:bg-white" />
-        <CarouselNext className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 rounded-sm shadow-2xl bg-white/80 hover:bg-white" />
+        <CarouselContent>{children}</CarouselContent>
+        {isButtonEnabled && (
+          <>
+            <CarouselPrevious className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 rounded-sm shadow-2xl bg-white/80 hover:bg-white" />
+            <CarouselNext className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 rounded-sm shadow-2xl bg-white/80 hover:bg-white" />
+          </>
+        )}
       </Carousel>
     </div>
   );
 }
-

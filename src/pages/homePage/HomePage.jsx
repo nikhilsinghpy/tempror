@@ -16,6 +16,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import DoctorCard from "@/components/custom-component/card/doctor-card";
 import ReviewCard from "@/components/custom-component/card/review-card";
 import { Button } from "@/components/ui/button";
+import HeroBanner from "@/components/custom-component/HeroSection/hero-banner";
 const heroData = [
   {
     id: 1,
@@ -154,12 +155,16 @@ const serviceData = [
 export default function HomePage() {
   return (
     <div className="space-y-12">
-      <HeroSection heroData={heroData} />
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-7xl mx-auto p-4">
-        {ratingData.map((item, index) => (
-          <RatingCard ratingData={item} key={index} />
-        ))}
+      <div className="max-w-7xl mx-auto px-4">
+        <CrouselCs autoPlayEnabled={true} isButtonEnabled={false}>
+          {Array.from({ length: 5 }).map((_, index) => (
+            <CarouselItem key={index} className="w-full py-4">
+              <HeroBanner />
+            </CarouselItem>
+          ))}
+        </CrouselCs>
       </div>
+      <HeroSection heroData={heroData} />
       <div>
         <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-4 px-4">
           Leading with Experience and Excellence – Your Trusted Healthcare
@@ -318,11 +323,15 @@ export default function HomePage() {
           </CarouselItem>
         </CrouselCs>
       </div>
-
       <div className="max-w-7xl mx-auto">
         <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-4 px-4">
           Trusted by Thousands of Patients From Around the India
         </p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {ratingData.map((item, index) => (
+            <RatingCard ratingData={item} key={index} />
+          ))}
+        </div>
         <CrouselCs autoScrollenabled={true}>
           {Array.from({ length: 5 }).map((_, index) => (
             <CarouselItem key={index} className="lg:basis-1/3 py-4">
