@@ -46,11 +46,11 @@ const accordionData = [
 export default function AppointmentPage() {
   const navigate = useNavigate();
   const { user } = useUser();
-  useEffect(() => {
-    if (!user) {
-      navigate("/auth/login");
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (!user) {
+  //     navigate("/auth/login");
+  //   }
+  // }, [user]);
   return (
     <div className="p-4 space-y-12">
       <div
