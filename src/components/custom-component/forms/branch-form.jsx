@@ -2,7 +2,7 @@ import React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { Delete, Trash2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 
 const InputField = ({ label, id, value, onChange }) => (
@@ -41,10 +41,6 @@ export default function BranchForm({ branchData, setBranchData }) {
         updatedClinicVideo[index].title = value;
       } else if (id.startsWith("video-url")) {
         updatedClinicVideo[index].youTubeVideoUrl = value;
-      } else if (id.startsWith("video-image-url")) {
-        updatedClinicVideo[index].image.url = value;
-      } else if (id.startsWith("video-image-alt")) {
-        updatedClinicVideo[index].image.alt = value;
       }
       return {
         ...prevData,
@@ -141,19 +137,7 @@ export default function BranchForm({ branchData, setBranchData }) {
       [id]: files[0],
     }));
   };
-  const handleClinicImageUpload = (e, index) => {
-    const file = e.target.files?.[0];
-    if (!file) return; // safety check
 
-    setBranchData((prevData) => {
-      const updatedClinicImages = [...(prevData.clinicImages || [])];
-      updatedClinicImages[index] = file;
-      return {
-        ...prevData,
-        clinicImages: updatedClinicImages,
-      };
-    });
-  };
 
   return (
     <div className="space-y-4">
@@ -400,10 +384,10 @@ export default function BranchForm({ branchData, setBranchData }) {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="mapLink">Map Link</Label>
+          <Label htmlFor="mapUrl">Map Url</Label>
           <Input
-            placeholder="Map Link"
-            id="mapLink"
+            placeholder="Map Url"
+            id="mapUrl"
             value={branchData.contact.mapLink}
             onChange={handleContactInputChange}
           />
@@ -437,26 +421,6 @@ export default function BranchForm({ branchData, setBranchData }) {
                 value={video.youTubeVideoUrl}
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor={`clinicVideoImage`}>Thumbnail Image</Label>
-              <Input
-                type="file"
-                placeholder="Image URL"
-                id={`clinicVideoImage`}
-                onChange={(e) => handleClinicImageUpload(e, index)}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor={`video-image-alt-${index}`}>
-                Thumbnail Image Alt Text
-              </Label>
-              <Input
-                placeholder="Image Alt Text"
-                id={`video-image-alt-${index}`}
-                onChange={(e) => handleVideoInputChange(e, index)}
-                value={video.image.alt}
-              />
-            </div>
           </div>
         ))}
         <Button
@@ -468,7 +432,6 @@ export default function BranchForm({ branchData, setBranchData }) {
                 {
                   title: "",
                   youTubeVideoUrl: "",
-                  image: { url: "", alt: "" },
                 },
               ],
             }))
@@ -513,40 +476,93 @@ export default function BranchForm({ branchData, setBranchData }) {
             />
           </div>
         </div>
-        {branchData.whyChooseUs.features.map((feature, index) => (
-          <div key={index} className="space-y-2 ">
-            {/* Feature Title */}
-            <Label htmlFor={`feature-title-${index}`}>
-              Feature {index + 1} Title
-            </Label>
-            <Input
-              placeholder="Feature Title"
-              id={`feature-title-${index}`}
-              value={feature.title}
-              onChange={(e) => handleWhyChooseUsFeatureInputChange(e, index)}
-            />
+        <div className="space-y-4 w-full">
+          {branchData.whyChooseUs.features.map((feature, index) => (
+            <div key={index} className="flex items-center gap-2 w-full">
+              {/* Feature Title */}
+              <div className="space-y-2 w-full">
+                <Label htmlFor={`feature-title-${index}`}>
+                  Feature {index + 1} Title
+                </Label>
+                <Input
+                  placeholder="Feature Title"
+                  id={`feature-title-${index}`}
+                  value={feature.title}
+                  onChange={(e) =>
+                    handleWhyChooseUsFeatureInputChange(e, index)
+                  }
+                  className=""
+                />
+              </div>
+              <div className="space-y-2 w-full">
+                {/* Feature Description */}
+                <Label htmlFor={`feature-description-${index}`}>
+                  Feature Description
+                </Label>
+                <Input
+                  placeholder="Feature Description"
+                  id={`feature-description-${index}`}
+                  value={feature.description}
+                  onChange={(e) =>
+                    handleWhyChooseUsFeatureInputChange(e, index)
+                  }
+                />
+              </div>
+              <div className="space-y-2 w-full">
+                {/* Feature Icon */}
+                <Label htmlFor={`feature-icon-${index}`}>Feature Icon</Label>
+                <Input
+                  placeholder="Feature Icon"
+                  id={`feature-icon-${index}`}
+                  value={feature.icon}
+                  onChange={(e) =>
+                    handleWhyChooseUsFeatureInputChange(e, index)
+                  }
+                />
+              </div>
 
-            {/* Feature Description */}
-            <Label htmlFor={`feature-description-${index}`}>
-              Feature Description
-            </Label>
-            <Input
-              placeholder="Feature Description"
-              id={`feature-description-${index}`}
-              value={feature.description}
-              onChange={(e) => handleWhyChooseUsFeatureInputChange(e, index)}
-            />
+              <Button
+                onClick={() =>
+                  setBranchData((prevData) => ({
+                    ...prevData,
+                    whyChooseUs: {
+                      ...prevData.whyChooseUs,
+                      features: prevData.whyChooseUs.features.filter(
+                        (_, i) => i !== index
+                      ),
+                    },
+                  }))
+                }
+                size={"icon"}
+                variant="destructive"
+                className={"mt-4"}
+              >
+                <Delete />
+              </Button>
+            </div>
+          ))}
 
-            {/* Feature Icon */}
-            <Label htmlFor={`feature-icon-${index}`}>Feature Icon</Label>
-            <Input
-              placeholder="Feature Icon"
-              id={`feature-icon-${index}`}
-              value={feature.icon}
-              onChange={(e) => handleWhyChooseUsFeatureInputChange(e, index)}
-            />
-          </div>
-        ))}
+          <Button
+            onClick={() =>
+              setBranchData((prevData) => ({
+                ...prevData,
+                whyChooseUs: {
+                  ...prevData.whyChooseUs,
+                  features: [
+                    ...prevData.whyChooseUs.features,
+                    {
+                      title: "",
+                      description: "",
+                      icon: "",
+                    },
+                  ],
+                },
+              }))
+            }
+          >
+            + Add New Feature
+          </Button>
+        </div>
       </div>
 
       <Label>SEO</Label>

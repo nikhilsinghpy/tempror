@@ -1,30 +1,43 @@
 import DoctorCard from "@/components/custom-component/card/doctor-card";
+import ServiceCard from "@/components/custom-component/card/service-card";
+import YouTubeCard from "@/components/custom-component/card/youtube-video-card";
 import { CrouselCs } from "@/components/custom-component/crouselcs/crousel-cs";
 import HeroSectionNonAnimate from "@/components/custom-component/HeroSection/hero-section-nonAnimate";
 import { Button } from "@/components/ui/button";
 import { CarouselItem } from "@/components/ui/carousel";
-import { ArrowRight, MapPin, Phone } from "lucide-react";
-import React from "react";
+import { getHandler } from "@/services/api.services";
+import { ArrowRight, Link, Mail, MapPin, Phone } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 export default function BranchPage() {
+  const { slug } = useParams();
+  const [branch, setBranch] = useState({});
+  const fetchBranch = async () => {
+    try {
+      const response = await getHandler(`/branch/get/${slug}`);
+      setBranch(response.data);
+    } catch (error) {
+      console.error("Error fetching branch:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchBranch();
+  }, []);
+
   return (
     <div className="p-2 space-y-12">
       <HeroSectionNonAnimate
-        heroImage="https://images.unsplash.com/photo-1522071820081-009f5f766356?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-        title="Belleza Jaipur Branch"
-        intro="Transform your look at Belleza Clinic, Jaipur! Experts in Hair, Beard, and Eyebrow & Eyelash Transplants, blending advanced technology with world-class results."
-        CTA={{
-          href: "#",
-          text: "Book an Appointment",
-        }}
+        heroImage={branch?.image?.url?.secure_url}
+        title={branch?.title}
+        intro={branch?.description}
+        CTA={branch?.buttons}
         badge={{ icon: MapPin, text: "Jaipur" }}
-        contact={[
-          { icon: MapPin, text: "Shop 12, Rohini Sector 5, Delhi, India" },
-          { icon: Phone, text: "+91 98765 43210" },
-        ]}
+        features={branch?.features}
       />
       <div className="max-w-7xl mx-auto">
-        <p className="text-md md:text-2xl font-semibold text-start mb-10 px-4">
+        <p className="text-md md:text-2xl text-center font-semibold  mb-10 px-4">
           Top Doctors From Belleza Jaipur
         </p>
         <CrouselCs autoPlayEnabled={true}>
@@ -52,55 +65,88 @@ export default function BranchPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 items-center">
           <div className="flex justify-center lg:justify-end">
             <img
-              src="https://media.istockphoto.com/id/1496720417/photo/high-five-for-being-such-a-brave-little-boy.jpg?s=612x612&w=0&k=20&c=jrhbbPCEEN5Z3nSmTdu6fBC84v0kFuuJ8L4l2reghn4="
+              src={branch?.whyChooseUs?.image?.url?.secure_url}
               alt="Doctors"
               className="rounded-xl shadow-lg object-cover w-full "
             />
           </div>
           <div>
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-              Why Choose Us
+              {branch?.whyChooseUs?.title}
             </h2>
             <p className="text-gray-500 mb-6">
-              We provide expert care with modern facilities and a compassionate
-              team, ensuring personalized treatment for every patient.
+              {branch?.whyChooseUs?.description}
             </p>
 
             <div className="grid sm:grid-cols-2 gap-4 mb-6 py-4">
-              <div>
-                <h3 className="font-semibold text-gray-900">Primary Care</h3>
-                <p className="text-gray-500 text-sm">
-                  Far far away, behind the word mountains, far from the
-                  countries Vokalia.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900">Lab Test</h3>
-                <p className="text-gray-500 text-sm">
-                  Far far away, behind the word mountains, far from the
-                  countries Vokalia.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900">Symptom Check</h3>
-                <p className="text-gray-500 text-sm">
-                  Far far away, behind the word mountains, far from the
-                  countries Vokalia.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900">Heart Rate</h3>
-                <p className="text-gray-500 text-sm">
-                  Far far away, behind the word mountains, far from the
-                  countries Vokalia.
-                </p>
-              </div>
+              {branch?.whyChooseUs?.features?.map((feature, index) => (
+                <div key={index}>
+                  <h3 className="font-semibold text-gray-900">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-500 text-sm">{feature.description}</p>
+                </div>
+              ))}
             </div>
-
             <Button>Book Appointment</Button>
           </div>
         </div>
       </section>
+      <div className="max-w-7xl mx-auto">
+        <p className="text-md md:text-2xl text-center font-semibold  mb-10 px-4">
+          Inside Our Clinic: The Ultimate Hair Transplant Experience
+        </p>
+        <CrouselCs autoPlayEnabled={true}>
+          {branch?.clinicVideo?.map((_, index) => (
+            <CarouselItem key={index} className="lg:basis-1/3 py-4">
+              <YouTubeCard videoUrl={_.youTubeVideoUrl} title={_.title} />
+            </CarouselItem>
+          ))}
+        </CrouselCs>
+      </div>
+      <div className="max-w-7xl mx-auto">
+        <p className="text-md md:text-2xl text-center font-semibold  mb-10 px-4">
+          We’d love to hear from you! Reach out and let’s connect.
+        </p>
+        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:md:grid-cols-4 gap-6">
+          <ServiceCard
+            serviceData={{
+              icon: MapPin,
+              title: "",
+              description:
+                "Here’s the complete address of our branch — we’d be delighted to welcome you in person!",
+              value: branch?.contact?.address,
+            }}
+          />
+          <ServiceCard
+            serviceData={{
+              icon: Phone,
+              title: "",
+              description:
+                "Give us a call — our team is always ready to assist and answer your questions.",
+              value: branch?.contact?.phone,
+            }}
+          />
+          <ServiceCard
+            serviceData={{
+              icon: Mail,
+              title: "",
+              description:
+                "Prefer writing to us? Drop an email anytime, and we’ll get back to you as soon as possible.",
+              value: branch?.contact?.email,
+            }}
+          />
+          <ServiceCard
+            serviceData={{
+              icon: Link,
+              title: "",
+              description:
+                "Find us easily — click the map below to get directions straight to our branch.",
+              value: branch?.contact?.mapUrl,
+            }}
+          />
+        </div>
+      </div>
     </div>
   );
 }

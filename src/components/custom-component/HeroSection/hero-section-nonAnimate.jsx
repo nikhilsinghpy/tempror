@@ -1,3 +1,4 @@
+import DynamicIcon from "@/components/ui/dynamic-icon";
 import { ArrowRight } from "lucide-react";
 import React from "react";
 
@@ -7,9 +8,10 @@ export default function HeroSectionNonAnimate({
   intro,
   CTA,
   badge: { icon, text },
-  contact = [],
+  features = [],
 }) {
   const Icon = icon;
+  console.log(CTA);
   return (
     <section>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -26,18 +28,31 @@ export default function HeroSectionNonAnimate({
               {intro}
             </p>
             <div className="mt-6 flex items-center gap-3">
-              <a
-                href={CTA.href}
-                className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2.5 text-sm font-medium hover:bg-slate-800"
-              >
-                {CTA.text}
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </a>
+              {CTA?.map((item, index) => (
+                <a
+                  key={index}
+                  href={item.link}
+                  className={`inline-flex items-center justify-center rounded-md px-4 py-2.5 text-sm font-medium transition-all duration-200
+                    ${
+                      item.type === "primary"
+                        ? "bg-slate-900 text-white hover:bg-slate-800"
+                        : "border border-slate-200 bg-white text-slate-900 hover:bg-slate-100 hover:text-slate-900"
+                    }`}
+                >
+                  {item.label}
+                  <DynamicIcon
+                    className={`ml-2 h-4 w-4 ${
+                      item.type === "primary" ? "text-white" : "text-slate-900"
+                    }`}
+                    name={item.icon}
+                  />
+                </a>
+              ))}
             </div>
             <div className="mt-6 flex flex-col sm:flex-row items-start sm:items-center gap-4 text-sm text-slate-600">
-              {contact.map((item, index) => (
+              {features.map((item, index) => (
                 <span className="inline-flex items-center gap-2" key={index}>
-                  <item.icon className="h-4 w-4" />
+                  <DynamicIcon className={`ml-2 h-4 w-4 `} name={item.icon} />
                   {item.text}
                 </span>
               ))}

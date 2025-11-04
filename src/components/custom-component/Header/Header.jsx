@@ -42,80 +42,80 @@ import usericon from "../../../assets/images/usericon.jpg";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUser } from "@/hooks/use-user";
 import { toast } from "sonner";
-import { postHandler } from "@/services/api.services";
+import { getHandler, postHandler } from "@/services/api.services";
 
-const menuData = [
-  {
-    label: "Home",
-    href: "/",
-    simpleLink: true,
-  },
-  {
-    label: "Branch",
-    links: [
-      {
-        title: "Rohini Belleza Branch",
-        href: "/branch/rohini-belleza-branch",
-        description:
-          "Our main and first branch, specializing in advanced hair transplants.",
-      },
-      {
-        title: "Lucknow Belleza Branch",
-        href: "/branch/lucknow-belleza-branch",
-        description:
-          "Our newly opened branch offering expert hair transplant services.",
-      },
-      {
-        title: "Jaipur Belleza Branch",
-        href: "/branch/jaipur-belleza-branch",
-        description:
-          "Our upcoming branch, expanding expert hair transplant services to Jaipur.",
-      },
-    ],
-  },
-  {
-    label: "What We Do",
-    links: [
-      {
-        title: "Hair Transplant",
-        href: "/services/hair-transplant",
-        description:
-          "We offer advanced hair transplant treatments for natural results.",
-      },
-      {
-        title: "Beard Transplant",
-        href: "/services/beard-transplant",
-        description:
-          "Get a fuller, well-defined beard with our expert transplant services.",
-      },
-      {
-        title: "Eyebrow Transplant",
-        href: "/services/eyebrow-transplant",
-        description:
-          "Enhance your look with precise and natural eyebrow transplants.",
-      },
-    ],
-  },
-  {
-    label: "Results",
-    href: "/results",
-    simpleLink: true,
-  },
-  {
-    label: "About",
-    href: "about-us",
-    simpleLink: true,
-  },
-  {
-    label: "Contact",
-    href: "/contact-us",
-    simpleLink: true,
-  },
-];
 export default function Header() {
   const navigate = useNavigate();
   const [login, setLogin] = useState(false);
+  const [menu, setMenu] = useState([
+    { label: "Home", href: "/", simpleLink: true },
+    {
+      label: "What We Do",
+      links: [
+        {
+          title: "Hair Transplant",
+          href: "/services/hair-transplant",
+          description:
+            "We offer advanced hair transplant treatments for natural results.",
+        },
+        {
+          title: "Beard Transplant",
+          href: "/services/beard-transplant",
+          description:
+            "Get a fuller, well-defined beard with our expert transplant services.",
+        },
+        {
+          title: "Eyebrow Transplant",
+          href: "/services/eyebrow-transplant",
+          description:
+            "Enhance your look with precise and natural eyebrow transplants.",
+        },
+      ],
+    },
+    { label: "Results", href: "/results", simpleLink: true },
+    { label: "About", href: "/about-us", simpleLink: true },
+    { label: "Contact", href: "/contact-us", simpleLink: true },
+  ]);
   const { user } = useUser();
+
+  const fetchBranches = async () => {
+    try {
+      const response = await getHandler("/branch/get");
+      return response.data;
+    } catch (error) {
+      toast.dismiss();
+      toast.error(error.message || "Something went wrong!");
+    }
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await fetchBranches();
+        const formattedData = data.map((branch) => ({
+          title: branch.title,
+          href: `/branch/${branch.seo.slug}`,
+          description: branch.description,
+        }));
+        setMenu((prevMenu) => {
+          // Avoid adding "Branch" twice
+          if (prevMenu.some((item) => item.label === "Branch")) return prevMenu;
+
+          // Insert at index 2
+          const index = 1;
+          return [
+            ...prevMenu.slice(0, index),
+            { label: "Branch", links: formattedData },
+            ...prevMenu.slice(index),
+          ];
+        });
+      } catch (error) {
+        console.error("Error fetching branch data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   useEffect(() => {
     if (user) {
       setLogin(true);
@@ -128,7 +128,7 @@ export default function Header() {
       </Link>
       <NavigationMenu viewport={false} className="hidden md:flex">
         <NavigationMenuList>
-          {menuData.map((item, index) =>
+          {menu.map((item, index) =>
             item.simpleLink ? (
               <NavigationMenuItem key={index}>
                 <NavigationMenuLink
@@ -149,7 +149,7 @@ export default function Header() {
                           <Link to={link.href}>
                             <div className="font-medium">{link.title}</div>
                             <div className="text-muted-foreground">
-                              {link.description}
+                              {`${link?.description?.slice(0, 80)} ...`}
                             </div>
                           </Link>
                         </NavigationMenuLink>
@@ -191,7 +191,7 @@ export default function Header() {
             </SheetDescription>
           </SheetHeader>
           <div className="px-4 py-6 w-full space-y-4 flex flex-col border-y  max-h-[90vh] overflow-y-auto">
-            {menuData.map((item, index) =>
+            {menu.map((item, index) =>
               item.simpleLink ? (
                 <Link
                   key={index}

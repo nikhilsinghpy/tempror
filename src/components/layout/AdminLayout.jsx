@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/sidebar";
 import { AppSidebar } from "../ui/app-sidebar";
 import { useUser } from "@/hooks/use-user";
+import { Toaster } from "sonner";
 
 const navItemData = [
   {
@@ -78,6 +79,21 @@ export default function AdminLayout() {
   }, [location.pathname]);
   return (
     <SidebarProvider>
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 5000,
+          unstyled: true,
+          className:
+            "flex items-center z-100 bg-white gap-2 rounded-md shadow-lg p-4 border min-w-[250px] sm:min-w-[300px] md:min-w-[350px] lg:min-w-[400px] max-w-[90vw] mx-auto",
+          classNames: {
+            error: "text-red-600 bg-white border-red-600 ",
+            success: "text-green-600 bg-white border-green-600 ",
+            warning: "text-yellow-600 bg-white border-yellow-600 ",
+            info: "text-blue-400 bg-white border-blue-400 ",
+          },
+        }}
+      />
       <AppSidebar sidebarData={navItemData} user={user} />
       <SidebarInset>
         <header className="bg-white z-50 sticky top-0 flex border-b h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">

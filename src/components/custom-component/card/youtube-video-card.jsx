@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 
-export default function YouTubeCard({ videoUrl }) {
+export default function YouTubeCard({ videoUrl, title = "Video Title" }) {
+  console.log("Video URL:", videoUrl);
   // Extract video ID from URL
   const videoId = new URL(videoUrl).searchParams.get("v");
   const thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
   const videoLink = `https://www.youtube.com/watch?v=${videoId}`;
-  const [title, setTitle] = useState("Loading...");
 
   // For now, using a placeholder title. You can fetch the real title using YouTube API.
-  useEffect(() => {
-    setTitle("Sample YouTube Video");
-  }, [videoId]);
 
   return (
     <a
