@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import homeimg1 from "../../assets/images/homepage1.jpg";
 import HeroSection from "@/components/custom-component/HeroSection/hero-section";
 import RatingCard from "@/components/custom-component/card/rating-card";
@@ -17,6 +17,8 @@ import DoctorCard from "@/components/custom-component/card/doctor-card";
 import ReviewCard from "@/components/custom-component/card/review-card";
 import { Button } from "@/components/ui/button";
 import HeroBanner from "@/components/custom-component/HeroSection/hero-banner";
+import { toast } from "sonner";
+import { getHandler } from "@/services/api.services";
 const heroData = [
   {
     id: 1,
@@ -153,6 +155,19 @@ const serviceData = [
 ];
 
 export default function HomePage() {
+  const [doctors, setDoctors] = useState([]);
+  const fetchData = async () => {
+    try {
+      const reponse = await getHandler("/doctor/get");
+      setDoctors(reponse.data);
+    } catch (error) {
+      toast.dismiss();
+      toast.error(error.message || "Something went wrong!");
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <div className="space-y-12">
       <div className="max-w-7xl mx-auto px-4">
@@ -181,18 +196,19 @@ export default function HomePage() {
           Meet Our Expert Doctors and Dedicated Clinic Team
         </p>
         <CrouselCs>
-          {Array.from({ length: 5 }).map((_, index) => (
+          {doctors.map((doctor, index) => (
             <CarouselItem key={index} className="lg:basis-1/3 py-4">
               <DoctorCard
-                name="Dr. Ananya Sharma"
-                specialty="Cardiologist"
-                hospital="City Heart Institute"
-                rating={4.9}
-                reviewsCount={342}
-                experienceYears={12}
-                location="Rohini, Delhi"
-                avatarUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRripLcqGUKIBfgbtmux6U1UY9UkgezqzJzFw&s"
-                bio={`Dr. Ananya Sharma is a senior cardiologist with 12+ years of experience in interventional cardiology. She focuses on patient-centred care and minimally invasive procedures.`}
+                key={index}
+                name={doctor?.name}
+                specialty={doctor?.speciality}
+                hospital={doctor?.branch?.title}
+                rating={doctor?.rating}
+                reviewsCount={doctor?.totalReviews}
+                experienceYears={doctor?.experience}
+                location={doctor?.branch?.contact?.address}
+                avatarUrl={doctor?.profile?.secure_url}
+                bio={doctor?.bio}
                 onBook={() => {
                   window.location.href = "/book-appointment";
                 }}

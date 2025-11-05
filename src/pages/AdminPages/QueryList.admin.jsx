@@ -1,6 +1,7 @@
 import TableCs from "@/components/custom-component/Table/table-cs";
 import React from "react";
 import { useSearchParams } from "react-router-dom";
+
 const contactColumns = [
   { header: "Name", accessor: "name" },
   { header: "Email", accessor: "email" },
@@ -10,7 +11,6 @@ const contactColumns = [
   { header: "Date", accessor: "date" },
   { header: "Status", accessor: "status" },
 ];
-
 const contactData = [
   {
     name: "Ravi Kumar",

@@ -1,16 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Upload } from "lucide-react";
+import { getHandler, postHandler } from "@/services/api.services";
+import { toast } from "sonner";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-export default function PostResultForm() {
+export default function PostResultForm({ setIsOpen }) {
+  const [loading, setLoading] = useState(false);
+  const [branches, setBranches] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
     treatment: "",
     image: null,
     patientPhone: "",
+    branchId: "",
   });
 
   const handleChange = (e) => {
@@ -24,17 +38,46 @@ export default function PostResultForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Build FormData for file upload
-    const data = new FormData();
-    data.append("title", formData.title);
-    data.append("treatment", formData.treatment);
-    data.append("image", formData.image);
-    data.append("patientPhone", formData.patientPhone);
-
-    console.log("Form data submitted:", formData);
-    alert("Form submitted! (Check console for data)");
+    setLoading(true);
+    toast.promise(
+      postHandler("/surgeryResult/create", formData, {
+        "Content-Type": "multipart/form-data",
+      }),
+      {
+        loading: "Submitting form...",
+        success: (response) => {
+          setFormData({
+            title: "",
+            treatment: "",
+            image: null,
+            patientPhone: "",
+            branchId: "",
+          });
+          setLoading(false);
+          setIsOpen(false);
+          return response.message;
+        },
+        error: (error) => {
+          setLoading(false);
+          return error.message || "Something went wrong!";
+        },
+      }
+    );
+    setLoading(false);
   };
 
+  const fetchBranches = async () => {
+    try {
+      const response = await getHandler("/branch/get");
+      setBranches(response.data);
+    } catch (error) {
+      toast.dismiss();
+      toast.error(error.message || "Something went wrong!");
+    }
+  };
+  useEffect(() => {
+    fetchBranches();
+  }, []);
   return (
     <form onSubmit={handleSubmit} className="space-y-4 p-4">
       <div className="space-y-2">
@@ -69,7 +112,29 @@ export default function PostResultForm() {
           onChange={handleChange}
         />
       </div>
-
+      <div className="space-y-2">
+        <Label htmlFor="branchId">Branch</Label>
+        <Select
+          onValueChange={(value) =>
+            setFormData((prev) => ({ ...prev, branchId: value }))
+          }
+        >
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select Branch" />{" "}
+            {/* Show placeholder if empty */}
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Select Branch</SelectLabel>
+              {branches.map((branch) => (
+                <SelectItem key={branch._id} value={branch._id}>
+                  {branch.title}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
       <div className="space-y-2">
         <Label htmlFor="image">Upload Image</Label>
         <div className="flex items-center gap-2">
@@ -87,7 +152,9 @@ export default function PostResultForm() {
           </p>
         )}
       </div>
-      <Button type="submit">Submit</Button>
+      <Button type="submit" disabled={loading}>
+        Submit
+      </Button>
     </form>
   );
 }

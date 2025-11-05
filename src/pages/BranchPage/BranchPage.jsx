@@ -41,19 +41,20 @@ export default function BranchPage() {
           Top Doctors From Belleza Jaipur
         </p>
         <CrouselCs autoPlayEnabled={true}>
-          {Array.from({ length: 5 }).map((_, index) => (
+          {branch?.doctors?.map((doctor, index) => (
             <CarouselItem key={index} className="lg:basis-1/3 py-4">
               <DoctorCard
-                name="Dr. Ananya Sharma"
-                specialty="Cardiologist"
-                hospital="City Heart Institute"
-                rating={4.9}
-                reviewsCount={342}
-                experienceYears={12}
-                location="Rohini, Delhi"
-                avatarUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRripLcqGUKIBfgbtmux6U1UY9UkgezqzJzFw&s"
-                bio={`Dr. Ananya Sharma is a senior cardiologist with 12+ years of experience in interventional cardiology. She focuses on patient-centred care and minimally invasive procedures.`}
-                onClick={() => {
+                key={index}
+                name={doctor?.name}
+                specialty={doctor?.speciality}
+                hospital={doctor?.branch?.title}
+                rating={doctor?.rating}
+                reviewsCount={doctor?.totalReviews}
+                experienceYears={doctor?.experience}
+                location={doctor?.branch?.contact?.address}
+                avatarUrl={doctor?.profile?.secure_url}
+                bio={doctor?.bio}
+                onBook={() => {
                   window.location.href = "/book-appointment";
                 }}
               />

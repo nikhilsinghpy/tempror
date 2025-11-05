@@ -1,39 +1,12 @@
 import CallToAction from "@/components/custom-component/CallToAction/call-to-action";
+import ResultCard from "@/components/custom-component/card/result-card";
 import HeroSectionNonAnimate from "@/components/custom-component/HeroSection/hero-section-nonAnimate";
 import { Card, CardContent } from "@/components/ui/card";
-import { Cpu, Layers, MapPin, Phone, Sparkles, Star } from "lucide-react";
-import React from "react";
+import { getHandler } from "@/services/api.services";
+import { Cpu, Layers, Sparkles, Star } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
 
-const beforeAfterGallery = [
-  {
-    before:
-      "https://png.pngtree.com/png-clipart/20241106/original/pngtree-professional-black-man-png-image_16685655.png",
-    after:
-      "https://static.vecteezy.com/system/resources/previews/024/354/252/non_2x/businessman-isolated-illustration-ai-generative-free-photo.jpg",
-    caption: "6 Months After FUE Hair Transplant",
-  },
-  {
-    before:
-      "https://png.pngtree.com/png-clipart/20241106/original/pngtree-professional-black-man-png-image_16685655.png",
-    after:
-      "https://static.vecteezy.com/system/resources/previews/024/354/252/non_2x/businessman-isolated-illustration-ai-generative-free-photo.jpg",
-    caption: "Patient regained natural hairline",
-  },
-  {
-    before:
-      "https://png.pngtree.com/png-clipart/20241106/original/pngtree-professional-black-man-png-image_16685655.png",
-    after:
-      "https://static.vecteezy.com/system/resources/previews/024/354/252/non_2x/businessman-isolated-illustration-ai-generative-free-photo.jpg",
-    caption: "Natural density restored after 8 months",
-  },
-  {
-    before:
-      "https://png.pngtree.com/png-clipart/20241106/original/pngtree-professional-black-man-png-image_16685655.png",
-    after:
-      "https://static.vecteezy.com/system/resources/previews/024/354/252/non_2x/businessman-isolated-illustration-ai-generative-free-photo.jpg",
-    caption: "Hairline restored with Sapphire FUE",
-  },
-];
 const treatments = [
   {
     icon: Cpu,
@@ -55,42 +28,48 @@ const treatments = [
   },
 ];
 export default function ResultPage() {
+  const [surgeryResults, setSurgeryResults] = useState([]);
+  const fetchData = async () => {
+    try {
+      const reponse = await getHandler("/surgeryResult/get");
+      setSurgeryResults(reponse.data);
+    } catch (error) {
+      toast.dismiss();
+      toast.error(error.message || "Something went wrong!");
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <div>
       <HeroSectionNonAnimate
-        heroImage=""
-        title="Transform Your Hair, Transform Your Confidence"
-        intro="Real results from real patients — witness the artistry of our advanced hair transplant techniques."
-        CTA={{
-          href: "/book-appointment",
-          text: "Book an Appointment",
-        }}
+        heroImage="/images/hair-clinic-banner.jpg" // replace with your banner image
+        title="Transform Your Hair, Beard & Eyebrows with Confidence"
+        intro="Real results from real patients — witness the artistry of our advanced hair, beard, and eyebrow transplant techniques."
+        CTA={[
+          {
+            label: "Book an Appointment",
+            link: "/book-appointment",
+            type: "primary",
+            icon: "ArrowRight",
+          },
+        ]}
         badge={{ icon: Star, text: "4.8/5" }}
-        contact={[
-          { icon: MapPin, text: "Sector-15, Chandigarh" },
-          { icon: Phone, text: "+91 98765 43210" },
+        features={[
+          { icon: "MapPin", text: "Sector-15, Chandigarh" },
+          { icon: "Phone", text: "+91 98765 43210" },
         ]}
       />
+
       <div className="max-w-7xl mx-auto px-4">
         <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-4 px-4">
           Witness the transformations of our patients and see real hair
           restoration results.
         </p>
         <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {beforeAfterGallery.map((item, index) => (
-            <Card key={index} className="p-0">
-              <CardContent className="p-0">
-                <img
-                  src="https://facesurgeon.in/wp-content/uploads/2020/03/hair-transplantation-in-india.jpg"
-                  alt="demo"
-                  className="rounded-md"
-                />
-                {/* Caption */}
-                <p className="text-gray-800 text-center  p-4 text-lg font-medium border-t border-gray-200">
-                  {item.caption}
-                </p>
-              </CardContent>
-            </Card>
+          {surgeryResults.map((item, index) => (
+            <ResultCard data={item} key={index} />
           ))}
         </div>
       </div>

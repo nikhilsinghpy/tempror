@@ -9,7 +9,6 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import PostClinicVideo from "@/components/custom-component/forms/post-clinic-video";
-import { Card, CardContent } from "@/components/ui/card";
 import YouTubeCard from "@/components/custom-component/card/youtube-video-card";
 export default function PostClinicVideoPageAdmin() {
   const [isOpen, setIsOpen] = useState(false);

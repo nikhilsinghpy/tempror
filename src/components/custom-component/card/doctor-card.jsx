@@ -22,9 +22,10 @@ export default function DoctorCard({
   location,
   bio,
   onBook,
+  onClick,
 }) {
   return (
-    <Card className="w-full shadow-lg rounded-2xl">
+    <Card className="w-full shadow-lg rounded-2xl" onClick={onClick}>
       <CardHeader className="flex flex-col items-start gap-3 ">
         <div className="flex w-full items-center justify-between">
           <div className="flex items-center gap-4">
@@ -51,7 +52,9 @@ export default function DoctorCard({
           <div className="flex flex-col items-end">
             <div className="flex items-center gap-1">
               <Star className="h-4 w-4" />
-              <span className="text-sm font-semibold">{rating.toFixed(1)}</span>
+              <span className="text-sm font-semibold">
+                {rating?.toFixed(1) || "4.8"}
+              </span>
             </div>
             <span className="text-xs text-muted-foreground text-end">
               {reviewsCount} reviews
@@ -60,7 +63,7 @@ export default function DoctorCard({
         </div>
       </CardHeader>
 
-      <CardContent className="px-6 pt-0 pb-4">
+      <CardContent className="px-6 pt-0">
         <div className="mb-3 flex items-center gap-3">
           <Badge className="rounded-md px-2 py-1">{experienceYears} yrs</Badge>
           {location && (
@@ -80,10 +83,8 @@ export default function DoctorCard({
       <CardFooter className="px-6 py-4">
         <div className="flex w-full items-center justify-between gap-3">
           <div className="flex flex-col">
-            <span className="text-xs text-muted-foreground">
-              Next available
-            </span>
-            <span className="text-sm font-medium">Mon • 10:00 AM</span>
+            <span className="text-xs text-muted-foreground">Available</span>
+            <span className="text-sm font-medium">Mon • Sun</span>
           </div>
 
           <div className="flex items-center gap-2">
