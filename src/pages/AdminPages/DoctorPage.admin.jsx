@@ -68,9 +68,8 @@ export default function DoctorPageAdmin() {
   };
   const handleUpdate = async () => {
     setLoading(true);
-    const { branch, ...rest } = selectedDoctor;
     toast.promise(
-      putHandler(`/doctor/update/${selectedDoctor._id}`, rest, {
+      putHandler(`/doctor/update/${selectedDoctor._id}`, selectedDoctor, {
         "Content-Type": "multipart/form-data",
       }),
       {

@@ -32,6 +32,8 @@ export default function PostResultAdmin() {
     }
   };
   const handleDelete = (id) => {
+    const confirmed = confirm("Are you sure you want to delete this result?");
+    if (!confirmed) return;
     toast.promise(deleteHandler(`/surgeryResult/delete/${id}`), {
       loading: "Deleting...",
       success: (response) => {

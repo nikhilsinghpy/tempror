@@ -26,6 +26,8 @@ export default function ManageReviewAdmin() {
   };
 
   const handleDelete = (id) => {
+    const confirmed = confirm("Are you sure you want to delete this review?");
+    if (!confirmed) return; 
     toast.promise(deleteHandler(`/review/delete/${id}`), {
       loading: "Deleting...",
       success: (response) => {
@@ -54,7 +56,7 @@ export default function ManageReviewAdmin() {
               }}
               className="cursor-pointer"
             >
-              <ReviewCard data={item} />
+              <ReviewCard review={item} />
             </div>
             <Button
               onClick={() => handleDelete(item._id)}
@@ -78,7 +80,7 @@ export default function ManageReviewAdmin() {
                 : "Here you can add a new review to display on the website. You can edit the details later after adding."}
             </SheetDescription>
           </SheetHeader>
-          <AddReviewForm />
+          <AddReviewForm fetchData={fetchData} />
         </SheetContent>
       </Sheet>
     </div>

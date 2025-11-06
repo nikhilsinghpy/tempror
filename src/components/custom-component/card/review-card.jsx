@@ -3,19 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Star, StarHalf } from "lucide-react";
 import React from "react";
 
-export default function ReviewCard() {
-  const review = {
-    name: "Sana Malik",
-    rating: 3.8,
-    reviewText:
-      "Superb service and amazing results! The clinic maintains high hygiene standards and uses the latest technology. Highly satisfied.",
-    source: "Instagram",
-    sourceUrlLogo:
-      "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png",
-    sourceUrl: "https://www.instagram.com/bellezaclinic/",
-    createdAt: "2025-11-05T12:40:04.852Z",
-  };
-
+export default function ReviewCard({ review }) {
   // Format date nicely
   const formattedDate = new Date(review.createdAt).toLocaleDateString("en-GB", {
     day: "2-digit",
@@ -51,7 +39,9 @@ export default function ReviewCard() {
       </div>
 
       <CardContent className="p-0">
-        <p className="text-gray-700 text-sm mb-4">{review.reviewText}</p>
+        <p className="text-gray-700 text-sm mb-4 capitalize">
+          {`${review.reviewText.slice(0, 120)}...`}
+        </p>
 
         <div className="flex items-center justify-between">
           <div className="flex items-center">
@@ -69,7 +59,7 @@ export default function ReviewCard() {
               </AvatarFallback>
             </Avatar>
             <div>
-              <p className="text-sm font-medium">{review.name}</p>
+              <p className="text-sm font-medium capitalize">{review.name}</p>
               <p className="text-xs text-gray-400">{formattedDate}</p>
             </div>
           </div>
@@ -85,7 +75,7 @@ export default function ReviewCard() {
               alt={review.source}
               className="w-5 h-5"
             />
-            <span className="text-xs text-gray-500">{review.source}</span>
+            <span className="text-xs text-gray-500 capitalize">{review.source}</span>
           </a>
         </div>
       </CardContent>

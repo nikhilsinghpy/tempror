@@ -52,6 +52,7 @@ const navItemData = [
     label: "Manage Website",
     navitems: [
       { label: "Hero Section", link: "/admin/manage-website/hero" },
+      { label: "Hero Banner", link: "/admin/manage-website/hero/banner" },
       { label: "Post Result", link: "/admin/manage-website/post-result" },
       {
         label: "Post Clinic Video",

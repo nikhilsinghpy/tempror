@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import homeimg1 from "../../assets/images/homepage1.jpg";
 import HeroSection from "@/components/custom-component/HeroSection/hero-section";
 import RatingCard from "@/components/custom-component/card/rating-card";
 import {
@@ -12,82 +11,14 @@ import {
 import ServiceCard from "@/components/custom-component/card/service-card";
 import { CrouselCs } from "@/components/custom-component/crouselcs/crousel-cs";
 import { CarouselItem } from "@/components/ui/carousel";
-import { Card, CardContent } from "@/components/ui/card";
 import DoctorCard from "@/components/custom-component/card/doctor-card";
 import ReviewCard from "@/components/custom-component/card/review-card";
 import { Button } from "@/components/ui/button";
 import HeroBanner from "@/components/custom-component/HeroSection/hero-banner";
 import { toast } from "sonner";
 import { getHandler } from "@/services/api.services";
-const heroData = [
-  {
-    id: 1,
-    tag: "Hair Transplant",
-    title: "Restore Your Confidence with Hair Transplant",
-    description:
-      "Our advanced hair transplant techniques provide natural-looking results with minimal downtime. Regain your hair and your self-esteem.",
-    cta: [
-      {
-        title: "Schedule an Appointment",
-        href: "/book-appointment",
-        icon: ArrowRight,
-        varient: "primary",
-      },
-      {
-        title: "Explore Treatment",
-        href: "/book-appointment",
-        icon: MessageCircle,
-        varient: "outline",
-      },
-    ],
-    image: "https://www.bellezarohini.com/image-new/1.jpg",
-  },
-  {
-    id: 2,
-    tag: "Beard Transplant",
-    title: "Achieve a Fuller Beard with Precision",
-    description:
-      "Get the beard you’ve always wanted. Our expert beard transplant services are tailored for density and symmetry.",
-    cta: [
-      {
-        title: "Schedule an Appointment",
-        href: "/book-appointment",
-        icon: ArrowRight,
-        varient: "primary",
-      },
-      {
-        title: "Explore Treatment",
-        href: "/book-appointment",
-        icon: MessageCircle,
-        varient: "outline",
-      },
-    ],
-    image:
-      "https://www.bellezarohini.com/doctor/hair-transplant-doctor%20(2).JPG",
-  },
-  {
-    id: 3,
-    tag: "Eyebrow Transplant",
-    title: "Perfect Your Look with Eyebrow Restoration",
-    description:
-      "Enhance your facial features with fuller, natural-looking eyebrows through our safe and effective eyebrow transplant procedure.",
-    cta: [
-      {
-        title: "Schedule an Appointment",
-        href: "/book-appointment",
-        icon: ArrowRight,
-        varient: "primary",
-      },
-      {
-        title: "Explore Treatment",
-        href: "/book-appointment",
-        icon: MessageCircle,
-        varient: "outline",
-      },
-    ],
-    image: homeimg1,
-  },
-];
+import YouTubeCard from "@/components/custom-component/card/youtube-video-card";
+
 const ratingData = [
   {
     platform: "Google",
@@ -155,6 +86,7 @@ const serviceData = [
 ];
 
 export default function HomePage() {
+  const [websitedata, setwebsitedata] = useState({});
   const [doctors, setDoctors] = useState([]);
   const fetchData = async () => {
     try {
@@ -165,21 +97,32 @@ export default function HomePage() {
       toast.error(error.message || "Something went wrong!");
     }
   };
+  const fetchDataWebsite = async () => {
+    try {
+      const reponse = await getHandler("/websiteSection/get");
+      console.log(reponse.data);
+      setwebsitedata(reponse.data);
+    } catch (error) {
+      toast.dismiss();
+      toast.error(error.message || "Something went wrong!");
+    }
+  };
   useEffect(() => {
     fetchData();
+    fetchDataWebsite();
   }, []);
   return (
     <div className="space-y-12">
       <div className="max-w-7xl mx-auto px-4">
         <CrouselCs autoPlayEnabled={true} isButtonEnabled={false}>
-          {Array.from({ length: 5 }).map((_, index) => (
+          {websitedata?.heroBanner?.map((_, index) => (
             <CarouselItem key={index} className="w-full py-4">
-              <HeroBanner />
+              <HeroBanner item={_} />
             </CarouselItem>
           ))}
         </CrouselCs>
       </div>
-      <HeroSection heroData={heroData} />
+      <HeroSection heroData={websitedata?.heroSection} />
       <div>
         <p className="text-md md:text-2xl font-semibold text-center max-w-4xl mx-auto mb-4 px-4">
           Leading with Experience and Excellence – Your Trusted Healthcare
@@ -303,40 +246,15 @@ export default function HomePage() {
           Inside Our Clinic: The Ultimate Hair Transplant Experience
         </p>
         <CrouselCs autoPlayEnabled={true}>
-          <CarouselItem className="basis-full sm:basis-1/2 py-4">
-            <Card className="h-full p-0">
-              <CardContent className="p-2 border rounded-md shadow-md h-full">
-                <div className="aspect-video w-full overflow-hidden rounded-md">
-                  <iframe
-                    src="https://www.youtube.com/embed/0OKHba2DKAM?si=cSG3DI4Ek-qITpjM"
-                    title={`YouTube video `}
-                    className="w-full h-full"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    allowFullScreen
-                  ></iframe>
-                </div>
-              </CardContent>
-            </Card>
-          </CarouselItem>
-          <CarouselItem className="basis-full sm:basis-1/2 py-4">
-            <Card className="h-full p-0">
-              <CardContent className="p-2 border rounded-md shadow-md h-full">
-                <div className="aspect-video w-full overflow-hidden rounded-md">
-                  <iframe
-                    src="https://www.youtube.com/embed/C4SMKd0OsoY?si=4mECqyHqpD7EKP8N"
-                    title={`YouTube video `}
-                    className="w-full h-full"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    allowFullScreen
-                  ></iframe>
-                </div>
-              </CardContent>
-            </Card>
-          </CarouselItem>
+          {websitedata?.clinicVideo?.map((item, index) => (
+            <CarouselItem className="basis-full sm:basis-1/2 py-4">
+              <YouTubeCard
+                videoUrl={item.youTubeVideoUrl}
+                title={item.title}
+                key={index}
+              />
+            </CarouselItem>
+          ))}
         </CrouselCs>
       </div>
       <div className="max-w-7xl mx-auto">
@@ -351,7 +269,19 @@ export default function HomePage() {
         <CrouselCs autoScrollenabled={true}>
           {Array.from({ length: 5 }).map((_, index) => (
             <CarouselItem key={index} className="lg:basis-1/3 py-4">
-              <ReviewCard />
+              <ReviewCard
+                review={{
+                  name: "Sana Malik",
+                  rating: 3.8,
+                  reviewText:
+                    "Superb service and amazing results! The clinic maintains high hygiene standards and uses the latest technology. Highly satisfied.",
+                  source: "Instagram",
+                  sourceUrlLogo:
+                    "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png",
+                  sourceUrl: "https://www.instagram.com/bellezaclinic/",
+                  createdAt: "2025-11-05T12:40:04.852Z",
+                }}
+              />
             </CarouselItem>
           ))}
         </CrouselCs>

@@ -1,31 +1,33 @@
 import React, { useState } from "react";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import { Plus, Trash } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { SheetClose } from "@/components/ui/sheet";
+import { Trash2 } from "lucide-react";
+import { toast } from "sonner";
+import { postHandler } from "@/services/api.services";
 
-export default function HeroSectionForm() {
+export default function HeroSectionForm({ setIsOpen }) {
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    section: "",
+    badge: "",
     title: "",
     description: "",
     buttons: [{ label: "", type: "", link: "", icon: "" }],
     features: [{ icon: "", text: "" }],
-    image: { url: "", alt: "" },
+    image: null,
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const handleInputChange = (field, value) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleButtonChange = (index, field, value) => {
@@ -40,23 +42,11 @@ export default function HeroSectionForm() {
     setFormData((prev) => ({ ...prev, features: updatedFeatures }));
   };
 
-  const handleImageChange = (field, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      image: { ...prev.image, [field]: value },
-    }));
-  };
-
   const addButton = () => {
     setFormData((prev) => ({
       ...prev,
       buttons: [...prev.buttons, { label: "", type: "", link: "", icon: "" }],
     }));
-  };
-
-  const removeButton = (index) => {
-    const updatedButtons = formData.buttons.filter((_, i) => i !== index);
-    setFormData((prev) => ({ ...prev, buttons: updatedButtons }));
   };
 
   const addFeature = () => {
@@ -66,115 +56,140 @@ export default function HeroSectionForm() {
     }));
   };
 
-  const removeFeature = (index) => {
-    const updatedFeatures = formData.features.filter((_, i) => i !== index);
-    setFormData((prev) => ({ ...prev, features: updatedFeatures }));
+  const handleImageChange = (e) => {
+    setFormData((prev) => ({ ...prev, image: e.target.files[0] }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form JSON:", JSON.stringify(formData, null, 2));
-    alert("Check console for generated JSON data!");
+    setLoading(true);
+    toast.promise(
+      postHandler("/websiteSection/herosection/create", formData, {
+        "Content-Type": "multipart/form-data",
+      }),
+      {
+        loading: "Submitting form...",
+        success: (response) => {
+          setFormData({
+            badge: "",
+            title: "",
+            description: "",
+            buttons: [{ label: "", type: "", link: "", icon: "" }],
+            features: [{ icon: "", text: "" }],
+            image: null,
+          });
+          setIsOpen(false);
+          setLoading(false);
+          return response.message;
+        },
+        error: (error) => {
+          setLoading(false);
+          return error.message || "Something went wrong!";
+        },
+      }
+    );
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="gap-4 px-2 grid grid-cols-2">
       <div className="space-y-2">
-        <Label>Section</Label>
+        <Label>Badge</Label>
         <Input
-          name="section"
-          value={formData.section}
-          onChange={handleChange}
-          placeholder="Beard Transplant"
+          value={formData.badge}
+          onChange={(e) => handleInputChange("badge", e.target.value)}
         />
       </div>
 
       <div className="space-y-2">
         <Label>Title</Label>
         <Input
-          name="title"
           value={formData.title}
-          onChange={handleChange}
-          placeholder="Achieve a Fuller Beard with Precision"
+          onChange={(e) => handleInputChange("title", e.target.value)}
         />
       </div>
 
       <div className="space-y-2">
         <Label>Description</Label>
         <Textarea
-          name="description"
           value={formData.description}
-          onChange={handleChange}
-          placeholder="Describe the treatment..."
+          onChange={(e) => handleInputChange("description", e.target.value)}
         />
       </div>
 
-      <Separator />
+      <div className="space-y-2">
+        <Label>Image</Label>
+        <Input type="file" onChange={handleImageChange} />
+        {formData.image && <p>Selected: {formData.image.name}</p>}
+      </div>
 
       <div className="space-y-2">
-        <Label className="text-lg font-semibold">Buttons</Label>
-        {formData.buttons.map((button, index) => (
-          <div
-            key={index}
-            className="flex flex-col md:flex-row items-center gap-2"
-          >
+        <Label>Buttons</Label>
+        {formData.buttons.map((btn, index) => (
+          <div key={index} className="space-y-2 border p-2 rounded relative">
             <Input
               placeholder="Label"
-              value={button.label}
+              value={btn.label}
               onChange={(e) =>
                 handleButtonChange(index, "label", e.target.value)
               }
             />
-            <Input
-              placeholder="Type (primary/secondary)"
-              value={button.type}
-              onChange={(e) =>
-                handleButtonChange(index, "type", e.target.value)
+            <Select
+              onValueChange={(value) =>
+                handleButtonChange(index, "type", value)
               }
-            />
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="primary">Primary</SelectItem>
+                <SelectItem value="secondary">Secondary</SelectItem>
+              </SelectContent>
+            </Select>
             <Input
               placeholder="Link"
-              value={button.link}
+              value={btn.link}
               onChange={(e) =>
                 handleButtonChange(index, "link", e.target.value)
               }
             />
             <Input
               placeholder="Icon"
-              value={button.icon}
+              value={btn.icon}
               onChange={(e) =>
                 handleButtonChange(index, "icon", e.target.value)
               }
             />
-            <Button
-              type="button"
-              variant="destructive"
-              size="icon"
-              onClick={() => removeButton(index)}
-            >
-              <Trash size={16} />
-            </Button>
+
+            {index > 0 && (
+              <Button
+                type="button"
+                variant={"destructive"}
+                size={"icon"}
+                className="absolute -top-2 -right-2"
+                onClick={() => {
+                  const updatedButtons = [...formData.buttons];
+                  updatedButtons.splice(index, 1);
+                  setFormData((prev) => ({
+                    ...prev,
+                    buttons: updatedButtons,
+                  }));
+                }}
+              >
+                <Trash2 />
+              </Button>
+            )}
           </div>
         ))}
-        <Button
-          type="button"
-          onClick={addButton}
-          className="mt-2"
-          variant="outline"
-        >
-          <Plus size={16} className="mr-1" /> Add Button
+        <Button type="button" onClick={addButton}>
+          Add Button
         </Button>
       </div>
 
-      <Separator />
-
       <div className="space-y-2">
-        <Label className="text-lg font-semibold">Features</Label>
+        <Label>Features</Label>
         {formData.features.map((feature, index) => (
-          <div
-            key={index}
-            className="flex flex-col md:flex-row items-center gap-2"
-          >
+          <div key={index} className="space-y-2 border p-2 rounded relative">
             <Input
               placeholder="Icon"
               value={feature.icon}
@@ -189,45 +204,39 @@ export default function HeroSectionForm() {
                 handleFeatureChange(index, "text", e.target.value)
               }
             />
-            <Button
-              type="button"
-              variant="destructive"
-              onClick={() => removeFeature(index)}
-            >
-              <Trash size={16} />
-            </Button>
+
+            {index > 0 && (
+              <Button
+                type="button"
+                variant={"destructive"}
+                size={"icon"}
+                className="absolute -top-2 -right-2"
+                onClick={() => {
+                  const updatedFeatures = [...formData.features];
+                  updatedFeatures.splice(index, 1);
+                  setFormData((prev) => ({
+                    ...prev,
+                    features: updatedFeatures,
+                  }));
+                }}
+              >
+                <Trash2 />
+              </Button>
+            )}
           </div>
         ))}
-        <Button
-          type="button"
-          onClick={addFeature}
-          className="mt-2"
-          variant="outline"
-        >
-          <Plus size={16} className="mr-1" /> Add Feature
+        <Button type="button" onClick={addFeature}>
+          Add Feature
         </Button>
       </div>
 
-      <Separator />
-
-      <div className="space-y-2">
-        <Label className="text-lg font-semibold">Image</Label>
-        <Input
-          placeholder="Image URL"
-          value={formData.image.url}
-          onChange={(e) => handleImageChange("url", e.target.value)}
-        />
-        <Input
-          placeholder="Alt Text"
-          className="mt-2"
-          value={formData.image.alt}
-          onChange={(e) => handleImageChange("alt", e.target.value)}
-        />
-      </div>
-
-      <div className="flex justify-end gap-2">
-        <Button type="submit">Update Hero Section</Button>
-        <Button variant="outline">Cancel</Button>
+      <div className="flex gap-2 col-span-2 justify-end items-center">
+        <Button type="submit" disabled={loading}>
+          Submit
+        </Button>
+        <SheetClose asChild>
+          <Button variant={"outline"}>Close</Button>
+        </SheetClose>
       </div>
     </form>
   );

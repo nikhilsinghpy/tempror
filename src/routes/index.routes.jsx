@@ -9,6 +9,7 @@ import ClientListPageAdmin from "@/pages/AdminPages/ClientListPage.admin";
 import ClientPayemntPageAdmin from "@/pages/AdminPages/ClientPayemntPage.admin";
 import ClientPRPPageAdmin from "@/pages/AdminPages/ClientPRPPage.admin";
 import DoctorPageAdmin from "@/pages/AdminPages/DoctorPage.admin";
+import HeroBannerAdmin from "@/pages/AdminPages/HeroBanner.admin";
 import HeroSectionAdmin from "@/pages/AdminPages/HeroSection.admin";
 import AdminHomePage from "@/pages/AdminPages/HomePage.admin";
 import ManageReviewAdmin from "@/pages/AdminPages/ManageReview.admin";
@@ -70,6 +71,7 @@ export const router = createBrowserRouter([
       { path: "queries", element: <QueryListAdmin /> },
       { path: "manage-doctor", element: <DoctorPageAdmin /> },
       { path: "manage-website/hero", element: <HeroSectionAdmin /> },
+      { path: "manage-website/hero/banner", element: <HeroBannerAdmin /> },
       { path: "manage-website/post-result", element: <PostResultAdmin /> },
       {
         path: "manage-website/post-clinic-video",

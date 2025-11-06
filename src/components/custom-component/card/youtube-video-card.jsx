@@ -2,7 +2,6 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 
 export default function YouTubeCard({ videoUrl, title = "Video Title" }) {
-  console.log("Video URL:", videoUrl);
   // Extract video ID from URL
   const videoId = new URL(videoUrl).searchParams.get("v");
   const thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;

@@ -10,7 +10,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { postHandler } from "@/services/api.services";
 import React, { useState } from "react";
+import { toast } from "sonner";
 
 const mapping = {
   google:
@@ -24,7 +26,8 @@ const mapping = {
   twitter:
     "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/X_logo_2023.svg/250px-X_logo_2023.svg.png",
 };
-export default function AddReviewForm() {
+export default function AddReviewForm({ fetchData, setIsOpen }) {
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     rating: 0,
@@ -52,7 +55,27 @@ export default function AddReviewForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Submitted Review:", formData);
+    toast.promise(postHandler("/review/add", formData), {
+      loading: "Submitting form...",
+      success: (response) => {
+        setIsLoading(false);
+        setFormData({
+          name: "",
+          rating: 0,
+          reviewText: "",
+          source: "",
+          sourceUrlLogo: "",
+          sourceUrl: "",
+        });
+        fetchData();
+        setIsOpen(false);
+        return response.message;
+      },
+      error: (error) => {
+        setIsLoading(false);
+        return error.message || "Something went wrong!";
+      },
+    });
   };
 
   return (
@@ -137,7 +160,7 @@ export default function AddReviewForm() {
       )}
 
       {/* Submit Button */}
-      <Button type="submit" className="w-full">
+      <Button type="submit" className="w-full" disabled={isLoading}>
         Submit Review
       </Button>
     </form>
