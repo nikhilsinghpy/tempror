@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Phone, Clock } from "lucide-react";
 
@@ -16,7 +13,7 @@ export default function ResultCard({ data }) {
   });
 
   return (
-    <Card className="py-0 overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 rounded-2xl border border-slate-200">
+    <Card className="py-0 h-full overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 rounded-2xl border border-slate-200">
       {/* Image Section */}
       <div className="relative h-56 w-full overflow-hidden">
         <img

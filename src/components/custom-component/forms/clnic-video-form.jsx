@@ -42,7 +42,7 @@ export default function ClinicVideoForm({ setIsOpen }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4 p-4">
       <div className="flex flex-col space-y-2">
         <Label htmlFor="title">Video Title</Label>
         <Input

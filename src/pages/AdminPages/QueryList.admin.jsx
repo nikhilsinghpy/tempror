@@ -1,83 +1,269 @@
 import TableCs from "@/components/custom-component/Table/table-cs";
-import React from "react";
+import { getHandler, putHandler } from "@/services/api.services";
+import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { FileText } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import axios from "axios";
 const contactColumns = [
   { header: "Name", accessor: "name" },
   { header: "Email", accessor: "email" },
   { header: "Phone", accessor: "phone" },
-  { header: "Subject", accessor: "subject" },
+  { header: "Looking For", accessor: "lookingFor" },
+  { header: "Branch", accessor: "branch" },
   { header: "Message", accessor: "message" },
-  { header: "Date", accessor: "date" },
+  { header: "Created At", accessor: "createdAt" },
   { header: "Status", accessor: "status" },
-];
-const contactData = [
-  {
-    name: "Ravi Kumar",
-    email: "ravi.kumar@example.com",
-    phone: "+91 98765 43210",
-    subject: "Appointment Inquiry",
-    message:
-      "I would like to know the available time slots for Dr. Mehta next week.",
-    date: "2025-10-22",
-    status: "Replied",
-  },
-  {
-    name: "Neha Sharma",
-    email: "neha.sharma@example.com",
-    phone: "+91 91234 56789",
-    subject: "Billing Issue",
-    message: "I was charged twice for my last consultation. Please check.",
-    date: "2025-10-23",
-    status: "Pending",
-  },
-  {
-    name: "Amit Patel",
-    email: "amit.patel@example.com",
-    phone: "+91 99876 54321",
-    subject: "General Query",
-    message: "Do you provide online consultations for dermatology?",
-    date: "2025-10-21",
-    status: "Replied",
-  },
-  {
-    name: "Priya Verma",
-    email: "priya.verma@example.com",
-    phone: "+91 90909 80808",
-    subject: "Feedback",
-    message: "The booking experience was smooth. Keep up the good work!",
-    date: "2025-10-19",
-    status: "Closed",
-  },
-  {
-    name: "Rohit Yadav",
-    email: "rohit.yadav@example.com",
-    phone: "+91 93456 78901",
-    subject: "Doctor Availability",
-    message: "Is Dr. Sharma available for appointments on weekends?",
-    date: "2025-10-20",
-    status: "Pending",
-  },
-  {
-    name: "Sneha Gupta",
-    email: "sneha.gupta@example.com",
-    phone: "+91 97654 32109",
-    subject: "Technical Issue",
-    message: "I am unable to submit my form on your website. Kindly assist.",
-    date: "2025-10-18",
-    status: "Resolved",
-  },
 ];
 
 export default function QueryListAdmin() {
   const [searchParams] = useSearchParams();
   const date = searchParams.get("date");
+  const [contactData, setContactData] = useState([]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [customCsv, setCustomCsv] = useState({
+    filterType: "",
+    startDate: "",
+    endDate: "",
+  });
+  const handleClick = (row) => {
+    setIsDialogOpen(true);
+    setSelectedRow(row);
+  };
+
+  const handleChange = (value) => {
+    toast.promise(
+      putHandler(`/contact/updateStatus/${selectedRow._id}`, {
+        status: value,
+      }),
+      {
+        loading: "Updating status...",
+        success: (response) => {
+          fetchData();
+          setIsDialogOpen(false);
+          return response.message || "Status updated successfully!";
+        },
+        error: (error) => error.message || "Something went wrong!",
+      }
+    );
+  };
+  const fetchData = async () => {
+    let url = "/contact/get";
+    if (date) {
+      url = `/contact/get?filterType=today`;
+    }
+    try {
+      const response = await getHandler(url);
+      const formatdata = response.data.map((item) => ({
+        ...item,
+        branch: item.branch.title,
+        createdAt: new Date(item.createdAt).toLocaleString(),
+      }));
+      setContactData(formatdata);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const downLoadCSV = async ({ filterType, startDate, endDate }) => {
+    try {
+      let url = `/contact/export?filterType=${filterType}`;
+      if (startDate && endDate) {
+        url += `&startDate=${startDate}&endDate=${endDate}`;
+      }
+
+      const response = await axios.get(url, {
+        responseType: "blob", // 👈 critical
+        baseURL: "http://localhost:4000/api/v1",
+      });
+
+      // ✅ Create blob and trigger download
+      const blob = new Blob([response.data], { type: response.data.type });
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.setAttribute("download", "query.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(downloadUrl);
+
+      toast.success("CSV downloaded successfully!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong!");
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <div className="p-4 w-full space-y-4">
       <h1 className="text-2xl font-bold ">
-        {date ? `Today's Appointment` : `Appointments`}
+        {date ? `Today's Query` : `Query List`}
       </h1>
-      <TableCs data={contactData} columns={contactColumns} rowsPerPage={10} />
+      <TableCs
+        data={contactData}
+        columns={contactColumns}
+        rowsPerPage={10}
+        onClick={handleClick}
+        buttonChildren={
+          <>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="default"
+                  className={"bg-green-700 text-white hover:bg-green-600"}
+                >
+                  <FileText />
+                  Export
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Select Duration</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => downLoadCSV({ filterType: "today" })}
+                >
+                  Today
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => downLoadCSV({ filterType: "week" })}
+                >
+                  This Week
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => downLoadCSV({ filterType: "month" })}
+                >
+                  This Month
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <div className="flex flex-col gap-2">
+                    <div>
+                      <label className="text-sm font-medium">Start Date</label>
+                      <Input
+                        type="date"
+                        className="mt-1"
+                        onChange={(e) =>
+                          setCustomCsv({
+                            ...customCsv,
+                            startDate: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium">End Date</label>
+                      <Input
+                        type="date"
+                        className="mt-1"
+                        onChange={(e) =>
+                          setCustomCsv({
+                            ...customCsv,
+                            endDate: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+
+                    <Button
+                      onClick={() =>
+                        downLoadCSV({
+                          filterType: "custom",
+                          startDate: customCsv.startDate,
+                          endDate: customCsv.endDate,
+                        })
+                      }
+                      className="mt-2 w-full"
+                    >
+                      Apply Filter
+                    </Button>
+                  </div>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </>
+        }
+      />
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Query Preview</DialogTitle>
+            <DialogDescription>
+              Review the details of your query below before taking any action.
+            </DialogDescription>
+            <ul>
+              <li>
+                <strong>Name:</strong> {selectedRow?.name}
+              </li>
+              <li>
+                <strong>Email:</strong> {selectedRow?.email}
+              </li>
+              <li>
+                <strong>Phone:</strong> {selectedRow?.phone}
+              </li>
+              <li>
+                <strong>Looking For:</strong> {selectedRow?.lookingFor}
+              </li>
+              <li>
+                <strong>Branch:</strong> {selectedRow?.branch}
+              </li>
+              <li>
+                <strong>Message:</strong> {selectedRow?.message}
+              </li>
+              <li>
+                <strong>Created At:</strong> {selectedRow?.createdAt}
+              </li>
+              <li className="flex items-center gap-2">
+                <strong>Status:</strong>{" "}
+                <Select
+                  value={selectedRow?.status}
+                  onValueChange={handleChange}
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {["PENDING", "REPLIED", "REJECTED", "RESOLVED"].map((s) => (
+                      <SelectItem key={s} value={s}>
+                        {s}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </li>
+            </ul>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

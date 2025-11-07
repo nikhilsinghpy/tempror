@@ -23,6 +23,7 @@ import SignUp from "@/pages/authPages/SignUp";
 import VerifyOtp from "@/pages/authPages/VerifyOtp";
 import BranchPage from "@/pages/BranchPage/BranchPage";
 import HomePage from "@/pages/homePage/HomePage";
+import UserHomePage from "@/pages/userPages/UserHomePage";
 import AboutUs from "@/pages/utilityPages/AboutUs";
 import AppointmentPage from "@/pages/utilityPages/AppointmentPage";
 import ContactUs from "@/pages/utilityPages/ContactUs";
@@ -34,7 +35,7 @@ import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/d",
     element: <HomeLayout />,
     children: [
       { index: true, element: <HomePage /> },
@@ -54,6 +55,7 @@ export const router = createBrowserRouter([
       { path: "*", element: <NotFound /> },
     ],
   },
+  { path: "/", element: <UserHomePage /> },
   {
     path: "/hr-management",
     element: <HRManagementDashboardLayout />,

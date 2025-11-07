@@ -33,8 +33,7 @@ export default function HeroSectionAdmin() {
   const fetchData = async () => {
     try {
       const reponse = await getHandler("/websiteSection/get");
-      setHeroSections(reponse.data.heroSection);
-      console.log(reponse.data.heroSection);
+      setHeroSections(reponse.data.websiteSections.heroSection);
     } catch (error) {
       toast.dismiss();
       toast.error(error.message || "Something went wrong!");
@@ -52,7 +51,7 @@ export default function HeroSectionAdmin() {
       </div>
 
       <div className="space-y-4">
-        {heroSections.map((item, index) => (
+        {heroSections?.map((item, index) => (
           <div key={index} className="relative border rounded-2xl">
             <HeroSectionNonAnimate
               heroImage={item?.image?.url?.secure_url}

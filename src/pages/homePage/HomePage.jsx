@@ -18,6 +18,7 @@ import HeroBanner from "@/components/custom-component/HeroSection/hero-banner";
 import { toast } from "sonner";
 import { getHandler } from "@/services/api.services";
 import YouTubeCard from "@/components/custom-component/card/youtube-video-card";
+import ResultCard from "@/components/custom-component/card/result-card";
 
 const ratingData = [
   {
@@ -88,27 +89,22 @@ const serviceData = [
 export default function HomePage() {
   const [websitedata, setwebsitedata] = useState({});
   const [doctors, setDoctors] = useState([]);
-  const fetchData = async () => {
-    try {
-      const reponse = await getHandler("/doctor/get");
-      setDoctors(reponse.data);
-    } catch (error) {
-      toast.dismiss();
-      toast.error(error.message || "Something went wrong!");
-    }
-  };
+  const [reviews, setReviews] = useState([]);
+  const [surgeryResults, setSurgeryResults] = useState([]);
+
   const fetchDataWebsite = async () => {
     try {
       const reponse = await getHandler("/websiteSection/get");
-      console.log(reponse.data);
-      setwebsitedata(reponse.data);
+      setwebsitedata(reponse.data.websiteSections);
+      setDoctors(reponse.data.doctors);
+      setReviews(reponse.data.reviewData);
+      setSurgeryResults(reponse.data.surgeryResults);
     } catch (error) {
       toast.dismiss();
       toast.error(error.message || "Something went wrong!");
     }
   };
   useEffect(() => {
-    fetchData();
     fetchDataWebsite();
   }, []);
   return (
@@ -166,18 +162,12 @@ export default function HomePage() {
           Procedure
         </p>
         <CrouselCs autoPlayEnabled={true}>
-          {Array.from({ length: 5 }).map((_, index) => (
+          {surgeryResults?.map((_, index) => (
             <CarouselItem
               key={index}
               className="basis-1 md:basis-1/3 lg:basis-1/4 py-4"
             >
-              <div className="p-2 border rounded-md shadow-md ">
-                <img
-                  src="https://facesurgeon.in/wp-content/uploads/2020/03/hair-transplantation-in-india.jpg"
-                  alt="demo"
-                  className="rounded-md"
-                />
-              </div>
+              <ResultCard data={_} />
             </CarouselItem>
           ))}
         </CrouselCs>
@@ -266,22 +256,10 @@ export default function HomePage() {
             <RatingCard ratingData={item} key={index} />
           ))}
         </div>
-        <CrouselCs autoScrollenabled={true}>
-          {Array.from({ length: 5 }).map((_, index) => (
+        <CrouselCs autoScrollenabled={true} isButtonEnabled={false}>
+          {reviews?.map((item, index) => (
             <CarouselItem key={index} className="lg:basis-1/3 py-4">
-              <ReviewCard
-                review={{
-                  name: "Sana Malik",
-                  rating: 3.8,
-                  reviewText:
-                    "Superb service and amazing results! The clinic maintains high hygiene standards and uses the latest technology. Highly satisfied.",
-                  source: "Instagram",
-                  sourceUrlLogo:
-                    "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png",
-                  sourceUrl: "https://www.instagram.com/bellezaclinic/",
-                  createdAt: "2025-11-05T12:40:04.852Z",
-                }}
-              />
+              <ReviewCard review={item} />
             </CarouselItem>
           ))}
         </CrouselCs>

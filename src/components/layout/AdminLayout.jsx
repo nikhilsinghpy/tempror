@@ -42,7 +42,13 @@ const navItemData = [
   },
   {
     label: "Query",
-    navitems: [{ label: "Query-List", link: "/admin/queries" }],
+    navitems: [
+      {
+        label: "Today's Query-List",
+        link: `/admin/queries?date=${new Date().toISOString().split("T")[0]}`,
+      },
+      { label: "Query-List", link: "/admin/queries" },
+    ],
   },
   {
     label: "Manage Doctor",

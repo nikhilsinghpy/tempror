@@ -18,7 +18,7 @@ export default function PostClinicVideoPageAdmin() {
   const fetchData = async () => {
     try {
       const reponse = await getHandler("/websiteSection/get");
-      setClinicVideos(reponse.data.clinicVideo);
+      setClinicVideos(reponse.data.websiteSections.clinicVideo);
     } catch (error) {
       toast.dismiss();
       toast.error(error.message || "Something went wrong!");
@@ -47,7 +47,7 @@ export default function PostClinicVideoPageAdmin() {
         <Button onClick={() => setIsOpen(true)}>Post Result</Button>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-3  gap-2 ">
-        {clinicVideos.map((_, index) => (
+        {clinicVideos?.map((_, index) => (
           <div className="relative">
             <YouTubeCard
               videoUrl={_.youTubeVideoUrl}

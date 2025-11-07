@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Bell, MapPin, MessageSquare, Phone, Smile } from "lucide-react";
 import vectorbg from "../../assets/images/vectorbg.jpg";
 import ServiceCard from "@/components/custom-component/card/service-card";
@@ -14,14 +14,16 @@ import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { postHandler } from "@/services/api.services";
+import { getHandler, postHandler } from "@/services/api.services";
 
 const data = [
   {
@@ -112,6 +114,7 @@ const accordionData = [
 
 export default function ContactUs() {
   const [loading, setLoading] = useState(false);
+  const [branches, setBranches] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -166,7 +169,18 @@ export default function ContactUs() {
     });
     setLoading(false);
   };
-
+  const fetchBranches = async () => {
+    try {
+      const response = await getHandler("/branch/get");
+      setBranches(response.data);
+    } catch (error) {
+      toast.dismiss();
+      toast.error(error.message || "Something went wrong!");
+    }
+  };
+  useEffect(() => {
+    fetchBranches();
+  }, []);
   return (
     <div className="p-4 space-y-12">
       {/* Hero Section */}
@@ -284,11 +298,14 @@ export default function ContactUs() {
                   <SelectValue placeholder="Select Branch" />
                 </SelectTrigger>
                 <SelectContent>
-                  {["delhi", "lucknow", "jaipur"].map((item, index) => (
-                    <SelectItem value={item} key={index}>
-                      {item.charAt(0).toUpperCase() + item.slice(1)}
-                    </SelectItem>
-                  ))}
+                  <SelectGroup>
+                    <SelectLabel>Select Branch</SelectLabel>
+                    {branches.map((branch) => (
+                      <SelectItem key={branch._id} value={branch._id}>
+                        {branch.title}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
                 </SelectContent>
               </Select>
             </div>

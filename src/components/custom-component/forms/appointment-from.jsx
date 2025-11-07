@@ -60,28 +60,33 @@ export default function AppointmentForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    toast.promise(postHandler("/appointment/create", formData), {
-      loading: "Submitting form...",
-      success: (response) => {
-        setFormData({
-          name: {
-            first: "",
-            last: "",
-          },
-          phone: "",
-          email: "",
-          city: "",
-          state: "",
-          message: "",
-          lookingFor: "",
-          date: "",
-          time: "",
-        });
-        setLoading(false);
-        return response.message;
-      },
-      error: (error) => error.message || "Something went wrong!",
-    });
+    toast.promise(
+      postHandler("/appointment/create", formData, {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      }),
+      {
+        loading: "Submitting form...",
+        success: (response) => {
+          setFormData({
+            name: {
+              first: "",
+              last: "",
+            },
+            phone: "",
+            email: "",
+            city: "",
+            state: "",
+            message: "",
+            lookingFor: "",
+            date: "",
+            time: "",
+          });
+          setLoading(false);
+          return response.message;
+        },
+        error: (error) => error.message || "Something went wrong!",
+      }
+    );
     setLoading(false);
   };
 

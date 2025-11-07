@@ -27,6 +27,8 @@ export default function TableCs({
   columns = [],
   rowsPerPage = 5,
   filters = [],
+  onClick,
+  buttonChildren,
 }) {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
@@ -85,7 +87,7 @@ export default function TableCs({
           }}
           className="w-1/3"
         />
-
+        {buttonChildren}
         {filters.length > 0 && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -122,7 +124,9 @@ export default function TableCs({
                   </DropdownMenuSubContent>
                 </DropdownMenuSub>
               ))}
-              <Button className="mt-2 w-full" onClick={handleReset}>Clear Filters</Button>
+              <Button className="mt-2 w-full" onClick={handleReset}>
+                Clear Filters
+              </Button>
             </DropdownMenuContent>
           </DropdownMenu>
         )}
@@ -141,10 +145,18 @@ export default function TableCs({
           <TableBody>
             {paginatedData.length > 0 ? (
               paginatedData.map((row, i) => (
-                <TableRow key={i}>
+                <TableRow
+                  key={i}
+                  onClick={() => onClick(row)}
+                  className={"cursor-pointer"}
+                >
                   {columns.map((col) => (
                     <TableCell key={col.accessor}>
-                      {row[col.accessor]}
+                      {col.accessor === "message"
+                        ? row[col.accessor].length > 20
+                          ? `${row[col.accessor].slice(0, 20)}...`
+                          : row[col.accessor]
+                        : row[col.accessor]}
                     </TableCell>
                   ))}
                 </TableRow>

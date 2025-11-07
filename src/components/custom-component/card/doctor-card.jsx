@@ -25,7 +25,10 @@ export default function DoctorCard({
   onClick,
 }) {
   return (
-    <Card className="w-full shadow-lg rounded-2xl" onClick={onClick}>
+    <Card
+      className="w-full h-full shadow-lg rounded-2xl hover:shadow-xl transition-all duration-300"
+      onClick={onClick}
+    >
       <CardHeader className="flex flex-col items-start gap-3 ">
         <div className="flex w-full items-center justify-between">
           <div className="flex items-center gap-4">

@@ -33,8 +33,7 @@ export default function HeroBannerAdmin() {
   const fetchData = async () => {
     try {
       const reponse = await getHandler("/websiteSection/get");
-      setHeroBanners(reponse.data.heroBanner);
-      
+      setHeroBanners(reponse.data.websiteSections.heroBanner);
     } catch (error) {
       toast.dismiss();
       toast.error(error.message || "Something went wrong!");

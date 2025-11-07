@@ -2,11 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   BadgeCheck,
-  Bell,
-  CreditCard,
   LogOut,
   MenuIcon,
-  Sparkles,
+  User,
+  CalendarCheck,
+  MessageSquare,
+  Utensils,
+  CreditCard,
+  Droplets,
+  Settings,
 } from "lucide-react";
 import logo from "../../../assets/images/logo.png";
 import {
@@ -43,6 +47,44 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUser } from "@/hooks/use-user";
 import { toast } from "sonner";
 import { getHandler, postHandler } from "@/services/api.services";
+
+const navigationData = [
+  {
+    label: "Account",
+    link: "/account",
+    icon: User,
+  },
+  {
+    label: "Your Appointment",
+    link: "/appointments",
+    icon: CalendarCheck,
+  },
+  {
+    label: "Your Query",
+    link: "/queries",
+    icon: MessageSquare,
+  },
+  {
+    label: "Diet Chart",
+    link: "/diet-chart",
+    icon: Utensils,
+  },
+  {
+    label: "Payment",
+    link: "/payment",
+    icon: CreditCard,
+  },
+  {
+    label: "PRP",
+    link: "/prp",
+    icon: Droplets,
+  },
+  {
+    label: "Settings",
+    link: "/settings",
+    icon: Settings,
+  },
+];
 
 export default function Header() {
   const navigate = useNavigate();
@@ -292,29 +334,23 @@ function UserDropdownMenu({ user }) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <Sparkles />
-            Upgrade to Pro
-          </DropdownMenuItem>
+          {navigationData.map((item, index) => (
+            <DropdownMenuItem
+              key={index}
+              onClick={() => navigate(item.link)}
+              className="cursor-pointer"
+            >
+              <item.icon className="mr-2 h-4 w-4" />
+              {item.label}
+            </DropdownMenuItem>
+          ))}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <BadgeCheck />
-            Account
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <CreditCard />
-            Billing
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Bell />
-            Notifications
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleLogout}>
-          <LogOut />
+        <DropdownMenuItem
+          onClick={handleLogout}
+          className={"bg-red-100 text-red-800"}
+        >
+          <LogOut className={"text-red-800"} />
           Log out
         </DropdownMenuItem>
       </DropdownMenuContent>

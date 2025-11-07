@@ -18,10 +18,11 @@ export function useUser() {
       setUser(response.data || null);
     } catch (error) {
       console.error("Fetch user error:", error.message);
-      if (error?.response?.data?.message === "TokenExpiredError") {
+      if (error.message === "TokenExpiredError") {
         try {
           const response = await postHandler(
             "/resend-access-token/web",
+            {},
             {},
             { withCredentials: true }
           );
