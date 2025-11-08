@@ -28,7 +28,7 @@ export default function QueryPageUser() {
   return (
     <div className="min-h-screen py-10 px-4 flex flex-col items-center bg-gray-50">
       <div className="w-full max-w-4xl space-y-6">
-        <h1 className="text-3xl font-bold text-center text-amber-700 mb-6">
+        <h1 className="text-4xl font-extrabold text-amber-700 tracking-tight mb-6">
           My Queries
         </h1>
         <Card className="py-0 overflow-hidden rounded-2xl shadow-lg border border-gray-200 bg-white">

@@ -69,7 +69,7 @@ export default function AppointmentPageUser() {
   return (
     <div className="min-h-screen py-10 px-4 flex justify-center">
       <div className="w-full max-w-4xl space-y-6">
-        <h1 className="text-3xl font-bold text-center text-amber-700 mb-6">
+        <h1 className="text-4xl font-extrabold text-amber-700 tracking-tight mb-6">
           My Appointments
         </h1>
         {appointments.length === 0 ? (
