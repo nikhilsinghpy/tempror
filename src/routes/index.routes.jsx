@@ -23,7 +23,7 @@ import SignUp from "@/pages/authPages/SignUp";
 import VerifyOtp from "@/pages/authPages/VerifyOtp";
 import BranchPage from "@/pages/BranchPage/BranchPage";
 import HomePage from "@/pages/homePage/HomePage";
-import UserHomePage from "@/pages/userPages/UserHomePage";
+import AccountPageUser from "@/pages/userPages/AccountPage.user";
 import AboutUs from "@/pages/utilityPages/AboutUs";
 import AppointmentPage from "@/pages/utilityPages/AppointmentPage";
 import ContactUs from "@/pages/utilityPages/ContactUs";
@@ -32,10 +32,17 @@ import BeardTransplantPage from "@/pages/utilityPages/servicePages/BeardTranspla
 import EyebrowTransplantPage from "@/pages/utilityPages/servicePages/EyebrowTransplantPage";
 import HairTransplantPage from "@/pages/utilityPages/servicePages/HairTransplantPage";
 import { createBrowserRouter } from "react-router-dom";
+import AccountDetailUser from "@/pages/userPages/AccountDetailPage.user";
+import AppointmentPageUser from "@/pages/userPages/AppointmentPage.user";
+import QueryPageUser from "@/pages/userPages/QueryPage.user";
+import DietChartPageUser from "@/pages/userPages/DietChartPage.user";
+import PaymentPageUser from "@/pages/userPages/PaymentPage.user";
+import PRPPageUser from "@/pages/userPages/PRPPage.user";
+import AccountSettingsUser from "@/pages/userPages/Setting.user";
 
 export const router = createBrowserRouter([
   {
-    path: "/d",
+    path: "/",
     element: <HomeLayout />,
     children: [
       { index: true, element: <HomePage /> },
@@ -52,10 +59,22 @@ export const router = createBrowserRouter([
           { path: "eyebrow-transplant", element: <EyebrowTransplantPage /> },
         ],
       },
+      {
+        path: "/account",
+        children: [
+          { index: true, element: <AccountPageUser /> },
+          { path: "account-details", element: <AccountDetailUser /> },
+          { path: "appointments", element: <AppointmentPageUser /> },
+          { path: "queries", element: <QueryPageUser /> },
+          { path: "diet-chart", element: <DietChartPageUser /> },
+          { path: "payment", element: <PaymentPageUser /> },
+          { path: "prp", element: <PRPPageUser /> },
+          { path: "settings", element: <AccountSettingsUser /> },
+        ],
+      },
       { path: "*", element: <NotFound /> },
     ],
   },
-  { path: "/", element: <UserHomePage /> },
   {
     path: "/hr-management",
     element: <HRManagementDashboardLayout />,

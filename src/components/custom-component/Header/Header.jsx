@@ -56,34 +56,14 @@ const navigationData = [
   },
   {
     label: "Your Appointment",
-    link: "/appointments",
+    link: "/account/appointments",
     icon: CalendarCheck,
   },
-  {
-    label: "Your Query",
-    link: "/queries",
-    icon: MessageSquare,
-  },
-  {
-    label: "Diet Chart",
-    link: "/diet-chart",
-    icon: Utensils,
-  },
-  {
-    label: "Payment",
-    link: "/payment",
-    icon: CreditCard,
-  },
-  {
-    label: "PRP",
-    link: "/prp",
-    icon: Droplets,
-  },
-  {
-    label: "Settings",
-    link: "/settings",
-    icon: Settings,
-  },
+  { label: "Your Query", link: "/account/queries", icon: MessageSquare },
+  { label: "Diet Chart", link: "/account/diet-chart", icon: Utensils },
+  { label: "Payment", link: "/account/payment", icon: CreditCard },
+  { label: "PRP", link: "/account/prp", icon: Droplets },
+  { label: "Settings", link: "/account/settings", icon: Settings },
 ];
 
 export default function Header() {

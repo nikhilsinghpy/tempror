@@ -122,7 +122,7 @@ export default function QueryListAdmin() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [date]);
 
   return (
     <div className="p-4 w-full space-y-4">
