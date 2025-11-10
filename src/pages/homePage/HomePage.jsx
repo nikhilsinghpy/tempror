@@ -162,12 +162,12 @@ export default function HomePage() {
           Procedure
         </p>
         <CrouselCs autoPlayEnabled={true}>
-          {surgeryResults?.map((_, index) => (
+          {surgeryResults?.map((result, index) => (
             <CarouselItem
-              key={index}
-              className="basis-1 md:basis-1/3 lg:basis-1/4 py-4"
+              key={result._id || index} // Prefer unique ID if available
+              className="w-full md:basis-1/3 lg:basis-1/4 py-4"
             >
-              <ResultCard data={_} />
+              <ResultCard data={result} />
             </CarouselItem>
           ))}
         </CrouselCs>

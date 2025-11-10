@@ -6,31 +6,11 @@ import {
   Phone,
   CheckCircle,
   XCircle,
-  Loader2,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-
-const appointments = [
-  {
-    _id: "690dc294644b4b889ae74d58",
-    userId: "68f3391a40cf3dda1610885e",
-    name: { first: "Paras", last: "Parivaarorg" },
-    status: "COMPLETED",
-    isPhoneVerified: false,
-    phone: "08882580006",
-    email: "parasparivaar39@gmail.com",
-    city: "New Delhi",
-    state: "Delhi",
-    message:
-      "Belleza Rohini — Delhi’s top Hair Transplant Clinic, specializing in FUE, DHI & Sapphire techniques. Trusted by 10,000+ happy clients.",
-    lookingFor: "hair-transplant",
-    date: "2025-11-07T00:00:00.000Z",
-    time: "15:24",
-    createdAt: "2025-11-07T09:57:40.061Z",
-  },
-];
+import { useUser } from "@/hooks/use-user";
+import { Separator } from "@/components/ui/separator";
 
 const getStatusBadge = (status) => {
   switch (status) {
@@ -66,18 +46,31 @@ const getStatusBadge = (status) => {
 };
 
 export default function AppointmentPageUser() {
+  const { user, loading } = useUser();
   return (
     <div className="min-h-screen py-10 px-4 flex justify-center">
       <div className="w-full max-w-4xl space-y-6">
-        <h1 className="text-4xl font-extrabold text-amber-700 tracking-tight mb-6">
-          My Appointments
-        </h1>
-        {appointments.length === 0 ? (
+        <div className="text-center space-y-3">
+          <h1 className="text-4xl font-extrabold text-amber-700 tracking-tight">
+            Your Appointments
+          </h1>
+          <p className="text-gray-700 max-w-lg mx-auto font-medium">
+            View your upcoming appointments arranged in a clean, easy-to-follow
+            timeline.
+          </p>
+        </div>
+
+        <Separator />
+        {loading ? (
+          <div className="text-center py-20 text-gray-500 text-lg">
+            loading ...
+          </div>
+        ) : !user?.appointments || user.appointments.length === 0 ? (
           <div className="text-center py-20 text-gray-500 text-lg">
             You don’t have any appointments yet.
           </div>
         ) : (
-          appointments.map((appt) => (
+          user?.appointments?.map((appt) => (
             <Card
               key={appt._id}
               className="py-0 overflow-hidden rounded-2xl shadow-md  border border-gray-200 bg-white"
@@ -101,8 +94,8 @@ export default function AppointmentPageUser() {
               <CardContent className="p-6 space-y-5 text-gray-700">
                 {/* Date, Time, Location */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-sm">
-                  <div className="flex items-center gap-2 bg-amber-50 px-3 py-2 rounded-lg">
-                    <Calendar className="w-5 h-5 text-amber-600" />
+                  <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg">
+                    <Calendar className="w-5 h-5 text-gray-600" />
                     <span>
                       {new Date(appt.date).toLocaleDateString("en-IN", {
                         day: "2-digit",
@@ -111,18 +104,18 @@ export default function AppointmentPageUser() {
                       })}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2 bg-amber-50 px-3 py-2 rounded-lg">
-                    <Clock className="w-5 h-5 text-amber-600" />
+                  <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg">
+                    <Clock className="w-5 h-5 text-gray-600" />
                     <span>{appt.time}</span>
                   </div>
-                  <div className="flex items-center gap-2 bg-amber-50 px-3 py-2 rounded-lg">
-                    <MapPin className="w-5 h-5 text-amber-600" />
+                  <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg">
+                    <MapPin className="w-5 h-5 text-gray-600" />
                     <span>
                       {appt.city}, {appt.state}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2 bg-amber-50 px-3 py-2 rounded-lg">
-                    <Phone className="w-5 h-5 text-amber-600" />
+                  <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg">
+                    <Phone className="w-5 h-5 text-gray-600" />
                     <span>{appt.phone}</span>
                     {appt.isPhoneVerified ? (
                       <CheckCircle className="w-5 h-5 text-green-600" />
@@ -130,8 +123,8 @@ export default function AppointmentPageUser() {
                       <XCircle className="w-5 h-5 text-red-500" />
                     )}
                   </div>
-                  <div className="flex items-center gap-2 bg-amber-50 px-3 py-2 rounded-lg">
-                    <Mail className="w-5 h-5 text-amber-600" />
+                  <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg">
+                    <Mail className="w-5 h-5 text-gray-600" />
                     <span>{appt.email}</span>
                   </div>
                 </div>

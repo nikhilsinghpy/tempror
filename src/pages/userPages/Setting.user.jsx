@@ -25,12 +25,24 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "@/hooks/use-user";
+import { toast } from "sonner";
+import { postHandler } from "@/services/api.services";
 
 const UpdateEmail = () => {
   return (
     <div className="space-y-2">
       <Label htmlFor="email">Email</Label>
       <Input type="email" id="email" value="xH8o7@example.com" />
+      <DialogFooter>
+        <Button className="bg-amber-600 hover:bg-amber-700 text-white ">
+          Update
+        </Button>
+        <DialogClose asChild>
+          <Button variant={"outline"}>Cancel</Button>
+        </DialogClose>
+      </DialogFooter>
     </div>
   );
 };
@@ -39,37 +51,117 @@ const UpdatePhone = () => {
     <div className="space-y-2">
       <Label htmlFor="phone">Phone Number</Label>
       <Input type="tel" id="phone" value="+91 12345 67890" />
+      <DialogFooter>
+        <Button className="bg-amber-600 hover:bg-amber-700 text-white ">
+          Update
+        </Button>
+        <DialogClose asChild>
+          <Button variant={"outline"}>Cancel</Button>
+        </DialogClose>
+      </DialogFooter>
     </div>
   );
 };
 
-const ChangePassword = () => {
+const ChangePassword = ({ setIsOpen }) => {
+  const [credentials, setCredentials] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setCredentials((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    const { currentPassword, newPassword, confirmPassword } = credentials;
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      toast.error("All fields are required");
+      return;
+    }
+    if (newPassword === currentPassword) {
+      toast.error("New password cannot be the same as current password");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      toast.error("New password and confirm password do not match");
+      return;
+    }
+    toast.promise(
+      postHandler(
+        "/auth/change-password",
+        { newPassword, oldPassword: currentPassword },
+        { Authorization: `Bearer ${localStorage.getItem("accessToken")}` }
+      ),
+      {
+        loading: "Resetting password...",
+        success: (response) => {
+          setIsOpen(false);
+          return response.message;
+        },
+        error: (error) => error.message || "Something went wrong!",
+      }
+    );
+  };
+
   return (
     <div className="space-y-3">
       <div className="space-y-2">
         <Label htmlFor="currentPassword">Current Password</Label>
-        <Input type="password" id="currentPassword" />
+        <Input
+          type="password"
+          id="currentPassword"
+          value={credentials.currentPassword}
+          onChange={handleChange}
+          required
+        />
       </div>
+
       <div className="space-y-2">
         <Label htmlFor="newPassword">New Password</Label>
-        <Input type="password" id="newPassword" />
+        <Input
+          type="password"
+          id="newPassword"
+          value={credentials.newPassword}
+          onChange={handleChange}
+          required
+        />
       </div>
+
       <div className="space-y-2">
         <Label htmlFor="confirmPassword">Confirm Password</Label>
-        <Input type="password" id="confirmPassword" />
+        <Input
+          type="password"
+          id="confirmPassword"
+          value={credentials.confirmPassword}
+          onChange={handleChange}
+          required
+        />
       </div>
+
+      <DialogFooter>
+        <Button
+          type="submit"
+          className="bg-amber-600 hover:bg-amber-700 text-white"
+          onClick={handleClick}
+        >
+          Update
+        </Button>
+
+        <DialogClose asChild>
+          <Button variant={"outline"}>Cancel</Button>
+        </DialogClose>
+      </DialogFooter>
     </div>
   );
 };
-const ForgetPassword = () => {
-  return (
-    <div className="space-y-2">
-      <Label htmlFor="phone">Phone Number</Label>
-      <Input type="tel" id="phone" value="+91 12345 67890" />
-    </div>
-  );
-};
+
 const AccountSettingsUser = () => {
+  const navigate = useNavigate();
+  const { user, loading } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const [dialogContent, setDialogContent] = useState({
     title: "",
@@ -98,12 +190,7 @@ const AccountSettingsUser = () => {
         break;
 
       case "forgetPassword":
-        setDialogContent({
-          title: "Forgot Password",
-          description:
-            "Enter your registered phone number. We’ll send you a verification link or OTP to reset your password securely.",
-          updateKey: "forgetPassword",
-        });
+        navigate("/auth/forgot-password");
         break;
 
       case "changePassword":
@@ -134,17 +221,22 @@ const AccountSettingsUser = () => {
         return <UpdatePhone />;
       case "email":
         return <UpdateEmail />;
-      case "forgetPassword":
-        return <ForgetPassword />;
       case "changePassword":
-        return <ChangePassword />;
+        return <ChangePassword setIsOpen={setIsOpen} />;
       default:
         return "No content available";
     }
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex justify-center items-center">
+        <p>Loading...</p>
+      </div>
+    );
+  }
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-100 flex justify-center items-start py-10 px-4">
+    <div className="min-h-screen  flex justify-center items-start py-10 px-4">
       <div className="w-full max-w-2xl bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-200">
         {/* Header Section */}
         <div className="relative bg-gradient-to-r from-amber-400 to-amber-600 h-44 flex justify-center items-end rounded-b-[6rem]">
@@ -154,7 +246,7 @@ const AccountSettingsUser = () => {
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <p className="text-xl mt-3 font-semibold text-gray-800">
-              Nikhil Thakur
+              {user?.name?.first} {user?.name?.last}
             </p>
             <p className="text-sm text-gray-500">Account Settings</p>
           </div>
@@ -173,7 +265,7 @@ const AccountSettingsUser = () => {
               <div className="space-y-2 md:col-span-2">
                 <Label htmlFor="phone">Phone Number</Label>
                 <div className="flex items-center gap-2">
-                  <Input id="phone" value="+91 12345 67890" />
+                  <Input id="phone" value={user?.phone} disabled />
                   <Button
                     size="icon"
                     variant="outline"
@@ -186,7 +278,7 @@ const AccountSettingsUser = () => {
               <div className="space-y-2 md:col-span-2">
                 <Label htmlFor="email">Email</Label>
                 <div className="flex items-center gap-2">
-                  <Input id="email" value="zVd1o@example.com" />
+                  <Input id="email" value={user?.email} disabled />
                   <Button
                     size="icon"
                     variant="outline"
@@ -303,14 +395,6 @@ const AccountSettingsUser = () => {
             <DialogDescription>{dialogContent.description}</DialogDescription>
           </DialogHeader>
           {renderContent()}
-          <DialogFooter>
-            <Button className="bg-amber-600 hover:bg-amber-700 text-white ">
-              Update
-            </Button>
-            <DialogClose asChild>
-              <Button variant={"outline"}>Cancel</Button>
-            </DialogClose>
-          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>

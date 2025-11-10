@@ -10,6 +10,7 @@ import {
   Utensils,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useUser } from "@/hooks/use-user";
 
 const navigationData = [
   { label: "Account Details", link: "/account/account-details", icon: User },
@@ -26,8 +27,10 @@ const navigationData = [
 ];
 
 export default function AccountPageUser() {
+  const { user, loading } = useUser();
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-100 flex justify-center items-start py-10 px-4">
+    <div className="min-h-screen flex justify-center items-start py-10 px-4">
       <div className="w-full max-w-md bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-200">
         {/* Header Section */}
         <div className="relative bg-gradient-to-r from-amber-400 to-amber-600 h-40 flex justify-center items-end rounded-b-[5rem]">
@@ -36,10 +39,18 @@ export default function AccountPageUser() {
               <AvatarImage src="https://github.com/shadcn.png" />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
-            <p className="text-lg mt-3 font-semibold text-gray-800">
-              Nikhil Thakur
-            </p>
-            <p className="text-sm text-gray-500">nikhilthakur@email.com</p>
+            {loading ? (
+              <p className="mt-2 text-lg font-semibold text-white">
+                Loading...
+              </p>
+            ) : (
+              <>
+                <p className="text-lg mt-3 font-semibold text-gray-800">
+                  {user?.name?.first} {user?.name?.last}
+                </p>
+                <p className="text-sm text-gray-500">{user?.email}</p>
+              </>
+            )}
           </div>
         </div>
 

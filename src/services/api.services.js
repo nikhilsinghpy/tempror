@@ -13,9 +13,9 @@ const createApi = ({ customHeaders = {}, customConfig = {} } = {}) => {
     baseURL: BASE_URL,
     headers: {
       "Content-Type": "application/json",
-      ...customHeaders, // merge custom headers like Authorization
+      ...customHeaders, 
     },
-    ...customConfig, // merge other Axios config if needed
+    ...customConfig, 
   });
 };
 /**

@@ -6,6 +6,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
 
 const dietPlanData = [
   {
@@ -60,51 +61,61 @@ const dietPlanData = [
 export default function DietChartPageUser() {
   return (
     <div className="min-h-screen w-full flex flex-col items-center p-4">
-      <div className="space-y-4">
-        <h1 className="text-4xl font-extrabold text-amber-700 tracking-tight">
-          My Diet Plan
-        </h1>
-        <p className="text-gray-600 text-md max-w-md font-semibold">
-          You don’t have a diet chart yet. It was created by a nutritionist and
-          according to Your surgery.
-        </p>
-        <Accordion type="single" collapsible className="space-y-4">
-          {dietPlanData.map((week) => (
-            <AccordionItem key={week.week} value={`week-${week.week}`}>
-              <AccordionTrigger className="w-full border p-5 rounded-2xl text-lg font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100">
-                Week {week.week}
-              </AccordionTrigger>
-              <AccordionContent>
-                <ScrollArea className="h-[200px] rounded-md border p-4">
-                  {Object.entries(week.days).map(([day, meals]) => (
-                    <div
-                      key={day}
-                      className="border border-gray-100 rounded-xl p-4 hover:shadow-sm transition"
-                    >
-                      <h3 className="text-lg font-semibold text-amber-600 mb-2">
-                        {day}
-                      </h3>
-                      <ul className="space-y-1 text-gray-600 text-sm">
-                        <li>
-                          <strong>Breakfast:</strong> {meals.breakfast}
-                        </li>
-                        <li>
-                          <strong>Lunch:</strong> {meals.lunch}
-                        </li>
-                        <li>
-                          <strong>Snack:</strong> {meals.snack}
-                        </li>
-                        <li>
-                          <strong>Dinner:</strong> {meals.dinner}
-                        </li>
-                      </ul>
-                    </div>
-                  ))}
-                </ScrollArea>
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+      <div className="space-y-4 min-w-sm md:min-w-3xl">
+        <div className="space-y-3">
+          <h1 className="text-4xl font-extrabold text-amber-700 tracking-tight">
+            Your Diet Chart
+          </h1>
+          <p className="text-gray-700 font-medium">
+            View your diet chart arranged in a clean, easy-to-follow timeline.
+          </p>
+        </div>
+
+        <Separator />
+        {dietPlanData.length === 0 ? (
+          <p className="text-gray-600 text-md max-w-md font-semibold">
+            You don’t have a diet chart yet. It was created by a nutritionist
+            and according to Your surgery.
+          </p>
+        ) : (
+          <Accordion type="single" collapsible className="space-y-4">
+            {dietPlanData.map((week) => (
+              <AccordionItem key={week.week} value={`week-${week.week}`}>
+                <AccordionTrigger className="w-full border p-5 rounded-2xl text-lg font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100">
+                  Week {week.week}
+                </AccordionTrigger>
+                <AccordionContent>
+                  <ScrollArea className="h-[200px] rounded-md border p-4">
+                    {Object.entries(week.days).map(([day, meals]) => (
+                      <div
+                        key={day}
+                        className="border border-gray-100 rounded-xl p-4 hover:shadow-sm transition"
+                      >
+                        <h3 className="text-lg font-semibold text-amber-600 mb-2">
+                          {day}
+                        </h3>
+                        <ul className="space-y-1 text-gray-600 text-sm">
+                          <li>
+                            <strong>Breakfast:</strong> {meals.breakfast}
+                          </li>
+                          <li>
+                            <strong>Lunch:</strong> {meals.lunch}
+                          </li>
+                          <li>
+                            <strong>Snack:</strong> {meals.snack}
+                          </li>
+                          <li>
+                            <strong>Dinner:</strong> {meals.dinner}
+                          </li>
+                        </ul>
+                      </div>
+                    ))}
+                  </ScrollArea>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        )}
       </div>
     </div>
   );
