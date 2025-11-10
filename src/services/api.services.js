@@ -1,6 +1,6 @@
 import axios from "axios";
-// const BASE_URL = "http://localhost:4000/api/v1";
-const BASE_URL = "https://api-belleza.onrender.com/api/v1";
+const BASE_URL = "http://localhost:4000/api/v1";
+// const BASE_URL = "https://api-belleza.onrender.com/api/v1";
 
 /**
  * Create a reusable Axios instance
@@ -13,9 +13,9 @@ const createApi = ({ customHeaders = {}, customConfig = {} } = {}) => {
     baseURL: BASE_URL,
     headers: {
       "Content-Type": "application/json",
-      ...customHeaders, 
+      ...customHeaders,
     },
-    ...customConfig, 
+    ...customConfig,
   });
 };
 /**
