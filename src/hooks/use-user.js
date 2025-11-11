@@ -3,13 +3,14 @@ import { getHandler, postHandler } from "@/services/api.services";
 
 export function useUser() {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const fetchUser = useCallback(async () => {
     const token = localStorage.getItem("accessToken");
 
     if (!token) {
       setUser(null);
+      setLoading(false);
       return;
     }
 

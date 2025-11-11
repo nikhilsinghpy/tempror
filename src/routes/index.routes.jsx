@@ -39,6 +39,7 @@ import DietChartPageUser from "@/pages/userPages/DietChartPage.user";
 import PaymentPageUser from "@/pages/userPages/PaymentPage.user";
 import PRPPageUser from "@/pages/userPages/PRPPage.user";
 import AccountSettingsUser from "@/pages/userPages/Setting.user";
+import ProtectRoutes from "./protect.routes";
 
 export const router = createBrowserRouter([
   {
@@ -50,7 +51,11 @@ export const router = createBrowserRouter([
       { path: "about-us", element: <AboutUs /> },
       { path: "results", element: <ResultPage /> },
       { path: "branch/:slug", element: <BranchPage /> },
-      { path: "book-appointment", element: <AppointmentPage /> },
+      {
+        path: "book-appointment",
+        element: <ProtectRoutes />,
+        children: [{ index: true, element: <AppointmentPage /> }],
+      },
       {
         path: "services",
         children: [
@@ -61,6 +66,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/account",
+        element: <ProtectRoutes />,
         children: [
           { index: true, element: <AccountPageUser /> },
           { path: "account-details", element: <AccountDetailUser /> },
@@ -82,7 +88,11 @@ export const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <AdminLayout />,
+    element: (
+      <ProtectRoutes requiredRole="admin">
+        <AdminLayout />
+      </ProtectRoutes>
+    ),
     children: [
       { index: true, element: <AdminHomePage /> },
       { path: "clients", element: <ClientListPageAdmin /> },
