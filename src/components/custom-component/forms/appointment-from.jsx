@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import {
@@ -7,14 +7,17 @@ import {
   SelectValue,
   SelectContent,
   SelectItem,
+  SelectGroup,
+  SelectLabel,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { postHandler } from "@/services/api.services";
+import { getHandler, postHandler } from "@/services/api.services";
 
 export default function AppointmentForm() {
   const [loading, setLoading] = useState(false);
+  const [branches, setBranches] = useState([]);
   const [formData, setFormData] = useState({
     name: {
       first: "",
@@ -28,6 +31,7 @@ export default function AppointmentForm() {
     lookingFor: "",
     date: "",
     time: "",
+    branch: "",
   });
 
   // handleChange function (works for nested and normal fields)
@@ -42,6 +46,9 @@ export default function AppointmentForm() {
           [id === "firstName" ? "first" : "last"]: value,
         },
       }));
+    } else if (id === "phone") {
+      setFormData((prev) => ({ ...prev, [id]: value.replace(/\D/g, "") }));
+      return;
     } else {
       setFormData((prev) => ({
         ...prev,
@@ -49,14 +56,12 @@ export default function AppointmentForm() {
       }));
     }
   };
-
   const handleSelectChange = (key, value) => {
     setFormData((prev) => ({
       ...prev,
       [key]: value,
     }));
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -90,6 +95,18 @@ export default function AppointmentForm() {
     setLoading(false);
   };
 
+  const fetchBranches = async () => {
+    try {
+      const response = await getHandler("/branch/get");
+      setBranches(response.data);
+    } catch (error) {
+      toast.dismiss();
+      toast.error(error.message || "Something went wrong!");
+    }
+  };
+  useEffect(() => {
+    fetchBranches();
+  }, []);
   return (
     <form
       onSubmit={handleSubmit}
@@ -212,6 +229,24 @@ export default function AppointmentForm() {
             <SelectItem value="eyebrow-transplant">
               Eyebrow Transplant
             </SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="space-y-2">
+        <Label>Nearest Branch To Visit</Label>
+        <Select onValueChange={(value) => handleSelectChange("branch", value)}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select Branch" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Select Branch</SelectLabel>
+              {branches.map((branch) => (
+                <SelectItem key={branch._id} value={branch._id}>
+                  {branch.title}
+                </SelectItem>
+              ))}
+            </SelectGroup>
           </SelectContent>
         </Select>
       </div>

@@ -9,8 +9,8 @@ import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
 const AccountDetailUser = () => {
+  
   const { user, loading, refetch } = useUser();
-
   const [form, setForm] = useState({
     name: { first: "", last: "" },
     email: "",

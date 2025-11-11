@@ -16,10 +16,13 @@ import { toast } from "sonner";
 
 export default function AddPrpForm({ fetchData, setIsOpen }) {
   const [branches, setBranches] = useState([]);
+
   const [formData, setFormData] = useState({
     phone: "",
+    firstname: "",
+    lastname: "",
+    email: "",
     treatmentType: "",
-    status: "pending",
     date: "",
     time: "",
     branchId: "",
@@ -35,7 +38,7 @@ export default function AddPrpForm({ fetchData, setIsOpen }) {
     toast.promise(postHandler("/prp/create", formData), {
       loading: "Submitting form...",
       success: (response) => {
-        fetchData(); // Call the fetchData function to refresh the table data
+        fetchData();
         setIsOpen(false);
         return response.message;
       },
@@ -44,6 +47,7 @@ export default function AddPrpForm({ fetchData, setIsOpen }) {
       },
     });
   };
+
   const fetchBranches = async () => {
     try {
       const response = await getHandler("/branch/get");
@@ -53,12 +57,43 @@ export default function AddPrpForm({ fetchData, setIsOpen }) {
       toast.error(error.message || "Something went wrong!");
     }
   };
+
   useEffect(() => {
     fetchBranches();
   }, []);
 
   return (
     <form className="grid gap-4 p-4" onSubmit={handleSubmit}>
+      {/* Firstname */}
+      <div className="flex gap-2">
+        <div className="grid w-full items-center gap-1.5">
+          <Label htmlFor="firstname">First Name</Label>
+          <Input
+            type="text"
+            id="firstname"
+            name="firstname"
+            value={formData.firstname}
+            onChange={handleChange}
+            placeholder="Enter first name"
+            required
+          />
+        </div>
+
+        {/* Lastname */}
+        <div className="grid w-full items-center gap-1.5">
+          <Label htmlFor="lastname">Last Name</Label>
+          <Input
+            type="text"
+            id="lastname"
+            name="lastname"
+            value={formData.lastname}
+            onChange={handleChange}
+            placeholder="Enter last name"
+            required
+          />
+        </div>
+      </div>
+
       {/* Phone */}
       <div className="grid w-full items-center gap-1.5">
         <Label htmlFor="phone">Phone</Label>
@@ -69,6 +104,20 @@ export default function AddPrpForm({ fetchData, setIsOpen }) {
           value={formData.phone}
           onChange={handleChange}
           placeholder="Enter phone number"
+          required
+        />
+      </div>
+
+      {/* Email */}
+      <div className="grid w-full items-center gap-1.5">
+        <Label htmlFor="email">Email</Label>
+        <Input
+          type="email"
+          id="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="Enter email address"
           required
         />
       </div>
@@ -86,27 +135,16 @@ export default function AddPrpForm({ fetchData, setIsOpen }) {
             <SelectValue placeholder="Select treatment type" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="Hair PRP">Hair PRP</SelectItem>
-            <SelectItem value="Eyebrow PRP">Eyebrow PRP</SelectItem>
-            <SelectItem value="Beard PRP">Beard PRP</SelectItem>
-            <SelectItem value="Face PRP">Face PRP</SelectItem>
-            <SelectItem value="Under-eye PRP">Under-eye PRP</SelectItem>
+            <SelectGroup>
+              <SelectLabel>Select Branch</SelectLabel>
+              <SelectItem value="Hair PRP">Hair PRP</SelectItem>
+              <SelectItem value="Eyebrow PRP">Eyebrow PRP</SelectItem>
+              <SelectItem value="Beard PRP">Beard PRP</SelectItem>
+              <SelectItem value="Face PRP">Face PRP</SelectItem>
+              <SelectItem value="Under-eye PRP">Under-eye PRP</SelectItem>
+            </SelectGroup>
           </SelectContent>
         </Select>
-      </div>
-
-      {/* Status */}
-      <div className="grid w-full items-center gap-1.5">
-        <Label htmlFor="status">Status</Label>
-        <Input
-          type="text"
-          id="status"
-          name="status"
-          value={formData.status}
-          disabled
-          placeholder="Enter status"
-          required
-        />
       </div>
 
       {/* Date */}
@@ -135,6 +173,7 @@ export default function AddPrpForm({ fetchData, setIsOpen }) {
         />
       </div>
 
+      {/* Branch */}
       <div className="space-y-2">
         <Label htmlFor="branchId">Branch</Label>
         <Select
@@ -144,8 +183,7 @@ export default function AddPrpForm({ fetchData, setIsOpen }) {
           }
         >
           <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select Branch" />{" "}
-            {/* Show placeholder if empty */}
+            <SelectValue placeholder="Select Branch" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>

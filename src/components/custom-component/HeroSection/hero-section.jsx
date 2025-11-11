@@ -56,19 +56,27 @@ export default function HeroSection({ heroData = [] }) {
                   {current?.description}
                 </p>
                 <div className="mt-6 flex flex-wrap items-center gap-3">
-                  {Array.isArray(current?.cta) &&
-                    current.cta.map((item, idx) => (
+                  {Array.isArray(current?.buttons) &&
+                    current.buttons.map((item, idx) => (
                       <a
-                        href={item.href || "#"}
-                        key={idx}
-                        className={`inline-flex border items-center justify-center rounded-md px-4 py-2.5 text-sm font-medium transition-colors duration-200 ${
-                          item.varient === "primary"
-                            ? "bg-slate-900 text-white hover:bg-slate-800"
-                            : "bg-white text-slate-900 hover:bg-slate-200"
-                        }`}
+                        key={index}
+                        href={item.link}
+                        className={`inline-flex items-center justify-center rounded-md px-4 py-2.5 text-sm font-medium transition-all duration-200
+                          ${
+                            item.type === "primary"
+                              ? "bg-slate-900 text-white hover:bg-slate-800"
+                              : "border border-slate-200 bg-white text-slate-900 hover:bg-slate-100 hover:text-slate-900"
+                          }`}
                       >
-                        {item.title}
-                        {item.icon && <item.icon className="ml-2 h-4 w-4" />}
+                        {item.label}
+                        <DynamicIcon
+                          className={`ml-2 h-4 w-4 ${
+                            item.type === "primary"
+                              ? "text-white"
+                              : "text-slate-900"
+                          }`}
+                          name={item.icon}
+                        />
                       </a>
                     ))}
                 </div>

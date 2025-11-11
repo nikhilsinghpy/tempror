@@ -11,80 +11,21 @@ import {
 import { getHandler } from "@/services/api.services";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
-const appointmentcolumns = [
-  { header: "Patient Name", accessor: "patientName" },
-  { header: "Contact", accessor: "contact" },
-  { header: "Treatment Type", accessor: "treatmentType" },
-  { header: "Appointment Date", accessor: "appointmentDate" },
-  { header: "Doctor", accessor: "doctor" },
-  { header: "Status", accessor: "status" },
-];
 
-const appointmentdata = [
-  {
-    patientName: "Rahul Sharma",
-    contact: "rahul.sharma@example.com",
-    treatmentType: "PRP Therapy",
-    appointmentDate: "2025-10-25",
-    doctor: "Dr. Mehta",
-    status: "Confirmed",
-  },
-  {
-    patientName: "Amit Patel",
-    contact: "amit.patel@example.com",
-    treatmentType: "PRP Therapy",
-    appointmentDate: "2025-10-27",
-    doctor: "Dr. Singh",
-    status: "Pending",
-  },
-  {
-    patientName: "Priya Verma",
-    contact: "priya.verma@example.com",
-    treatmentType: "PRP Therapy",
-    appointmentDate: "2025-10-29",
-    doctor: "Dr. Kapoor",
-    status: "Completed",
-  },
-  {
-    patientName: "Rohit Yadav",
-    contact: "rohit.yadav@example.com",
-    treatmentType: "PRP Therapy",
-    appointmentDate: "2025-10-30",
-    doctor: "Dr. Mehta",
-    status: "Confirmed",
-  },
-  {
-    patientName: "Sneha Gupta",
-    contact: "sneha.gupta@example.com",
-    treatmentType: "PRP Therapy",
-    appointmentDate: "2025-11-01",
-    doctor: "Dr. Sharma",
-    status: "Cancelled",
-  },
-  {
-    patientName: "Vikas Jain",
-    contact: "vikas.jain@example.com",
-    treatmentType: "PRP Therapy",
-    appointmentDate: "2025-11-02",
-    doctor: "Dr. Singh",
-    status: "Pending",
-  },
-  {
-    patientName: "Vikas Jain",
-    contact: "vikas.jain@example.com",
-    treatmentType: "PRP Therapy",
-    appointmentDate: "2025-11-02",
-    doctor: "Dr. Singh",
-    status: "Pending",
-  },
-  {
-    patientName: "Vikas Jain",
-    contact: "vikas.jain@example.com",
-    treatmentType: "PRP Therapy",
-    appointmentDate: "2025-11-02",
-    doctor: "Dr. Singh",
-    status: "Pending",
-  },
+const columns = [
+  { header: "Session ID", accessor: "sessionId" },
+  { header: "Status", accessor: "status" },
+  { header: "Date", accessor: "date" },
+  { header: "Time", accessor: "time" },
+  { header: "Treatment Type", accessor: "treatmentType" },
+  { header: "Patient Name", accessor: "patientFirstName" },
+  { header: "Patient Last Name", accessor: "patientLastName" },
+  { header: "Patient Email", accessor: "patientEmail" },
+  { header: "Patient Phone", accessor: "patientPhone" },
+  { header: "User ID", accessor: "patientUserId" },
+  { header: "Branch Title", accessor: "branchTitle" },
+  { header: "Branch Phone", accessor: "branchPhone" },
+  { header: "Scheduled At", accessor: "createdAt" },
 ];
 
 export default function ClientPRPPageAdmin() {
@@ -94,18 +35,34 @@ export default function ClientPRPPageAdmin() {
     data: [],
     pagination: {},
   });
-  const fetchData = async () => {
+  const fetchData = async (query) => {
     try {
-      const response = await getHandler("/prp/get");
-      console.log(response.data);
+      let url = `/prp/get?${query}`;
+      const response = await getHandler(url);
+      const formatdata = response.data.data.map((item) => ({
+        ...item,
+        patientFirstName: item.patientInfo.name.first,
+        patientLastName: item.patientInfo.name.last,
+        patientEmail: item.patientInfo.email,
+        patientPhone: item.patientInfo.phone,
+        patientUserId: item.patientInfo.userId,
+        branchTitle: item.branch.title,
+        branchPhone: item.branch.contact.phone,
+        createdAt: new Date(item.createdAt).toLocaleString(),
+        date: new Date(item.date).toLocaleDateString(),
+      }));
       setPrpData({
-        data: response.data,
-        pagination: response.pagination,
+        data: formatdata,
+        pagination: response.data.pagination,
       });
     } catch (error) {
+      console.log(error);
       toast.error(error.messege || "Something went wrong!");
     }
   };
+
+  const handleNext = (page) => fetchData(`page=${page}`);
+  const handlePrevious = (page) => fetchData(`page=${page}`);
   useEffect(() => {
     fetchData();
   }, []);
@@ -115,16 +72,21 @@ export default function ClientPRPPageAdmin() {
         <h1 className="text-2xl font-bold ">Clients PRP List</h1>
         <Button onClick={() => setIsOpen(true)}>+ Add PRP Schedule</Button>
       </div>
-      <TableCs
-        data={appointmentdata}
-        columns={appointmentcolumns}
-        rowsPerPage={10}
-      />
+      <div className="md:max-w-[77vw]">
+        <TableCs
+          data={PrpData.data}
+          columns={columns}
+          rowsPerPage={1}
+          paginationData={PrpData.pagination}
+          handleNext={handleNext}
+          handlePrev={handlePrevious}
+        />
+      </div>
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetContent>
           <SheetHeader>
             <SheetTitle>
-              {selectedPrp ? "Update PRP Review" : "Add New PRP Review"}
+              {selectedPrp ? "Update PRP Schedule" : "Schedule A New PRP"}
             </SheetTitle>
             <SheetDescription className={"capitalize"}>
               {selectedPrp

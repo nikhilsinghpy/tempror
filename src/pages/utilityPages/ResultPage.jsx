@@ -6,6 +6,7 @@ import { getHandler } from "@/services/api.services";
 import { Cpu, Layers, Sparkles, Star } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
+import image from "@/assets/images/hairprocess1.webp";
 
 const treatments = [
   {
@@ -44,7 +45,7 @@ export default function ResultPage() {
   return (
     <div>
       <HeroSectionNonAnimate
-        heroImage="/images/hair-clinic-banner.jpg" // replace with your banner image
+        heroImage={image}
         title="Transform Your Hair, Beard & Eyebrows with Confidence"
         intro="Real results from real patients — witness the artistry of our advanced hair, beard, and eyebrow transplant techniques."
         CTA={[

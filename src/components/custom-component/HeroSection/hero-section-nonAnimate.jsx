@@ -11,7 +11,6 @@ export default function HeroSectionNonAnimate({
   features = [],
 }) {
   const Icon = icon;
-  console.log(CTA);
   return (
     <section>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

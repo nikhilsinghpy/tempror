@@ -126,6 +126,10 @@ export default function ContactUs() {
 
   const handleChange = (e) => {
     const { id, value } = e.target;
+    if (id === "phone") {
+      setFormData((prev) => ({ ...prev, [id]: value.replace(/\D/g, "") }));
+      return;
+    }
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
@@ -242,6 +246,7 @@ export default function ContactUs() {
               <Input
                 id="name"
                 type="text"
+                value={formData.name}
                 placeholder="John Doe"
                 onChange={handleChange}
               />
@@ -251,6 +256,7 @@ export default function ContactUs() {
               <Input
                 id="phone"
                 type="tel"
+                value={formData.phone}
                 placeholder="+91 0000-0000"
                 onChange={handleChange}
               />
@@ -260,6 +266,7 @@ export default function ContactUs() {
               <Input
                 id="email"
                 type="email"
+                value={formData.email}
                 placeholder="m@example.com"
                 onChange={handleChange}
               />
@@ -315,6 +322,7 @@ export default function ContactUs() {
               <Textarea
                 placeholder="Type your message here."
                 id="message"
+                value={formData.message}
                 onChange={handleChange}
               />
             </div>

@@ -9,72 +9,7 @@ const appointmentcolumns = [
   { header: "Status", accessor: "status" },
 ];
 
-const appointmentdata = [
-  {
-    patientName: "Rahul Sharma",
-    contact: "rahul.sharma@example.com",
-    treatmentType: "FUE Hair Transplant",
-    appointmentDate: "2025-10-25",
-    doctor: "Dr. Mehta",
-    status: "Confirmed",
-  },
-  {
-    patientName: "Amit Patel",
-    contact: "amit.patel@example.com",
-    treatmentType: "PRP Therapy",
-    appointmentDate: "2025-10-27",
-    doctor: "Dr. Singh",
-    status: "Pending",
-  },
-  {
-    patientName: "Priya Verma",
-    contact: "priya.verma@example.com",
-    treatmentType: "FUT Hair Transplant",
-    appointmentDate: "2025-10-29",
-    doctor: "Dr. Kapoor",
-    status: "Completed",
-  },
-  {
-    patientName: "Rohit Yadav",
-    contact: "rohit.yadav@example.com",
-    treatmentType: "Beard Transplant",
-    appointmentDate: "2025-10-30",
-    doctor: "Dr. Mehta",
-    status: "Confirmed",
-  },
-  {
-    patientName: "Sneha Gupta",
-    contact: "sneha.gupta@example.com",
-    treatmentType: "Hairline Restoration",
-    appointmentDate: "2025-11-01",
-    doctor: "Dr. Sharma",
-    status: "Cancelled",
-  },
-  {
-    patientName: "Vikas Jain",
-    contact: "vikas.jain@example.com",
-    treatmentType: "PRP Therapy",
-    appointmentDate: "2025-11-02",
-    doctor: "Dr. Singh",
-    status: "Pending",
-  },
-  {
-    patientName: "Vikas Jain",
-    contact: "vikas.jain@example.com",
-    treatmentType: "PRP Therapy",
-    appointmentDate: "2025-11-02",
-    doctor: "Dr. Singh",
-    status: "Pending",
-  },
-  {
-    patientName: "Vikas Jain",
-    contact: "vikas.jain@example.com",
-    treatmentType: "PRP Therapy",
-    appointmentDate: "2025-11-02",
-    doctor: "Dr. Singh",
-    status: "Pending",
-  },
-];
+const appointmentdata = [];
 export default function ClientListPageAdmin() {
   return (
     <div className="p-4 w-full space-y-4">
