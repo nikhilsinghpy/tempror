@@ -51,6 +51,7 @@ export default function DoctorPageAdmin() {
     toast.promise(
       postHandler("/doctor/add", formData, {
         "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       }),
       {
         loading: "Submitting form...",
@@ -71,6 +72,7 @@ export default function DoctorPageAdmin() {
     toast.promise(
       putHandler(`/doctor/update/${selectedDoctor._id}`, selectedDoctor, {
         "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       }),
       {
         loading: "Submitting form...",

@@ -11,6 +11,7 @@ export default function HeroBannerForm({ setIsOpen }) {
     title: "",
     subtitle: "",
     image: null,
+    link: "",
   });
 
   const handleChange = (e) => {
@@ -27,6 +28,7 @@ export default function HeroBannerForm({ setIsOpen }) {
     toast.promise(
       postHandler("/websiteSection/herobanner/create", formData, {
         "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       }),
       {
         loading: "Submitting form...",
@@ -68,6 +70,16 @@ export default function HeroBannerForm({ setIsOpen }) {
           name="subtitle"
           placeholder="Enter banner subtitle"
           value={formData.subtitle}
+          onChange={handleChange}
+        />
+      </div>
+      <div className="flex flex-col space-y-2">
+        <Label htmlFor="link">Link</Label>
+        <Input
+          id="link"
+          name="link"
+          placeholder="Enter banner link"
+          value={formData.link}
           onChange={handleChange}
         />
       </div>

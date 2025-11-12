@@ -35,17 +35,23 @@ export default function AddPrpForm({ fetchData, setIsOpen }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    toast.promise(postHandler("/prp/create", formData), {
-      loading: "Submitting form...",
-      success: (response) => {
-        fetchData();
-        setIsOpen(false);
-        return response.message;
-      },
-      error: (error) => {
-        toast.error(error.message || "Something went wrong!");
-      },
-    });
+    toast.promise(
+      postHandler("/prp/create", formData, {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        "Content-Type": "application/json",
+      }),
+      {
+        loading: "Submitting form...",
+        success: (response) => {
+          fetchData();
+          setIsOpen(false);
+          return response.message;
+        },
+        error: (error) => {
+          toast.error(error.message || "Something went wrong!");
+        },
+      }
+    );
   };
 
   const fetchBranches = async () => {

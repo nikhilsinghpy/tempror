@@ -58,9 +58,13 @@ export default function QueryListAdmin() {
 
   const handleChange = (value) => {
     toast.promise(
-      putHandler(`/contact/updateStatus/${selectedRow._id}`, {
-        status: value,
-      }),
+      putHandler(
+        `/contact/updateStatus/${selectedRow._id}`,
+        {
+          status: value,
+        },
+        { Authorization: `Bearer ${localStorage.getItem("accessToken")}` }
+      ),
       {
         loading: "Updating status...",
         success: (response) => {
@@ -78,7 +82,9 @@ export default function QueryListAdmin() {
       url = `/contact/get?filterType=today`;
     }
     try {
-      const response = await getHandler(url);
+      const response = await getHandler(url, {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      });
       const formatdata = response.data.map((item) => ({
         ...item,
         branch: item.branch.title,
@@ -100,6 +106,9 @@ export default function QueryListAdmin() {
       const response = await axios.get(url, {
         responseType: "blob", // 👈 critical
         baseURL: "http://localhost:4000/api/v1",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
       });
 
       // ✅ Create blob and trigger download

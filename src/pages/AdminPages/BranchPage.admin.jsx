@@ -14,76 +14,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import BranchForm from "@/components/custom-component/forms/branch-form";
 import { getHandler, postHandler, putHandler } from "@/services/api.services";
 import { toast } from "sonner";
-// const convertToFormData = (branchData) => {
-//   console.log("Branch Data:", branchData);
-//   const formData = new FormData();
-//   // ✅ Basic text fields
-//   formData.append("badge", branchData.badge || "");
-//   formData.append("title", branchData.title || "");
-//   formData.append("description", branchData.description || "");
-//   formData.append("openingHours", branchData.openingHours || "");
-//   // ✅ Buttons
-//   branchData.buttons.forEach((btn, index) => {
-//     formData.append(`buttons[${index}][label]`, btn.label || "");
-//     formData.append(`buttons[${index}][type]`, btn.type || "");
-//     formData.append(`buttons[${index}][link]`, btn.link || "");
-//     formData.append(`buttons[${index}][icon]`, btn.icon || "");
-//   });
-//   // ✅ Features
-//   branchData.features.forEach((f, index) => {
-//     formData.append(`features[${index}][icon]`, f.icon || "");
-//     formData.append(`features[${index}][text]`, f.text || "");
-//   });
-//   // ✅ Contact
-//   Object.entries(branchData.contact).forEach(([key, value]) => {
-//     formData.append(`contact[${key}]`, value || "");
-//   });
-//   // ✅ Clinic Videos
-//   branchData.clinicVideo.forEach((video, index) => {
-//     formData.append(
-//       `clinicVideo[${index}][youTubeVideoUrl]`,
-//       video.youTubeVideoUrl || ""
-//     );
-//     formData.append(`clinicVideo[${index}][title]`, video.title || "");
-//     formData.append(
-//       `clinicVideo[${index}][image][alt]`,
-//       video.image?.alt || ""
-//     );
-//   });
-//   // ✅ Why Choose Us
-//   formData.append("whyChooseUs[title]", branchData.whyChooseUs.title || "");
-//   formData.append(
-//     "whyChooseUs[description]",
-//     branchData.whyChooseUs.description || ""
-//   );
-//   branchData.whyChooseUs.features.forEach((f, index) => {
-//     formData.append(`whyChooseUs[features][${index}][title]`, f.title || "");
-//     formData.append(
-//       `whyChooseUs[features][${index}][description]`,
-//       f.description || ""
-//     );
-//     formData.append(`whyChooseUs[features][${index}][icon]`, f.icon || "");
-//   });
-//   // ✅ SEO Fields
-//   formData.append("seo[metaTitle]", branchData.seo.metaTitle || "");
-//   formData.append("seo[metaDescription]", branchData.seo.metaDescription || "");
-//   formData.append("seo[canonicalUrl]", branchData.seo.canonicalUrl || "");
-//   branchData.seo.metaKeywords.forEach((keyword, i) =>
-//     formData.append(`seo[metaKeywords][${i}]`, keyword)
-//   );
-//   formData.append("seo[ogImage][alt]", branchData.seo.ogImage?.alt || "");
-//   formData.append(
-//     "seo[structuredData]",
-//     JSON.stringify(branchData.seo.structuredData || {})
-//   );
-//   // ✅ File uploads (must match multer field names)
-//   if (branchData.image) formData.append("image", branchData.image);
-//   if (branchData.ogImage) formData.append("ogImage", branchData.ogImage);
-//   if (branchData.whyChooseUsImage)
-//     formData.append("whyChooseUsImage", branchData.whyChooseUsImage);
 
-//   return formData;
-// };
 export default function BranchPageAdmin() {
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -159,42 +90,47 @@ export default function BranchPageAdmin() {
   };
 
   const handleSubmit = async () => {
-    try {
-      setLoading(true);
-      // Send via postHandler
-      const response = await postHandler("/branch/create", branchData, {
+    setLoading(true);
+    await toast.promise(
+      postHandler("/branch/create", branchData, {
         "Content-Type": "multipart/form-data",
-      });
-      toast.dismiss();
-      setIsOpen(false);
-      setLoading(false);
-      toast.success(response.message);
-    } catch (error) {
-      setLoading(false);
-      toast.dismiss();
-      toast.error(error.message || "Something went wrong!");
-    }
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      }),
+      {
+        loading: "Creating branch... ",
+        success: (response) => {
+          setIsOpen(false);
+          setLoading(false);
+          return response.message;
+        },
+        error: (error) => {
+          setLoading(false);
+          return error.message || "Something went wrong!";
+        },
+      }
+    );
   };
 
   const handleUpdate = async () => {
-    try {
-      setLoading(true);
-      const response = await putHandler(
-        `/branch/update/${branchData._id}`,
-        branchData,
-        {
-          "Content-Type": "multipart/form-data",
-        }
-      );
-      toast.dismiss();
-      setIsOpen(false);
-      setLoading(false);
-      toast.success(response.message);
-    } catch (error) {
-      setLoading(false);
-      toast.dismiss();
-      toast.error(error.message || "Something went wrong!");
-    }
+    setLoading(true);
+    await toast.promise(
+      putHandler(`/branch/update/${branchData._id}`, branchData, {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      }),
+      {
+        loading: "Updating branch... ",
+        success: (response) => {
+          setIsOpen(false);
+          setLoading(false);
+          return response.message;
+        },
+        error: (error) => {
+          setLoading(false);
+          return error.message || "Something went wrong!";
+        },
+      }
+    );
   };
 
   const fetchBranches = async () => {

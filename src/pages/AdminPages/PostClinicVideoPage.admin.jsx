@@ -31,14 +31,19 @@ export default function PostClinicVideoPageAdmin() {
   const handleDelete = (id) => {
     const confirmed = confirm("Are you sure you want to delete this videos?");
     if (!confirmed) return;
-    toast.promise(deleteHandler(`/websiteSection/clinicVideo/delete/${id}`), {
-      loading: "Deleting...",
-      success: (response) => {
-        fetchData();
-        return response.message;
-      },
-      error: (error) => error.message || "Something went wrong!",
-    });
+    toast.promise(
+      deleteHandler(`/websiteSection/clinicVideo/delete/${id}`, {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      }),
+      {
+        loading: "Deleting...",
+        success: (response) => {
+          fetchData();
+          return response.message;
+        },
+        error: (error) => error.message || "Something went wrong!",
+      }
+    );
   };
   return (
     <div className="p-4">

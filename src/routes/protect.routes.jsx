@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useUser } from "@/hooks/use-user";
 
-export default function ProtectRoutes({ requiredRole }) {
+export default function ProtectRoutes({ requiredRole, children }) {
   const { user, loading } = useUser();
 
   if (loading) return <p>Loading...</p>;
@@ -13,5 +13,5 @@ export default function ProtectRoutes({ requiredRole }) {
     return <Navigate to="/unauthorized" replace />;
   }
 
-  return <Outlet />;
+  return children ? children : <Outlet />;
 }

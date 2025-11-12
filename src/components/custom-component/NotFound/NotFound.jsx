@@ -1,5 +1,7 @@
+import { Card, CardContent } from "@/components/ui/card";
+import { Home } from "lucide-react";
 import React from "react";
-
+import { Link } from "react-router-dom";
 
 export default function NotFoundPage() {
   return (
@@ -9,9 +11,24 @@ export default function NotFoundPage() {
         Ooops! Page not found
       </p>
       <p className="text-center max-w-md text-gray-600 mt-3">
-        Book a 30-minute call to discuss your plans, needs, and goals. We’ll get
-        on the same page and create an action plan.
+        The page you are looking for might have been removed, had its name
+        changed, or is temporarily unavailable.
       </p>
+      <div className="max-w-7xl mx-auto flex items-center justify-center mt-4">
+        <Link to="/">
+          <Card>
+            <CardContent className="flex items-center gap-4">
+              <Home className="text-black" />
+              <div>
+                <p className="font-semibold text-black">Home Page</p>
+                <p className="text-sm text-gray-600">
+                  There's no place like home…
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
+      </div>
     </div>
   );
 }

@@ -71,6 +71,9 @@ export default function AppointmentsAdmin() {
       const response = await axios.get(url, {
         responseType: "blob", // 👈 critical
         baseURL: "http://localhost:4000/api/v1",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
       });
 
       // ✅ Create blob and trigger download
@@ -91,11 +94,17 @@ export default function AppointmentsAdmin() {
     }
   };
 
-  const handleChange = (value) => {
-    toast.promise(
-      putHandler(`/appointment/updateStatus/${selectedRow._id}`, {
-        status: value,
-      }),
+  const handleChange = async (value) => {
+    await toast.promise(
+      putHandler(
+        `/appointment/updateStatus/${selectedRow._id}`,
+        {
+          status: value,
+        },
+        {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        }
+      ),
       {
         loading: "Updating status...",
         success: (response) => {
@@ -113,7 +122,9 @@ export default function AppointmentsAdmin() {
       if (date) {
         url = `/appointment/get?filterType=today`;
       }
-      const reponse = await getHandler(url);
+      const reponse = await getHandler(url, {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      });
 
       const formatData = reponse.data.map((item) => ({
         ...item,

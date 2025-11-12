@@ -42,6 +42,7 @@ export default function PostResultForm({ setIsOpen }) {
     toast.promise(
       postHandler("/surgeryResult/create", formData, {
         "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       }),
       {
         loading: "Submitting form...",

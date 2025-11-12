@@ -55,27 +55,33 @@ export default function AddReviewForm({ fetchData, setIsOpen }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    toast.promise(postHandler("/review/add", formData), {
-      loading: "Submitting form...",
-      success: (response) => {
-        setIsLoading(false);
-        setFormData({
-          name: "",
-          rating: 0,
-          reviewText: "",
-          source: "",
-          sourceUrlLogo: "",
-          sourceUrl: "",
-        });
-        fetchData();
-        setIsOpen(false);
-        return response.message;
-      },
-      error: (error) => {
-        setIsLoading(false);
-        return error.message || "Something went wrong!";
-      },
-    });
+    toast.promise(
+      postHandler("/review/add", formData, {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      }),
+      {
+        loading: "Submitting form...",
+        success: (response) => {
+          setIsLoading(false);
+          setFormData({
+            name: "",
+            rating: 0,
+            reviewText: "",
+            source: "",
+            sourceUrlLogo: "",
+            sourceUrl: "",
+          });
+          fetchData();
+          setIsOpen(false);
+          return response.message;
+        },
+        error: (error) => {
+          setIsLoading(false);
+          return error.message || "Something went wrong!";
+        },
+      }
+    );
   };
 
   return (

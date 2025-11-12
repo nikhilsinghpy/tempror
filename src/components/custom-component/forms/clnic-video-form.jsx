@@ -23,22 +23,27 @@ export default function ClinicVideoForm({ setIsOpen }) {
   const handleSubmit = (e) => {
     setIsLoading(true);
     e.preventDefault();
-    toast.promise(postHandler("/websiteSection/clinicVideo/create", formData), {
-      loading: "Submitting form...",
-      success: (response) => {
-        setFormData({
-          youTubeVideoUrl: "",
-          title: "",
-        });
-        setIsOpen(false);
-        setIsLoading(false);
-        return response.message;
-      },
-      error: (error) => {
-        setIsLoading(false);
-        return error.message || "Something went wrong!";
-      },
-    });
+    toast.promise(
+      postHandler("/websiteSection/clinicVideo/create", formData, {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      }),
+      {
+        loading: "Submitting form...",
+        success: (response) => {
+          setFormData({
+            youTubeVideoUrl: "",
+            title: "",
+          });
+          setIsOpen(false);
+          setIsLoading(false);
+          return response.message;
+        },
+        error: (error) => {
+          setIsLoading(false);
+          return error.message || "Something went wrong!";
+        },
+      }
+    );
   };
 
   return (

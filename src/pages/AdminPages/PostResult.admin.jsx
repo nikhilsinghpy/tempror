@@ -34,14 +34,19 @@ export default function PostResultAdmin() {
   const handleDelete = (id) => {
     const confirmed = confirm("Are you sure you want to delete this result?");
     if (!confirmed) return;
-    toast.promise(deleteHandler(`/surgeryResult/delete/${id}`), {
-      loading: "Deleting...",
-      success: (response) => {
-        fetchData();
-        return response.message;
-      },
-      error: (error) => error.message || "Something went wrong!",
-    });
+    toast.promise(
+      deleteHandler(`/surgeryResult/delete/${id}`, {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      }),
+      {
+        loading: "Deleting...",
+        success: (response) => {
+          fetchData();
+          return response.message;
+        },
+        error: (error) => error.message || "Something went wrong!",
+      }
+    );
   };
   useEffect(() => {
     fetchData();

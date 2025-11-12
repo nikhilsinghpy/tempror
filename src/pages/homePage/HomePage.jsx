@@ -237,12 +237,8 @@ export default function HomePage() {
         </p>
         <CrouselCs autoPlayEnabled={true}>
           {websitedata?.clinicVideo?.map((item, index) => (
-            <CarouselItem className="basis-full sm:basis-1/2 py-4">
-              <YouTubeCard
-                videoUrl={item.youTubeVideoUrl}
-                title={item.title}
-                key={index}
-              />
+            <CarouselItem className="basis-full sm:basis-1/2 py-4" key={index}>
+              <YouTubeCard videoUrl={item.youTubeVideoUrl} title={item.title} />
             </CarouselItem>
           ))}
         </CrouselCs>

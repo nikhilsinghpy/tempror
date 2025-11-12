@@ -38,7 +38,9 @@ export default function ClientPRPPageAdmin() {
   const fetchData = async (query) => {
     try {
       let url = `/prp/get?${query}`;
-      const response = await getHandler(url);
+      const response = await getHandler(url, {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      });
       const formatdata = response.data.data.map((item) => ({
         ...item,
         patientFirstName: item.patientInfo.name.first,
