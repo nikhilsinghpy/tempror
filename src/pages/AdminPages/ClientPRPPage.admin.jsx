@@ -9,28 +9,62 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { getHandler } from "@/services/api.services";
+import { searchApi } from "@/services/searchApi.services";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { FileText, SlidersHorizontal } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import axios from "axios";
+import { downloadFile } from "@/utils/downloadFile";
 const columns = [
-  { header: "Session ID", accessor: "sessionId" },
-  { header: "Status", accessor: "status" },
-  { header: "Date", accessor: "date" },
-  { header: "Time", accessor: "time" },
-  { header: "Treatment Type", accessor: "treatmentType" },
   { header: "Patient Name", accessor: "patientFirstName" },
   { header: "Patient Last Name", accessor: "patientLastName" },
   { header: "Patient Email", accessor: "patientEmail" },
   { header: "Patient Phone", accessor: "patientPhone" },
+  { header: "Treatment Type", accessor: "treatmentType" },
+  { header: "Session ID", accessor: "sessionId" },
+  { header: "Status", accessor: "status" },
   { header: "User ID", accessor: "patientUserId" },
+  { header: "Date", accessor: "date" },
+  { header: "Time", accessor: "time" },
   { header: "Branch Title", accessor: "branchTitle" },
   { header: "Branch Phone", accessor: "branchPhone" },
   { header: "Scheduled At", accessor: "createdAt" },
 ];
 
+function formatData(data) {
+  return data.map((item) => ({
+    ...item,
+    patientFirstName: item.patientInfo.name.first,
+    patientLastName: item.patientInfo.name.last,
+    patientEmail: item.patientInfo.email,
+    patientPhone: item.patientInfo.phone,
+    patientUserId: item.patientInfo.userId,
+    branchTitle: item.branch.title,
+    branchPhone: item.branch.contact.phone,
+    createdAt: new Date(item.createdAt).toLocaleString(),
+    date: new Date(item.date).toLocaleDateString(),
+  }));
+}
 export default function ClientPRPPageAdmin() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedPrp, setselectedPrp] = useState(null);
+  const [customCsv, setCustomCsv] = useState({
+    filterType: "",
+    startDate: "",
+    endDate: "",
+  });
   const [PrpData, setPrpData] = useState({
     data: [],
     pagination: {},
@@ -41,20 +75,9 @@ export default function ClientPRPPageAdmin() {
       const response = await getHandler(url, {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       });
-      const formatdata = response.data.data.map((item) => ({
-        ...item,
-        patientFirstName: item.patientInfo.name.first,
-        patientLastName: item.patientInfo.name.last,
-        patientEmail: item.patientInfo.email,
-        patientPhone: item.patientInfo.phone,
-        patientUserId: item.patientInfo.userId,
-        branchTitle: item.branch.title,
-        branchPhone: item.branch.contact.phone,
-        createdAt: new Date(item.createdAt).toLocaleString(),
-        date: new Date(item.date).toLocaleDateString(),
-      }));
+      const formatedData = formatData(response.data.data);
       setPrpData({
-        data: formatdata,
+        data: formatedData,
         pagination: response.data.pagination,
       });
     } catch (error) {
@@ -65,6 +88,55 @@ export default function ClientPRPPageAdmin() {
 
   const handleNext = (page) => fetchData(`page=${page}`);
   const handlePrevious = (page) => fetchData(`page=${page}`);
+  const handleSearch = async (search) => {
+    if (!search.trim()) {
+      return;
+    }
+    try {
+      const response = await searchApi(search, "/prp/get");
+      const formatdata = formatData(response.data.data);
+      setPrpData({
+        data: formatdata,
+        pagination: response.data.pagination,
+      });
+    } catch (error) {
+      toast.error(error.message || "Something went wrong!");
+    }
+  };
+  const downLoadCSV = async ({ filterType, startDate, endDate }) => {
+    try {
+      let url = `/prp/export?filterType=${filterType}`;
+      if (startDate && endDate) {
+        url += `&startDate=${startDate}&endDate=${endDate}`;
+      }
+      const response = await axios.get(url, {
+        responseType: "blob",
+        baseURL: "http://localhost:4000/api/v1",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      // ✅ Create blob and trigger download
+      const fileType =
+        response.headers["content-type"] ||
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+      downloadFile(response.data, "prp_schedules.xlsx", fileType);
+      setCustomCsv({
+        filterType: "",
+        startDate: "",
+        endDate: "",
+      });
+      toast.success("CSV downloaded successfully!");
+    } catch (error) {
+      console.error(error);
+      setCustomCsv({
+        filterType: "",
+        startDate: "",
+        endDate: "",
+      });
+      toast.error("Something went wrong!");
+    }
+  };
   useEffect(() => {
     fetchData();
   }, []);
@@ -81,7 +153,177 @@ export default function ClientPRPPageAdmin() {
           rowsPerPage={1}
           paginationData={PrpData.pagination}
           handleNext={handleNext}
-          handlePrev={handlePrevious}
+          handlePrevious={handlePrevious}
+          onSearch={handleSearch}
+          buttonChildren={
+            <div className="flex items-center gap-2">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline">
+                    <SlidersHorizontal />
+                    Data Filter
+                  </Button>
+                </DropdownMenuTrigger>
+
+                <DropdownMenuContent>
+                  <DropdownMenuLabel>Select Duration</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+
+                  <DropdownMenuItem
+                    onClick={() => fetchData("filterType=today")}
+                  >
+                    Today
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => fetchData("filterType=week")}
+                  >
+                    This Week
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => fetchData("filterType=month")}
+                  >
+                    This Month
+                  </DropdownMenuItem>
+
+                  {/* Custom Submenu */}
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>Custom</DropdownMenuSubTrigger>
+                    <DropdownMenuSubContent className="p-3 w-64">
+                      <div className="flex flex-col gap-2">
+                        <div>
+                          <label className="text-sm font-medium">
+                            Start Date
+                          </label>
+                          <Input
+                            type="date"
+                            className="mt-1"
+                            onChange={(e) =>
+                              setCustomCsv({
+                                ...customCsv,
+                                startDate: e.target.value,
+                              })
+                            }
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-sm font-medium">
+                            End Date
+                          </label>
+                          <Input
+                            type="date"
+                            className="mt-1"
+                            onChange={(e) =>
+                              setCustomCsv({
+                                ...customCsv,
+                                endDate: e.target.value,
+                              })
+                            }
+                          />
+                        </div>
+
+                        <Button
+                          onClick={() =>
+                            fetchData(
+                              `filterType=custom&startDate=${customCsv.startDate}&endDate=${customCsv.endDate}`
+                            )
+                          }
+                          className="mt-2 w-full"
+                        >
+                          Apply Filter
+                        </Button>
+                      </div>
+                    </DropdownMenuSubContent>
+                  </DropdownMenuSub>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="default"
+                    className="bg-green-700 text-white hover:bg-green-600"
+                  >
+                    <FileText />
+                    Export
+                  </Button>
+                </DropdownMenuTrigger>
+
+                <DropdownMenuContent>
+                  <DropdownMenuLabel>Select Duration</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+
+                  <DropdownMenuItem
+                    onClick={() => downLoadCSV({ filterType: "today" })}
+                  >
+                    Today
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => downLoadCSV({ filterType: "week" })}
+                  >
+                    This Week
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => downLoadCSV({ filterType: "month" })}
+                  >
+                    This Month
+                  </DropdownMenuItem>
+
+                  {/* Custom Submenu */}
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>Custom</DropdownMenuSubTrigger>
+                    <DropdownMenuSubContent className="p-3 w-64">
+                      <div className="flex flex-col gap-2">
+                        <div>
+                          <label className="text-sm font-medium">
+                            Start Date
+                          </label>
+                          <Input
+                            type="date"
+                            className="mt-1"
+                            onChange={(e) =>
+                              setCustomCsv({
+                                ...customCsv,
+                                startDate: e.target.value,
+                              })
+                            }
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-sm font-medium">
+                            End Date
+                          </label>
+                          <Input
+                            type="date"
+                            className="mt-1"
+                            onChange={(e) =>
+                              setCustomCsv({
+                                ...customCsv,
+                                endDate: e.target.value,
+                              })
+                            }
+                          />
+                        </div>
+
+                        <Button
+                          onClick={() =>
+                            downLoadCSV({
+                              filterType: "custom",
+                              startDate: customCsv.startDate,
+                              endDate: customCsv.endDate,
+                            })
+                          }
+                          className="mt-2 w-full"
+                        >
+                          Apply Filter
+                        </Button>
+                      </div>
+                    </DropdownMenuSubContent>
+                  </DropdownMenuSub>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          }
         />
       </div>
       <Sheet open={isOpen} onOpenChange={setIsOpen}>

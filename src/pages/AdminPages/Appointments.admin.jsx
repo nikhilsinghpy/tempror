@@ -24,6 +24,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { getHandler, putHandler } from "@/services/api.services";
+import { searchApi } from "@/services/searchApi.services";
+import { downloadFile } from "@/utils/downloadFile";
 import axios from "axios";
 import { FileText } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -44,11 +46,23 @@ const columns = [
   { header: "Time", accessor: "time" },
   { header: "Status", accessor: "status" },
 ];
-
+function formatData(data) {
+  return data?.map((item) => ({
+    ...item,
+    firstName: item.name.first,
+    lastName: item.name.last,
+    isPhoneVerified: item.isPhoneVerified ? "Yes" : "No",
+    date: new Date(item.date).toLocaleDateString(),
+    time: item.time,
+  }));
+}
 export default function AppointmentsAdmin() {
   const [searchParams] = useSearchParams();
   const date = searchParams.get("date");
-  const [appointmentdata, setAppointmentData] = useState([]);
+  const [appointmentdata, setAppointmentData] = useState({
+    data: [],
+    pagination: {},
+  });
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [customCsv, setCustomCsv] = useState({
@@ -67,7 +81,6 @@ export default function AppointmentsAdmin() {
       if (startDate && endDate) {
         url += `&startDate=${startDate}&endDate=${endDate}`;
       }
-
       const response = await axios.get(url, {
         responseType: "blob", // 👈 critical
         baseURL: "http://localhost:4000/api/v1",
@@ -75,18 +88,10 @@ export default function AppointmentsAdmin() {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-
-      // ✅ Create blob and trigger download
-      const blob = new Blob([response.data], { type: response.data.type });
-      const downloadUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = downloadUrl;
-      link.setAttribute("download", "query.xlsx");
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      window.URL.revokeObjectURL(downloadUrl);
-
+      const fileType =
+        response.headers["content-type"] ||
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+      downloadFile(response.data, "patient.xlsx", fileType);
       toast.success("CSV downloaded successfully!");
     } catch (error) {
       console.error(error);
@@ -116,30 +121,50 @@ export default function AppointmentsAdmin() {
       }
     );
   };
-  const fetchData = async () => {
+
+  const handleSearch = async (text) => {
+    if (!text.trim()) {
+      return;
+    }
+    try {
+      const response = await searchApi(text, "/appointment/get");
+      const formattedData = formatData(response?.data?.data || []);
+      setAppointmentData({
+        data: formattedData,
+        pagination: response?.data?.pagination || {},
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message || "Something went wrong!");
+    }
+  };
+
+  const fetchData = async (query) => {
     try {
       let url = "/appointment/get";
-      if (date) {
+      if (date && query) {
+        url = `/appointment/get?${query}&filterType=today`;
+      } else if (date) {
         url = `/appointment/get?filterType=today`;
+      } else if (query) {
+        url = `/appointment/get?${query}`;
       }
-      const reponse = await getHandler(url, {
+
+      const response = await getHandler(url, {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       });
-
-      const formatData = reponse.data.map((item) => ({
-        ...item,
-        firstName: item.name.first,
-        lastName: item.name.last,
-        isPhoneVerified: item.isPhoneVerified ? "Yes" : "No",
-        date: new Date(item.date).toLocaleDateString(),
-        time: item.time,
-      }));
-      setAppointmentData(formatData);
+      const formattedData = formatData(response.data.data);
+      setAppointmentData({
+        data: formattedData,
+        pagination: response.data.pagination,
+      });
     } catch (error) {
       toast.error(error.message || "Something went wrong!");
     }
   };
 
+  const handleNext = (page) => fetchData(`page=${page}`);
+  const handlePrevious = (page) => fetchData(`page=${page}`);
   useEffect(() => {
     fetchData();
   }, [date]);
@@ -151,10 +176,14 @@ export default function AppointmentsAdmin() {
       </h1>
       <div className="md:max-w-[77vw]">
         <TableCs
-          data={appointmentdata}
+          data={appointmentdata.data}
+          paginationData={appointmentdata.pagination}
           columns={columns}
           rowsPerPage={10}
           onClick={handleClick}
+          onSearch={handleSearch}
+          handleNext={handleNext}
+          handlePrevious={handlePrevious}
           buttonChildren={
             <>
               <DropdownMenu>

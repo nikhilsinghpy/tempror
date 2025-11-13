@@ -21,9 +21,14 @@ const createApi = ({ customHeaders = {}, customConfig = {} } = {}) => {
 /**
  * Generic GET request
  */
-export const getHandler = async (url, headers = {}, params = {}) => {
+export const getHandler = async (
+  url,
+  headers = {},
+  params = {},
+  config = {}
+) => {
   try {
-    const api = createApi({ customHeaders: headers });
+    const api = createApi({ customHeaders: headers, customConfig: config });
     const response = await api.get(url, { params });
     return response.data;
   } catch (error) {

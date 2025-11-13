@@ -30,9 +30,10 @@ export default function TableCs({
   buttonChildren,
   paginationData = {},
   handleNext,
-  handlePrev,
+  handlePrevious,
+  onSearch,
+  handleKeyDown,
 }) {
-  const [search, setSearch] = useState("");
   const [selectedFilters, setSelectedFilters] = useState({});
   const [refactoredData, setRefactoredData] = useState([]);
   const [pagination, setPagination] = useState({
@@ -78,10 +79,10 @@ export default function TableCs({
       {/* Search & Filters */}
       <div className="flex justify-between items-center">
         <Input
-          placeholder="Search..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search Using Phone or name ..."
+          onChange={(e) => onSearch(e.target.value)}
           className="w-1/3"
+          onKeyDown={handleKeyDown}
         />
         {buttonChildren}
         {filters.length > 0 && (
@@ -177,7 +178,7 @@ export default function TableCs({
           <Button
             variant="outline"
             size="sm"
-            onClick={() => handlePrev(pagination.page - 1)}
+            onClick={() => handlePrevious(pagination.page - 1)}
             disabled={pagination.page === 1}
           >
             <ChevronLeft className="w-4 h-4 mr-1" />

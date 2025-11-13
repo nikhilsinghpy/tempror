@@ -29,6 +29,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
+import { searchApi } from "@/services/searchApi.services";
+import { downloadFile } from "@/utils/downloadFile";
 const contactColumns = [
   { header: "Name", accessor: "name" },
   { header: "Email", accessor: "email" },
@@ -40,10 +42,21 @@ const contactColumns = [
   { header: "Status", accessor: "status" },
 ];
 
+function formatData(data) {
+  return data.map((item) => ({
+    ...item,
+    branch: item.branch.title,
+    createdAt: new Date(item.createdAt).toLocaleString(),
+  }));
+}
+
 export default function QueryListAdmin() {
   const [searchParams] = useSearchParams();
   const date = searchParams.get("date");
-  const [contactData, setContactData] = useState([]);
+  const [contactData, setContactData] = useState({
+    data: [],
+    pagination: {},
+  });
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [customCsv, setCustomCsv] = useState({
@@ -76,21 +89,43 @@ export default function QueryListAdmin() {
       }
     );
   };
-  const fetchData = async () => {
+
+  const handleSearch = async (text) => {
+    if (!text.trim()) {
+      return;
+    }
+    try {
+      const response = await searchApi(text, "/appointment/get");
+      const formattedData = formatData(response?.data?.data || []);
+      setContactData({
+        data: formattedData,
+        pagination: response?.data?.pagination || {},
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message || "Something went wrong!");
+    }
+  };
+  const fetchData = async (query) => {
     let url = "/contact/get";
-    if (date) {
+    if (date && query) {
+      url = `/contact/get?${query}&filterType=today`;
+    } else if (date) {
       url = `/contact/get?filterType=today`;
+    } else if (query) {
+      url = `/contact/get?${query}`;
     }
     try {
       const response = await getHandler(url, {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       });
-      const formatdata = response.data.map((item) => ({
-        ...item,
-        branch: item.branch.title,
-        createdAt: new Date(item.createdAt).toLocaleString(),
-      }));
-      setContactData(formatdata);
+
+      const formattedData = formatData(response.data.data);
+      setContactData({
+        data: formattedData,
+        pagination: response?.data?.pagination || {},
+      });
+      console.log(formattedData);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -111,16 +146,10 @@ export default function QueryListAdmin() {
         },
       });
 
-      // ✅ Create blob and trigger download
-      const blob = new Blob([response.data], { type: response.data.type });
-      const downloadUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = downloadUrl;
-      link.setAttribute("download", "query.xlsx");
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      window.URL.revokeObjectURL(downloadUrl);
+      const fileType =
+        response.headers["content-type"] ||
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+      downloadFile(response.data, "patient.xlsx", fileType);
 
       toast.success("CSV downloaded successfully!");
     } catch (error) {
@@ -129,6 +158,8 @@ export default function QueryListAdmin() {
     }
   };
 
+  const handleNext = (page) => fetchData(`page=${page}`);
+  const handlePrevious = (page) => fetchData(`page=${page}`);
   useEffect(() => {
     fetchData();
   }, [date]);
@@ -139,10 +170,14 @@ export default function QueryListAdmin() {
         {date ? `Today's Query` : `Query List`}
       </h1>
       <TableCs
-        data={contactData}
+        data={contactData.data}
         columns={contactColumns}
         rowsPerPage={10}
         onClick={handleClick}
+        handleSearch={handleSearch}
+        handleNext={handleNext}
+        handlePrevious={handlePrevious}
+        paginationData={contactData.pagination}
         buttonChildren={
           <>
             <DropdownMenu>
