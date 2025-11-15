@@ -2,7 +2,6 @@ import NotFound from "@/components/custom-component/NotFound/NotFound";
 import AdminLayout from "@/components/layout/AdminLayout";
 import AuthLayout from "@/components/layout/AuthLayout";
 import HomeLayout from "@/components/layout/HomeLayout";
-import HRManagementDashboardLayout from "@/components/layout/HRManagementDashboardLayout";
 import AppointmentsAdmin from "@/pages/AdminPages/Appointments.admin";
 import BranchPageAdmin from "@/pages/AdminPages/BranchPage.admin";
 import ClientListPageAdmin from "@/pages/AdminPages/ClientListPage.admin";
@@ -80,11 +79,6 @@ export const router = createBrowserRouter([
       },
       { path: "*", element: <NotFound /> },
     ],
-  },
-  {
-    path: "/hr-management",
-    element: <HRManagementDashboardLayout />,
-    children: [{ path: "*", element: <NotFound /> }],
   },
   {
     path: "/admin",

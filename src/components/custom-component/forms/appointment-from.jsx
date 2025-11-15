@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { getHandler, postHandler } from "@/services/api.services";
 
-export default function AppointmentForm() {
+export default function AppointmentForm({ url }) {
   const [loading, setLoading] = useState(false);
   const [branches, setBranches] = useState([]);
   const [formData, setFormData] = useState({
@@ -65,8 +65,9 @@ export default function AppointmentForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
+    let endPoint = url ? url : "/appointment/create";
     toast.promise(
-      postHandler("/appointment/create", formData, {
+      postHandler(endPoint, formData, {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       }),
       {

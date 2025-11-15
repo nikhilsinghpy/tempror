@@ -74,13 +74,27 @@ export default function TableCs({
       setRefactoredData(data.slice(startIndex, startIndex + pagination.limit));
     }
   }, [data]);
+
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    if (onSearch) {
+      onSearch(value);
+      return;
+    }
+    const filtered = data.filter((item) => {
+      return Object.values(item).some((val) =>
+        String(val).toLowerCase().includes(value)
+      );
+    });
+    setRefactoredData(filtered)
+  };
   return (
     <div className="w-full space-y-4">
       {/* Search & Filters */}
       <div className="flex justify-between items-center">
         <Input
           placeholder="Search Using Phone or name ..."
-          onChange={(e) => onSearch(e.target.value)}
+          onChange={handleSearch}
           className="w-1/3"
           onKeyDown={handleKeyDown}
         />

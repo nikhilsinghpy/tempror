@@ -8,6 +8,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -31,6 +38,8 @@ import { FileText } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
+import AppointmentForm from "@/components/custom-component/forms/appointment-from";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const columns = [
   { header: "First Name", accessor: "firstName" },
@@ -59,6 +68,7 @@ function formatData(data) {
 export default function AppointmentsAdmin() {
   const [searchParams] = useSearchParams();
   const date = searchParams.get("date");
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [appointmentdata, setAppointmentData] = useState({
     data: [],
     pagination: {},
@@ -171,9 +181,14 @@ export default function AppointmentsAdmin() {
 
   return (
     <div className="p-4 w-full space-y-4">
-      <h1 className="text-2xl font-bold ">
-        {date ? `Today's Appointment` : `Appointments`}
-      </h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold ">
+          {date ? `Today's Appointment` : `Appointments`}
+        </h1>
+        <Button onClick={() => setIsSheetOpen(true)}>
+          Schedule Appointment
+        </Button>
+      </div>
       <div className="md:max-w-[77vw]">
         <TableCs
           data={appointmentdata.data}
@@ -331,6 +346,20 @@ export default function AppointmentsAdmin() {
           </DialogHeader>
         </DialogContent>
       </Dialog>
+
+      <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+        <SheetContent>
+          <SheetHeader>
+            <SheetTitle>Schedule Appointment</SheetTitle>
+            <SheetDescription>
+              Schedule an appointment for a user by filling out the form below.
+            </SheetDescription>
+          </SheetHeader>
+          <ScrollArea className="h-[calc(100vh-100px)]">
+            <AppointmentForm url="/appointment/schedule" />
+          </ScrollArea>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }

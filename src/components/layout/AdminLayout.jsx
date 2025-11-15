@@ -18,6 +18,10 @@ import { Toaster } from "sonner";
 
 const navItemData = [
   {
+    label: "Home & Analytics",
+    navitems: [{ label: "Home", link: "/admin" }],
+  },
+  {
     label: "Manage Client",
     navitems: [
       { label: "Clients List ", link: "/admin/clients" },
