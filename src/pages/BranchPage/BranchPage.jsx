@@ -33,12 +33,12 @@ export default function BranchPage() {
         title={branch?.title}
         intro={branch?.description}
         CTA={branch?.buttons}
-        badge={{ icon: MapPin, text: "Jaipur" }}
+        badge={{ icon: MapPin, text: branch?.badge }}
         features={branch?.features}
       />
       <div className="max-w-7xl mx-auto">
         <p className="text-md md:text-2xl text-center font-semibold  mb-10 px-4">
-          Top Doctors From Belleza Jaipur
+          Top Doctors From Our {branch?.badge} Branch
         </p>
         <CrouselCs autoPlayEnabled={true}>
           {branch?.doctors?.map((doctor, index) => (
@@ -99,7 +99,7 @@ export default function BranchPage() {
         </p>
         <CrouselCs autoPlayEnabled={true}>
           {branch?.clinicVideo?.map((_, index) => (
-            <CarouselItem key={index} className="lg:basis-1/3 py-4">
+            <CarouselItem key={index} className="lg:basis-1/2 py-4">
               <YouTubeCard videoUrl={_.youTubeVideoUrl} title={_.title} />
             </CarouselItem>
           ))}

@@ -13,7 +13,19 @@ export default function ServiceCard({ serviceData }) {
       </CardHeader>
       <CardContent>
         <p className="text-xl font-semibold">
-          {serviceData.value} {serviceData.title}
+           {serviceData?.title} {
+            serviceData?.value?.startsWith("https") ? (
+              <a
+                href={serviceData.value}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Belleza
+              </a>
+            ) : (
+              serviceData.value
+            )
+           }
         </p>
         <p className="mt-4 text-sm text-muted-foreground">
           {serviceData.description}

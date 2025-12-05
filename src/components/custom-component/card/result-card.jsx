@@ -22,7 +22,7 @@ export default function ResultCard({ data }) {
           className="h-full w-full object-cover hover:scale-105 transition-transform duration-500"
         />
         <Badge className="absolute top-3 left-3 bg-primary-foreground text-white text-xs px-3 py-1 rounded-full">
-          {branch?.title}
+          {branch?.badge}
         </Badge>
       </div>
       <CardContent className="space-y-2 px-3 pb-3">
