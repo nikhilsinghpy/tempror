@@ -1,5 +1,4 @@
 import DynamicIcon from "@/components/ui/dynamic-icon";
-import { ArrowRight } from "lucide-react";
 import React from "react";
 
 export default function HeroSectionNonAnimate({
@@ -63,6 +62,7 @@ export default function HeroSectionNonAnimate({
                 src={heroImage}
                 alt="Lifestyle product banner"
                 className="h-full w-full object-cover"
+                loading="lazy"
               />
             </div>
           </div>

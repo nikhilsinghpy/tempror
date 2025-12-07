@@ -106,6 +106,7 @@ export default function BeardTransplantPage() {
           src={processHero}
           alt="beard-process"
           className="w-full sm:w-[60%] md:w-[40%]"
+          loading="lazy"
         />
       </div>
 
@@ -157,6 +158,7 @@ export default function BeardTransplantPage() {
             src={processHero}
             alt="treatment vector"
             className="w-full rounded-lg shadow-lg"
+            loading="lazy"
           />
           <div className="absolute -top-4 -left-4 w-24 h-24 bg-gradient-to-r from-primary-foreground/30 to-pink-200 rounded-full blur-3xl"></div>
           <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-gradient-to-r from-yellow-200 to-primary-foreground/40 rounded-full blur-2xl"></div>

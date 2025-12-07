@@ -173,6 +173,7 @@ export default function AboutUs() {
           src={aboutus1}
           alt="vector-aboutus"
           className="w-full sm:w-[60%] md:w-[40%]"
+          loading="lazy"
         />
       </div>
 
@@ -195,6 +196,7 @@ export default function AboutUs() {
               src={aboutus1}
               alt="vector-aboutus"
               className="w-full h-auto object-contain rounded-lg shadow-lg"
+              loading="lazy"
             />
             {/* Decorative gradient blobs */}
             <div className="absolute -top-6 -left-6 w-24 h-24 bg-gradient-to-r from-primary-foreground/30 to-pink-200 rounded-full blur-3xl"></div>
@@ -269,6 +271,7 @@ export default function AboutUs() {
               src={aboutus1}
               alt="vector-aboutus"
               className="w-full h-auto object-contain rounded-lg shadow-lg"
+              loading="lazy"
             />
             {/* Optional decorative blobs */}
             <div className="absolute -top-6 -left-6 w-24 h-24 bg-gradient-to-r from-primary-foreground/30 to-pink-200 rounded-full blur-3xl"></div>

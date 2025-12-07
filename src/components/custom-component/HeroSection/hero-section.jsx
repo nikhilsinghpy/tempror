@@ -110,6 +110,7 @@ export default function HeroSection({ heroData = [] }) {
                     src={current.image.secure_url}
                     alt={current?.title || "Hero banner"}
                     className="h-full w-full object-cover"
+                    loading="lazy"
                   />
                 ) : (
                   <div className="flex items-center justify-center h-full text-slate-500 text-sm">

@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -16,15 +15,15 @@ import { toast } from "sonner";
 
 const mapping = {
   google:
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/512px-Google_Favicon_2025.svg.png",
+    "https://res.cloudinary.com/dlfpme2sn/image/upload/v1765017770/Google_Favicon_2025.svg_bnxtqm.png",
   facebook:
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/250px-Facebook_f_logo_%282019%29.svg.png",
+    "https://res.cloudinary.com/dlfpme2sn/image/upload/v1765017791/Facebook_f_logo__2019.svg_s0svyw.png",
   instagram:
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png",
+    "https://res.cloudinary.com/dlfpme2sn/image/upload/v1765017898/Instagram_logo_2022.svg_dct2mv.webp",
   youtube:
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/2560px-YouTube_full-color_icon_%282017%29.svg.png",
+    "https://res.cloudinary.com/dlfpme2sn/image/upload/v1765017897/YouTube_full-color_icon__2017.svg_ss2hc1.webp",
   twitter:
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/X_logo_2023.svg/250px-X_logo_2023.svg.png",
+    "https://res.cloudinary.com/dlfpme2sn/image/upload/v1765017896/X_logo_2023.svg_vgickn.webp",
 };
 export default function AddReviewForm({ fetchData, setIsOpen }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -152,14 +151,13 @@ export default function AddReviewForm({ fetchData, setIsOpen }) {
           placeholder="Paste the source URL (optional)"
         />
       </div>
-
-      {/* Source Logo (Preview) */}
       {formData.sourceUrlLogo && (
         <div className="space-y-2">
           <Label>Source Logo</Label>
           <img
             src={formData.sourceUrlLogo}
             alt={`${formData.source} logo`}
+            loading="lazy"
             className="w-12 h-12 rounded-md border"
           />
         </div>

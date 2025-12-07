@@ -19,6 +19,7 @@ export default function ResultCard({ data }) {
         <img
           src={image?.secure_url}
           alt={title}
+          loading="lazy"
           className="h-full w-full object-cover hover:scale-105 transition-transform duration-500"
         />
         <Badge className="absolute top-3 left-3 bg-primary-foreground text-white text-xs px-3 py-1 rounded-full">

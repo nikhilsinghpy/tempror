@@ -69,6 +69,7 @@ export default function BranchPage() {
               src={branch?.whyChooseUs?.image?.url?.secure_url}
               alt="Doctors"
               className="rounded-xl shadow-lg object-cover w-full "
+              loading="lazy"
             />
           </div>
           <div>

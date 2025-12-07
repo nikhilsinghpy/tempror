@@ -22,10 +22,11 @@ export default function YouTubeCard({ videoUrl, title = "Video Title" }) {
             <img
               src={thumbnail}
               alt={title}
+              loading="lazy"
               className="w-full aspect-video object-cover rounded-md transition-transform duration-500 group-hover:scale-110"
             />
             <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              <img src={youtubeicon} alt="YouTube Icon" className="w-16 h-12" />
+              <img  src={youtubeicon} alt="YouTube Icon" className="w-16 h-12" loading="lazy" />
             </div>
           </div>
           <h2 className="text-md mt-4 text-center font-semibold text-gray-800 group-hover:text-red-600 transition-colors duration-300">

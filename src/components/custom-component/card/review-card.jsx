@@ -74,6 +74,7 @@ export default function ReviewCard({ review }) {
               src={review.sourceUrlLogo}
               alt={review.source}
               className="w-5 h-5"
+              loading="lazy"
             />
             <span className="text-xs text-gray-500 capitalize">{review.source}</span>
           </a>

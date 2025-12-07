@@ -7,7 +7,6 @@ import {
   Phone,
   Mail,
 } from "lucide-react";
-import logo from "../../../assets/images/logo.png";
 const menuData = [
   {
     label: "Branch",
@@ -67,9 +66,8 @@ const menuData = [
         href: "/Contact",
       },
       {
-        label: "Results",
+        title: "Results",
         href: "/Results",
-        simpleLink: true,
       },
     ],
   },
@@ -79,9 +77,8 @@ export default function Footer() {
     <footer className="bg-gradient-to-b from-white to-gray-50 border-t border-gray-200 mt-8">
       <div className="max-w-7xl mx-auto py-10 px-4 md:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-          {/* Logo & About */}
           <div>
-            <img src={logo} alt="Belleza Rohini Logo" className="h-12 mb-4" />
+            <img src={"https://res.cloudinary.com/dlfpme2sn/image/upload/v1765022631/logo_ojc0cv.png"} alt="Belleza Rohini Logo" className="h-12 mb-4" loading="lazy" />
             <p className="text-gray-600 text-sm leading-relaxed">
               <strong>Belleza Rohini</strong> — Delhi’s top Hair Transplant
               Clinic, specializing in <strong>FUE, DHI</strong> &amp;{" "}
@@ -123,10 +120,7 @@ export default function Footer() {
             </div>
           ))}
         </div>
-
-        {/* Divider */}
         <div className="border-t border-gray-300 my-8"></div>
-
         {/* Social + Copyright */}
         <div className="flex flex-col md:flex-row items-center justify-between text-sm text-gray-600 gap-4">
           <p>© 2025 Belleza Rohini. All Rights Reserved.</p>
@@ -158,62 +152,3 @@ export default function Footer() {
     </footer>
   );
 }
-
-// {/* Contact Info */}
-//           <div>
-//             <h3 className="text-white font-semibold mb-4">Reach Us</h3>
-//             <ul className="text-gray-400 space-y-2 text-sm">
-//               <li>
-//                 Address: C, 9/119, Halar Rd, Pocket 9, Sector 8C, Rohini, New
-//                 Delhi, 110085
-//               </li>
-//               <li>
-//                 Phone:{" "}
-//                 <a href="tel:+917982332206" className="hover:text-white">
-//                   +91 79823 32206
-//                 </a>
-//               </li>
-//               <li>
-//                 Email:{" "}
-//                 <a
-//                   href="mailto:info@bellezarohini.com"
-//                   className="hover:text-white"
-//                 >
-//                   info@bellezarohini.com
-//                 </a>
-//               </li>
-//             </ul>
-//           </div>
-//           {/* Social & Newsletter */}
-//           <div>
-//             <h3 className="text-white font-semibold mb-4">Connect with Us</h3>
-//             <div className="flex space-x-4 mb-6">
-//               <a href="#" className="text-gray-400 hover:text-white">
-//                 <svg
-//                   className="h-6 w-6"
-//                   fill="currentColor"
-//                   viewBox="0 0 24 24"
-//                 >
-//                   …FB icon svg…
-//                 </svg>
-//               </a>
-//               <a href="#" className="text-gray-400 hover:text-white">
-//                 <svg
-//                   className="h-6 w-6"
-//                   fill="currentColor"
-//                   viewBox="0 0 24 24"
-//                 >
-//                   …Instagram icon svg…
-//                 </svg>
-//               </a>
-//               <a href="#" className="text-gray-400 hover:text-white">
-//                 <svg
-//                   className="h-6 w-6"
-//                   fill="currentColor"
-//                   viewBox="0 0 24 24"
-//                 >
-//                   …YouTube icon svg…
-//                 </svg>
-//               </a>
-//             </div>
-//           </div>

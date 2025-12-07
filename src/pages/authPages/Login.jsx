@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import logo from "../../assets/images/logo.png";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -81,7 +80,7 @@ export default function Login() {
 
   return (
     <div className="flex flex-col min-h-screen items-center justify-center">
-      <img src={logo} alt="logo" className="w-32 h-full mb-4" />
+      <img src={"https://res.cloudinary.com/dlfpme2sn/image/upload/v1765022631/logo_ojc0cv.png"} alt="logo" className="w-32 h-full mb-4" loading="lazy"/>
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>

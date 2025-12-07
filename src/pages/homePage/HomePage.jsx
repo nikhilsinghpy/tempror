@@ -179,6 +179,7 @@ export default function HomePage() {
               src="https://media.istockphoto.com/id/1496720417/photo/high-five-for-being-such-a-brave-little-boy.jpg?s=612x612&w=0&k=20&c=jrhbbPCEEN5Z3nSmTdu6fBC84v0kFuuJ8L4l2reghn4="
               alt="Doctors"
               className="rounded-xl shadow-lg object-cover w-full "
+              loading="lazy"
             />
           </div>
           <div>

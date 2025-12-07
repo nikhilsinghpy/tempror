@@ -10,7 +10,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/images/logo.png";
 import { toast } from "sonner";
 import { getValidPhone } from "@/utils/validatePhone.utils";
 import { postHandler } from "@/services/api.services";
@@ -52,7 +51,7 @@ export default function ForgotPassword() {
 
   return (
     <div className="flex flex-col min-h-screen items-center justify-center">
-      <img src={logo} alt="logo" className="w-32 h-full mb-4" />
+      <img src={"https://res.cloudinary.com/dlfpme2sn/image/upload/v1765022631/logo_ojc0cv.png"} alt="logo" className="w-32 h-full mb-4" loading="lazy" />
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>Forgot Password</CardTitle>

@@ -12,7 +12,6 @@ import {
   Droplets,
   Settings,
 } from "lucide-react";
-import logo from "../../../assets/images/logo.png";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -146,7 +145,7 @@ export default function Header() {
   return (
     <header className="fixed w-full z-50 top-0 flex items-center justify-between bg-white border-b py-4 px-4 md:px-8">
       <Link to={"/"}>
-        <img src={logo} alt="paras parivar" className="w-28 h-full" />
+        <img src={"https://res.cloudinary.com/dlfpme2sn/image/upload/v1765022631/logo_ojc0cv.png"} alt="paras parivar" className="w-28 h-full" loading="lazy" />
       </Link>
       <NavigationMenu viewport={false} className="hidden md:flex">
         <NavigationMenuList>
@@ -201,7 +200,7 @@ export default function Header() {
 
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant="outline" className={"md:hidden"}>
+          <Button variant="outline" className={"md:hidden"}   aria-label="Open menu">
             <MenuIcon className="h-4 w-4" />
           </Button>
         </SheetTrigger>
