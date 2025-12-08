@@ -13,19 +13,51 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { getHandler } from "@/services/api.services";
-export default function PatientFrom({ patientData, setPatientData }) {
+import { getHandler, postHandler, putHandler } from "@/services/api.services"; // added missing imports
+import { Button } from "@/components/ui/button";
+
+export default function PatientForm({ selectedPatient }) {
   const [branches, setBranches] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [patientData, setPatientData] = useState(
+    selectedPatient || {
+      phone: "",
+      name: { first: "", last: "" },
+      age: "",
+      gender: "",
+      profession: "",
+      residentialAddress: "",
+      maritalStatus: "",
+      medicalInformation: {
+        medicalHistory: "",
+        takingAnyMedicine: "",
+        allergicToAnyMedicine: "",
+        allergicToAnyOther: "",
+        geneticHistoryForHairFall: "",
+      },
+      reference: "",
+      purposeOfVisit: "",
+      lookingFor: "",
+      branchId: "",
+      baldnessPattern: "",
+      surgeryDetails: {
+        diagnosis: "",
+        noOfFolliclesRequired: "",
+        dateOfSurgery: "",
+        costOfSurgery: "",
+        remarks: "",
+        bookingAmount: "",
+      },
+    }
+  );
+
   const updateField = (field, value) =>
     setPatientData((prev) => ({ ...prev, [field]: value }));
 
   const updateNestedField = (parent, field, value) =>
     setPatientData((prev) => ({
       ...prev,
-      [parent]: {
-        ...prev[parent],
-        [field]: value,
-      },
+      [parent]: { ...prev[parent], [field]: value },
     }));
 
   const fetchBranches = async () => {
@@ -37,12 +69,46 @@ export default function PatientFrom({ patientData, setPatientData }) {
       toast.error(error.message || "Something went wrong!");
     }
   };
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      const response = await postHandler("/patient/register", patientData, {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      });
+      toast.success(response.message);
+    } catch (error) {
+      toast.error(error.message || "Something went wrong!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUpdate = async () => {
+    if (!selectedPatient?._id) return;
+    setLoading(true);
+    try {
+      const response = await putHandler(
+        `/patient/update/${selectedPatient._id}`,
+        patientData,
+        {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        }
+      );
+      toast.success(response.message);
+    } catch (error) {
+      toast.error(error.message || "Something went wrong!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchBranches();
   }, []);
 
   return (
-    <form className="flex flex-col gap-6 px-2">
+    <form className="flex flex-col gap-6 px-2" >
       {/* 👤 Personal Information */}
       <section>
         <h3 className="text-lg font-medium mb-3 text-black">
@@ -92,7 +158,7 @@ export default function PatientFrom({ patientData, setPatientData }) {
               value={patientData.gender}
               onValueChange={(val) => updateField("gender", val)}
             >
-              <SelectTrigger className={"w-full"}>
+              <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select gender" />
               </SelectTrigger>
               <SelectContent>
@@ -126,7 +192,7 @@ export default function PatientFrom({ patientData, setPatientData }) {
               value={patientData.maritalStatus}
               onValueChange={(val) => updateField("maritalStatus", val)}
             >
-              <SelectTrigger className={"w-full"}>
+              <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select status" />
               </SelectTrigger>
               <SelectContent>
@@ -175,7 +241,7 @@ export default function PatientFrom({ patientData, setPatientData }) {
               value={patientData.reference}
               onValueChange={(val) => updateField("reference", val)}
             >
-              <SelectTrigger className={"w-full"}>
+              <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select source" />
               </SelectTrigger>
               <SelectContent>
@@ -201,7 +267,7 @@ export default function PatientFrom({ patientData, setPatientData }) {
               value={patientData.lookingFor}
               onValueChange={(val) => updateField("lookingFor", val)}
             >
-              <SelectTrigger className={"w-full"}>
+              <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select treatment" />
               </SelectTrigger>
               <SelectContent>
@@ -232,8 +298,7 @@ export default function PatientFrom({ patientData, setPatientData }) {
               onValueChange={(val) => updateField("branchId", val)}
             >
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select Branch" />{" "}
-                {/* Show placeholder if empty */}
+                <SelectValue placeholder="Select Branch" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
@@ -281,6 +346,10 @@ export default function PatientFrom({ patientData, setPatientData }) {
           ))}
         </div>
       </section>
+
+      <div className="flex justify-end mt-4">
+        <Button type="submit">Submit</Button>
+      </div>
     </form>
   );
 }

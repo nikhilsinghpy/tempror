@@ -39,6 +39,8 @@ import PaymentPageUser from "@/pages/userPages/PaymentPage.user";
 import PRPPageUser from "@/pages/userPages/PRPPage.user";
 import AccountSettingsUser from "@/pages/userPages/Setting.user";
 import ProtectRoutes from "./protect.routes";
+import AddPrpForm from "@/components/custom-component/forms/add-Prp-form";
+import PatientFrom from "@/components/custom-component/forms/patient-from";
 
 export const router = createBrowserRouter([
   {
@@ -89,22 +91,33 @@ export const router = createBrowserRouter([
     ),
     children: [
       { index: true, element: <AdminHomePage /> },
-      { path: "clients", element: <ClientListPageAdmin /> },
-      { path: "clients-prp", element: <ClientPRPPageAdmin /> },
-      { path: "clients-payment-schedule", element: <ClientPayemntPageAdmin /> },
+      {
+        path: "patient",
+        children: [
+          { path: "", element: <ClientListPageAdmin /> },
+          { path: "add-patient", element: <PatientFrom /> },
+          {
+            path: "patient-prp",
+            children: [
+              { path: "", element: <ClientPRPPageAdmin /> },
+              { path: "schedule", element: <AddPrpForm /> },
+            ],
+          },
+          { path: "payment-schedule", element: <ClientPayemntPageAdmin /> },
+        ],
+      },
       { path: "appointments", element: <AppointmentsAdmin /> },
       { path: "queries", element: <QueryListAdmin /> },
       { path: "manage-doctor", element: <DoctorPageAdmin /> },
-      { path: "manage-website/hero", element: <HeroSectionAdmin /> },
-      { path: "manage-website/hero/banner", element: <HeroBannerAdmin /> },
-      { path: "manage-website/post-result", element: <PostResultAdmin /> },
       {
-        path: "manage-website/post-clinic-video",
-        element: <PostClinicVideoPageAdmin />,
-      },
-      {
-        path: "manage-website/post-review",
-        element: <ManageReviewAdmin />,
+        path: "manage-website",
+        children: [
+          { path: "hero/section", element: <HeroSectionAdmin /> },
+          { path: "hero/banner", element: <HeroBannerAdmin /> },
+          { path: "post-result", element: <PostResultAdmin /> },
+          { path: "post-clinic-video", element: <PostClinicVideoPageAdmin /> },
+          { path: "post-review", element: <ManageReviewAdmin /> },
+        ],
       },
       { path: "manage-branch", element: <BranchPageAdmin /> },
       { path: "*", element: <NotFound /> },

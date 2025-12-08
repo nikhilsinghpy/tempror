@@ -83,7 +83,7 @@ export default function Footer() {
               <strong>Belleza Rohini</strong> — Delhi’s top Hair Transplant
               Clinic, specializing in <strong>FUE, DHI</strong> &amp;{" "}
               <strong>Sapphire</strong> techniques. Trusted by 10,000+ happy
-              clients.
+              patient.
             </p>
 
             {/* Contact Info */}

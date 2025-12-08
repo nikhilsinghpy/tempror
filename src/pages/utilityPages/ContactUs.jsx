@@ -78,7 +78,7 @@ const accordionData = [
     value: "item-5",
     trigger: "Can I consult online before visiting the clinic?",
     content:
-      "Yes, Belleza offers online video consultations for clients who live outside Delhi, Jaipur, or Lucknow. You can request one through our Contact Us form.",
+      "Yes, Belleza offers online video consultations for patient who live outside Delhi, Jaipur, or Lucknow. You can request one through our Contact Us form.",
   },
   {
     value: "item-6",
@@ -106,9 +106,9 @@ const accordionData = [
   },
   {
     value: "item-10",
-    trigger: "Do you assist clients from outside India?",
+    trigger: "Do you assist patient from outside India?",
     content:
-      "Yes, Belleza serves national and international clients. We offer online consultations, travel assistance, and post-procedure follow-ups for overseas patients.",
+      "Yes, Belleza serves national and international patient. We offer online consultations, travel assistance, and post-procedure follow-ups for overseas patients.",
   },
 ];
 

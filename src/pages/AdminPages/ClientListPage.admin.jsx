@@ -1,16 +1,6 @@
-import PatientFrom from "@/components/custom-component/forms/patient-from";
 import TableCs from "@/components/custom-component/Table/table-cs";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,7 +12,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { getHandler, postHandler, putHandler } from "@/services/api.services";
+import { getHandler } from "@/services/api.services";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { FileText, SlidersHorizontal } from "lucide-react";
@@ -30,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { searchApi } from "@/services/searchApi.services";
 import { downloadFile } from "@/utils/downloadFile";
+import { Link } from "react-router-dom";
 const patientColumns = [
   { header: "Branch", accessor: "branch" },
   { header: "Patient ID", accessor: "_id" },
@@ -73,36 +64,33 @@ const patientColumns = [
   { header: "Booking Amount", accessor: "surgeryDetailsbookingAmount" },
   { header: "Added At", accessor: "createdAt" },
 ];
-
 function formatData(data) {
   const formattedData = data.map((patient) => ({
     ...patient,
-    branch: patient.branch.title,
-    namefirst: patient.name.first,
-    namelast: patient.name.last,
-    medicalInformationmedicalHistory: patient.medicalInformation.medicalHistory,
+    branch: patient?.branch?.badge || "N/A",
+    namefirst: patient?.name?.first || "N/A",
+    namelast: patient?.name?.last || "N/A",
+    medicalInformationmedicalHistory: patient?.medicalInformation?.medicalHistory || "N/A",
     medicalInformationtakingAnyMedicine:
-      patient.medicalInformation.takingAnyMedicine,
+      patient?.medicalInformation?.takingAnyMedicine || "N/A",
     medicalInformationallergicToAnyMedicine:
-      patient.medicalInformation.allergicToAnyMedicine,
+      patient?.medicalInformation?.allergicToAnyMedicine || "N/A",
     medicalInformationallergicToAnyOther:
-      patient.medicalInformation.allergicToAnyOther,
+      patient?.medicalInformation?.allergicToAnyOther || "N/A",
     medicalInformationgeneticHistoryForHairFall:
-      patient.medicalInformation.geneticHistoryForHairFall,
-    surgeryDetailsdiagnosis: patient.surgeryDetails.diagnosis,
+      patient?.medicalInformation?.geneticHistoryForHairFall || "N/A",
+    surgeryDetailsdiagnosis: patient?.surgeryDetails?.diagnosis || "N/A",
     surgeryDetailsnoOfFolliclesRequired:
-      patient.surgeryDetails.noOfFolliclesRequired,
-    surgeryDetailsdateOfSurgery: patient.surgeryDetails.dateOfSurgery,
-    surgeryDetailscostOfSurgery: patient.surgeryDetails.costOfSurgery,
-    surgeryDetailsremarks: patient.surgeryDetails.remarks,
-    surgeryDetailsbookingAmount: patient.surgeryDetails.bookingAmount,
+      patient?.surgeryDetails?.noOfFolliclesRequired || "N/A",
+    surgeryDetailsdateOfSurgery: patient?.surgeryDetails?.dateOfSurgery || "N/A",
+    surgeryDetailscostOfSurgery: patient?.surgeryDetails?.costOfSurgery || "N/A",
+    surgeryDetailsremarks: patient?.surgeryDetails?.remarks || "N/A",
+    surgeryDetailsbookingAmount: patient?.surgeryDetails?.bookingAmount || "N/A",
     createdAt: new Date(patient.createdAt).toLocaleString(),
   }));
   return formattedData;
 }
 export default function ClientListPageAdmin() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [customCsv, setCustomCsv] = useState({
     filterType: "",
     startDate: "",
@@ -112,83 +100,8 @@ export default function ClientListPageAdmin() {
     data: [],
     pagination: {},
   });
-  const [selectedPatient, setSelectedPatient] = useState(null);
-  const [newPatientData, setNewPatientData] = useState({
-    phone: "",
-    name: {
-      first: "",
-      last: "",
-    },
-    age: "",
-    gender: "", // "male" | "female" | "other"
-    profession: "",
-    residentialAddress: "",
-    maritalStatus: "", // "married" | "unmarried"
-    medicalInformation: {
-      medicalHistory: "",
-      takingAnyMedicine: "",
-      allergicToAnyMedicine: "",
-      allergicToAnyOther: "",
-      geneticHistoryForHairFall: "",
-    },
-    reference: "", // "social-media" | "google" | "website" | "word-of-mouth" | "others"
-    purposeOfVisit: "",
-    lookingFor: "", // "hair-transplant" | "beard-transplant" | "eyebrow-transplant" | "other"
-    branchId: "",
-    baldnessPattern: "", // number 1–8
-    surgeryDetails: {
-      diagnosis: "",
-      noOfFolliclesRequired: "",
-      dateOfSurgery: "",
-      costOfSurgery: "",
-      remarks: "",
-      bookingAmount: "",
-    },
-  });
-
   const handleRowClick = (patient) => {
-    setSelectedPatient(patient);
-    setIsOpen(true);
-  };
-  const handleSubmit = () => {
-    setLoading(true);
-    toast.promise(
-      postHandler(`/patient/register`, newPatientData, {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      }),
-      {
-        loading: "adding new patient... ",
-        success: (response) => {
-          setIsOpen(false);
-          setLoading(false);
-          return response.message;
-        },
-        error: (error) => {
-          setLoading(false);
-          return error.message || "Something went wrong!";
-        },
-      }
-    );
-  };
-  const handleUpdate = () => {
-    setLoading(true);
-    toast.promise(
-      putHandler(`/patient/update/${selectedPatient._id}`, selectedPatient, {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      }),
-      {
-        loading: "Updating patient... ",
-        success: (response) => {
-          setIsOpen(false);
-          setLoading(false);
-          return response.message;
-        },
-        error: (error) => {
-          setLoading(false);
-          return error.message || "Something went wrong!";
-        },
-      }
-    );
+    console.log("Row clicked:", patient);
   };
 
   const downLoadCSV = async ({ filterType, startDate, endDate }) => {
@@ -199,7 +112,7 @@ export default function ClientListPageAdmin() {
       }
       const response = await axios.get(url, {
         responseType: "blob",
-        baseURL: "http://localhost:4000/api/v1",
+        baseURL: "http://localhost:4040/api/v1",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
@@ -216,7 +129,6 @@ export default function ClientListPageAdmin() {
       });
       toast.success("CSV downloaded successfully!");
     } catch (error) {
-      console.error(error);
       setCustomCsv({
         filterType: "",
         startDate: "",
@@ -278,10 +190,12 @@ export default function ClientListPageAdmin() {
   return (
     <div className="p-4 w-full space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold ">Clients List</h1>
-        <Button onClick={() => setIsOpen(true)}>Add New Patient</Button>
+        <h1 className="text-2xl font-bold "> Patient List</h1>
+        <Button asChild>
+          <Link to="/admin/patient/add-patient">Add New Patient</Link>
+        </Button>
       </div>
-      <div className="md:max-w-[77vw]">
+      <div className="md:max-w-[76vw]">
         <TableCs
           data={patients.data}
           columns={patientColumns}
@@ -462,52 +376,6 @@ export default function ClientListPageAdmin() {
           }
         />
       </div>
-
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetContent className={"gap-2 !max-w-[40vw]"}>
-          <SheetHeader>
-            <SheetTitle>
-              {selectedPatient ? "Update Patient" : "Add New Patient"}
-            </SheetTitle>
-            <SheetDescription className={"capitalize"}>
-              {selectedPatient
-                ? "Here you can update the patient's details that will appear on the website or in your records."
-                : "Here you can add a new patient profile to your system. You can edit their details later after adding."}
-            </SheetDescription>
-          </SheetHeader>
-
-          <ScrollArea className="h-[calc(100vh-200px)] p-4 space-y-4">
-            {selectedPatient ? (
-              <PatientFrom
-                patientData={selectedPatient}
-                setPatientData={setSelectedPatient}
-              />
-            ) : (
-              <PatientFrom
-                patientData={newPatientData}
-                setPatientData={setNewPatientData}
-              />
-            )}
-          </ScrollArea>
-
-          <SheetFooter className={"border-t shadow-2xl"}>
-            <div className="flex justify-end gap-2">
-              {selectedPatient ? (
-                <Button onClick={handleUpdate} disabled={loading}>
-                  Update Patient
-                </Button>
-              ) : (
-                <Button onClick={handleSubmit} disabled={loading}>
-                  Register Patient
-                </Button>
-              )}
-              <SheetClose asChild>
-                <Button variant="outline">Cancel</Button>
-              </SheetClose>
-            </div>
-          </SheetFooter>
-        </SheetContent>
-      </Sheet>
     </div>
   );
 }

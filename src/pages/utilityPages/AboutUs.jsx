@@ -98,7 +98,7 @@ const serviceData = [
 ];
 const whyChooseUs = {
   title: "Why Choose Us",
-  desc: "At Belleza Hair Transplant Clinic, we understand that choosing the right clinic for your hair restoration journey is a significant decision. Here's why we stand out as a trusted choice for clients in Delhi and beyond",
+  desc: "At Belleza Hair Transplant Clinic, we understand that choosing the right clinic for your hair restoration journey is a significant decision. Here's why we stand out as a trusted choice for patient in Delhi and beyond",
   points: [
     {
       title: "Expertise & Experience",
@@ -127,7 +127,7 @@ const whyChooseUs = {
     {
       title: "Proven Results",
       description:
-        "Our clinic is known for exceptional outcomes, with numerous success stories from clients who have regained confidence and natural hair growth.",
+        "Our clinic is known for exceptional outcomes, with numerous success stories from patient who have regained confidence and natural hair growth.",
       icon: "CheckCircle2",
     },
   ],

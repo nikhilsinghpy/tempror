@@ -14,9 +14,8 @@ import { Button } from "@/components/ui/button";
 import { getHandler, postHandler } from "@/services/api.services";
 import { toast } from "sonner";
 
-export default function AddPrpForm({ fetchData, setIsOpen }) {
+export default function AddPrpForm() {
   const [branches, setBranches] = useState([]);
-
   const [formData, setFormData] = useState({
     phone: "",
     firstname: "",
@@ -43,8 +42,6 @@ export default function AddPrpForm({ fetchData, setIsOpen }) {
       {
         loading: "Submitting form...",
         success: (response) => {
-          fetchData();
-          setIsOpen(false);
           return response.message;
         },
         error: (error) => {
@@ -143,11 +140,9 @@ export default function AddPrpForm({ fetchData, setIsOpen }) {
           <SelectContent>
             <SelectGroup>
               <SelectLabel>Select Branch</SelectLabel>
-              <SelectItem value="Hair PRP">Hair PRP</SelectItem>
-              <SelectItem value="Eyebrow PRP">Eyebrow PRP</SelectItem>
-              <SelectItem value="Beard PRP">Beard PRP</SelectItem>
-              <SelectItem value="Face PRP">Face PRP</SelectItem>
-              <SelectItem value="Under-eye PRP">Under-eye PRP</SelectItem>
+              <SelectItem value="hair-prp">Hair PRP</SelectItem>
+              <SelectItem value="eyebrow-prp">Eyebrow PRP</SelectItem>
+              <SelectItem value="beard-prp">Beard PRP</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>

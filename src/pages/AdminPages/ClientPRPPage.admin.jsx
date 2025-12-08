@@ -27,6 +27,7 @@ import { FileText, SlidersHorizontal } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { downloadFile } from "@/utils/downloadFile";
+import { Link } from "react-router-dom";
 const columns = [
   { header: "Patient Name", accessor: "patientFirstName" },
   { header: "Patient Last Name", accessor: "patientLastName" },
@@ -38,7 +39,7 @@ const columns = [
   { header: "User ID", accessor: "patientUserId" },
   { header: "Date", accessor: "date" },
   { header: "Time", accessor: "time" },
-  { header: "Branch Title", accessor: "branchTitle" },
+  { header: "Branch", accessor: "branch" },
   { header: "Branch Phone", accessor: "branchPhone" },
   { header: "Scheduled At", accessor: "createdAt" },
 ];
@@ -46,17 +47,31 @@ const columns = [
 function formatData(data) {
   return data.map((item) => ({
     ...item,
-    patientFirstName: item.patientInfo.name.first,
-    patientLastName: item.patientInfo.name.last,
-    patientEmail: item.patientInfo.email,
-    patientPhone: item.patientInfo.phone,
-    patientUserId: item.patientInfo.userId,
-    branchTitle: item.branch.title,
-    branchPhone: item.branch.contact.phone,
-    createdAt: new Date(item.createdAt).toLocaleString(),
-    date: new Date(item.date).toLocaleDateString(),
+
+    // Patient details with fallback
+    patientFirstName: item?.patient?.name?.first || "N/A",
+    patientLastName: item?.patient?.name?.last || "N/A",
+    patientEmail: item?.patient?.email || "N/A",
+    patientPhone: item?.patient?.phone || "N/A",
+    patientUserId: item?.patient?.userId || "N/A",
+
+    // Branch details (from patient.branch)
+    branch: item?.patient?.branch?.badge || "N/A",
+    branchPhone: item?.patient?.branch?.contact?.phone || "N/A",
+
+    // Time & Date formatting
+    createdAt: item?.createdAt
+      ? new Date(item.createdAt).toLocaleString()
+      : "N/A",
+
+    date: item?.date
+      ? new Date(item.date).toLocaleDateString()
+      : "N/A",
+
+    time: item?.time || "N/A",
   }));
 }
+
 export default function ClientPRPPageAdmin() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedPrp, setselectedPrp] = useState(null);
@@ -111,7 +126,7 @@ export default function ClientPRPPageAdmin() {
       }
       const response = await axios.get(url, {
         responseType: "blob",
-        baseURL: "http://localhost:4000/api/v1",
+        baseURL: "http://localhost:4040/api/v1",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
@@ -143,10 +158,12 @@ export default function ClientPRPPageAdmin() {
   return (
     <div className="p-4 w-full space-y-4">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-bold ">Clients PRP List</h1>
-        <Button onClick={() => setIsOpen(true)}>+ Add PRP Schedule</Button>
+        <h1 className="text-2xl font-bold ">Patient PRP List</h1>
+        <Button asChild>
+          <Link to="/admin/patient/patient-prp/schedule">+ Add PRP Schedule</Link>
+        </Button>
       </div>
-      <div className="md:max-w-[77vw]">
+      <div className="md:max-w-[75vw]">
         <TableCs
           data={PrpData.data}
           columns={columns}

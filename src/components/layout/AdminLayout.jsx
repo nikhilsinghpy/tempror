@@ -24,12 +24,9 @@ const navItemData = [
   {
     label: "Manage Client",
     navitems: [
-      { label: "Clients List ", link: "/admin/clients" },
-      { label: "Client PRP ", link: "/admin/clients-prp" },
-      {
-        label: "Client Payment & Schedule ",
-        link: "/admin/clients-payment-schedule",
-      },
+      { label: "Patient List", link: "/admin/patient" },
+      { label: "Patient PRP", link: "/admin/patient/patient-prp" },
+      { label: "Patient Payment & Schedule", link: "/admin/patient/payment-schedule" },
     ],
   },
   {
@@ -37,9 +34,7 @@ const navItemData = [
     navitems: [
       {
         label: "Today's Appointment",
-        link: `/admin/appointments?date=${
-          new Date().toISOString().split("T")[0]
-        }`,
+        link: `/admin/appointments?date=${new Date().toISOString().split("T")[0]}`,
       },
       { label: "Appointment", link: "/admin/appointments" },
     ],
@@ -61,17 +56,11 @@ const navItemData = [
   {
     label: "Manage Website",
     navitems: [
-      { label: "Hero Section", link: "/admin/manage-website/hero" },
+      { label: "Hero Section", link: "/admin/manage-website/hero/section" },
       { label: "Hero Banner", link: "/admin/manage-website/hero/banner" },
       { label: "Post Result", link: "/admin/manage-website/post-result" },
-      {
-        label: "Post Clinic Video",
-        link: "/admin/manage-website/post-clinic-video",
-      },
-      {
-        label: "Manage Review",
-        link: "/admin/manage-website/post-review",
-      },
+      { label: "Post Clinic Video", link: "/admin/manage-website/post-clinic-video" },
+      { label: "Manage Review", link: "/admin/manage-website/post-review" },
     ],
   },
   {
@@ -79,6 +68,7 @@ const navItemData = [
     navitems: [{ label: "Branch", link: "/admin/manage-branch" }],
   },
 ];
+
 export default function AdminLayout() {
   const { user } = useUser();
   const location = useLocation();

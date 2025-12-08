@@ -303,10 +303,9 @@ function UserDropdownMenu({ user }) {
               <AvatarFallback className="rounded-lg">CN</AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">
-              <span className="truncate font-medium">{"Paras Parivar"}</span>
+              <span className="truncate font-medium">{`${user?.name.first} ${user?.name.last}`}</span>
               <span className="truncate text-xs">
-                {" "}
-                {"parasParivar@gmail.com"}
+                {user?.email || "loading..."}
               </span>
             </div>
           </div>
