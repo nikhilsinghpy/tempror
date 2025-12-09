@@ -176,7 +176,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 items-center">
           <div className="flex justify-center lg:justify-end">
             <img
-              src="https://res.cloudinary.com/dlfpme2sn/image/upload/v1765279914/5_cpohvs.png"
+              src="https://res.cloudinary.com/dlfpme2sn/image/upload/v1765282727/5_ff8udv.png"
               alt="Doctors"
               className="rounded-xl shadow-lg object-cover w-full "
               loading="lazy"
