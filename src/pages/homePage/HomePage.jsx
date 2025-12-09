@@ -176,7 +176,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 items-center">
           <div className="flex justify-center lg:justify-end">
             <img
-              src="https://media.istockphoto.com/id/1496720417/photo/high-five-for-being-such-a-brave-little-boy.jpg?s=612x612&w=0&k=20&c=jrhbbPCEEN5Z3nSmTdu6fBC84v0kFuuJ8L4l2reghn4="
+              src="https://res.cloudinary.com/dlfpme2sn/image/upload/v1765279914/5_cpohvs.png"
               alt="Doctors"
               className="rounded-xl shadow-lg object-cover w-full "
               loading="lazy"

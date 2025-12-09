@@ -56,11 +56,14 @@ const columns = [
   { header: "Status", accessor: "status" },
 ];
 function formatData(data) {
+  console.log(data[0]);
   return data?.map((item) => ({
     ...item,
-    firstName: item.name.first,
-    lastName: item.name.last,
-    isPhoneVerified: item.isPhoneVerified ? "Yes" : "No",
+    firstName: item.patient.name.first,
+    lastName: item.patient.name.last,
+    isPhoneVerified: item.patient.userId ? "Yes" : "No",
+    email: item.patient.email,
+    phone: item.patient.phone,
     date: new Date(item.date).toLocaleDateString(),
     time: item.time,
   }));
@@ -189,7 +192,7 @@ export default function AppointmentsAdmin() {
           Schedule Appointment
         </Button>
       </div>
-      <div className="md:max-w-[77vw]">
+      <div className="md:max-w-[75vw]">
         <TableCs
           data={appointmentdata.data}
           paginationData={appointmentdata.pagination}

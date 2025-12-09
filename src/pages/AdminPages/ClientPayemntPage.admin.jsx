@@ -15,7 +15,7 @@ const appointmentdata = [];
 export default function ClientPayemntPageAdmin() {
   return (
     <div className="p-4 w-full space-y-4">
-      <h1 className="text-2xl font-bold ">patient Payment & Shedule</h1>
+      <h1 className="text-2xl font-bold ">Patient Payment & Shedule</h1>
       <TableCs
         data={appointmentdata}
         columns={appointmentcolumns}

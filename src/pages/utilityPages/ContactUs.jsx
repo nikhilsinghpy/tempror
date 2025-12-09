@@ -257,7 +257,7 @@ export default function ContactUs() {
                 id="phone"
                 type="tel"
                 value={formData.phone}
-                placeholder="+91 0000-0000"
+                placeholder="9011256789"
                 onChange={handleChange}
               />
             </div>
