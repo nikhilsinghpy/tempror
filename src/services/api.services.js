@@ -1,8 +1,8 @@
 import axios from "axios";
 // const BASE_URL = "http://localhost:4040/api/v1";
-const BASE_URL = "http://localhost:8080/api/v1";
+// const BASE_URL = "http://localhost:8080/api/v1";
 // const BASE_URL = "https://api-belleza.onrender.com/api/v1";
-// const BASE_URL = "http://34.131.223.22/api/v1";
+const BASE_URL = "http://34.131.223.22/api/v1";
 
 /**
  * Create a reusable Axios instance
