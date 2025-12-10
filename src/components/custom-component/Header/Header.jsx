@@ -145,7 +145,7 @@ export default function Header() {
   return (
     <header className="fixed w-full z-50 top-0 flex items-center justify-between bg-white border-b py-4 px-4 md:px-8">
       <Link to={"/"}>
-        <img src={"https://res.cloudinary.com/dlfpme2sn/image/upload/v1765022631/logo_ojc0cv.png"} alt="paras parivar" className="w-28 h-full" loading="lazy" />
+        <img src={"https://res.cloudinary.com/dlfpme2sn/image/upload/v1765022631/logo_ojc0cv.png"} alt="Belleza Rohini" className="w-28 h-full" loading="lazy" />
       </Link>
       <NavigationMenu viewport={false} className="hidden md:flex">
         <NavigationMenuList>

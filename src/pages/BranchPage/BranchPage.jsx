@@ -6,7 +6,7 @@ import HeroSectionNonAnimate from "@/components/custom-component/HeroSection/her
 import { Button } from "@/components/ui/button";
 import { CarouselItem } from "@/components/ui/carousel";
 import { getHandler } from "@/services/api.services";
-import { ArrowRight, Link, Mail, MapPin, Phone } from "lucide-react";
+import {  Link, Mail, MapPin, Phone } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -24,7 +24,7 @@ export default function BranchPage() {
 
   useEffect(() => {
     fetchBranch();
-  }, []);
+  }, [slug]);
 
   return (
     <div className="p-2 space-y-12">
