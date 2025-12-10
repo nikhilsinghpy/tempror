@@ -63,11 +63,11 @@ const menuData = [
       },
       {
         title: "Contact",
-        href: "/Contact",
+        href: "/contact-us",
       },
       {
         title: "Results",
-        href: "/Results",
+        href: "/results",
       },
     ],
   },

@@ -48,7 +48,7 @@ export default function ManageReviewAdmin() {
   return (
     <div className="p-4 w-full space-y-4">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-bold ">patient PRP List</h1>
+        <h1 className="text-2xl font-bold ">Manage Reviews</h1>
         <Button onClick={() => setIsOpen(true)}>Post Result</Button>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
