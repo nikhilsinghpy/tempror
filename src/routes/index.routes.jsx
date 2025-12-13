@@ -4,7 +4,7 @@ import AdminLayout from "@/components/layout/AdminLayout";
 import AuthLayout from "@/components/layout/AuthLayout";
 import HomeLayout from "@/components/layout/HomeLayout";
 import ProtectRoutes from "./protect.routes";
-import SpinWin from "@/game/spin-win";
+
 const NotFound = lazy(() => import("@/components/custom-component/NotFound/NotFound")); 
 const AppointmentsAdmin = lazy(()=> import("@/pages/AdminPages/Appointments.admin"));
 const BranchPageAdmin = lazy(() => import("@/pages/AdminPages/BranchPage.admin"));
@@ -34,7 +34,7 @@ const AboutUs = lazy(() => import("@/pages/utilityPages/AboutUs"));
 const AppointmentPage = lazy(() => import("@/pages/utilityPages/AppointmentPage"));
 const ContactUs = lazy(() => import("@/pages/utilityPages/ContactUs"));
 const ResultPage = lazy(() => import("@/pages/utilityPages/ResultPage"));
-
+const RewardPage = lazy(() => import("@/pages/rewards/RewardPage"));
 // Service Pages
 const BeardTransplantPage = lazy(() => import("@/pages/utilityPages/servicePages/BeardTransplantPage"));
 const EyebrowTransplantPage = lazy(() => import("@/pages/utilityPages/servicePages/EyebrowTransplantPage"));
@@ -129,7 +129,7 @@ export const router = createBrowserRouter([
           { path: "settings", element: <AccountSettingsUser /> },
         ],
       },
-      { path: "spin-win", element: <SpinWin /> },
+      { path: "rewards", element: <RewardPage /> },
       { path: "*", element: <NotFound /> },
     ],
   },
