@@ -4,6 +4,7 @@ import AdminLayout from "@/components/layout/AdminLayout";
 import AuthLayout from "@/components/layout/AuthLayout";
 import HomeLayout from "@/components/layout/HomeLayout";
 import ProtectRoutes from "./protect.routes";
+import SpinWin from "@/game/spin-win";
 const NotFound = lazy(() => import("@/components/custom-component/NotFound/NotFound")); 
 const AppointmentsAdmin = lazy(()=> import("@/pages/AdminPages/Appointments.admin"));
 const BranchPageAdmin = lazy(() => import("@/pages/AdminPages/BranchPage.admin"));
@@ -128,6 +129,7 @@ export const router = createBrowserRouter([
           { path: "settings", element: <AccountSettingsUser /> },
         ],
       },
+      { path: "spin-win", element: <SpinWin /> },
       { path: "*", element: <NotFound /> },
     ],
   },
