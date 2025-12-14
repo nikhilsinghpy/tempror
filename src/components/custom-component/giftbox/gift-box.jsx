@@ -75,13 +75,14 @@ const ExplosionParticle = ({ id }) => {
   );
 };
 
-export default function GiftBox({ rewards, phone,onConsume, setRewaredData }) {
+export default function GiftBox({ rewards, phone, onConsume, setRewaredData }) {
   const [stage, setStage] = useState("idle");
   const [reward, setReward] = useState(null);
   const [showDialog, setShowDialog] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
 
   const handleClaimReward = (payload) => {
+    setShowDialog(true);
     toast.promise(
       postHandler(
         "/reward/claim",
@@ -120,11 +121,8 @@ export default function GiftBox({ rewards, phone,onConsume, setRewaredData }) {
         const randomReward = getItemByProbability(rewards);
         setReward(randomReward);
         setShowConfetti(true);
-
-        // Show dialog after explosion
         setTimeout(() => {
           setStage("exploded");
-          setShowDialog(true);
           handleClaimReward(randomReward);
         }, 800);
       }, 1500);
