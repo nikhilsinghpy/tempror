@@ -82,7 +82,6 @@ export default function GiftBox({ rewards, phone, onConsume, setRewaredData }) {
   const [showConfetti, setShowConfetti] = useState(false);
 
   const handleClaimReward = (payload) => {
-    setShowDialog(true);
     toast.promise(
       postHandler(
         "/reward/claim",
@@ -100,7 +99,10 @@ export default function GiftBox({ rewards, phone, onConsume, setRewaredData }) {
         loading: "Claiming reward...",
         success: (response) => {
           setRewaredData(response.data);
-          onConsume();
+          setShowDialog(true);
+          setTimeout(() => {
+            onConsume();
+          }, 300);
           return response.message || "Reward claimed successfully 🎉";
         },
         error: (error) => {
