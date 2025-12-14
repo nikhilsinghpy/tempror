@@ -1,12 +1,12 @@
 import axios from "axios";
 
 // DEVELOPMENT SERVER URL
-// const BASE_URL = "http://localhost:8080/api/v1";
+// const BASE_URL = "http://localhost:4040/api/v1";
 // const BASE_URL = "http://34.131.223.22/api/v1";
-// const BASE_URL = "http://192.168.0.5:8080/api/v1";
+const BASE_URL = "http://192.168.0.5:4040/api/v1";
 
 // TESTING SERVER URL
-const BASE_URL = "https://api-belleza.onrender.com/api/v1";
+// const BASE_URL = "https://api-belleza.onrender.com/api/v1";
 
 // PRODUCTION SERVER URL
 // const BASE_URL = "https://api.bellezarohini.com/api/v1";

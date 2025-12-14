@@ -1,20 +1,43 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogClose, DialogContent } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
-export default function ResultDialog({ open, onOpenChange , result }) {
+export default function ResultDialog({ open, onOpenChange, result }) {
   if (!result) return null;
 
   const isLose = result.includes("Better Luck");
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={"bg-white rounded-3xl border-4 border-yellow-400 shadow-xl overflow-hidden"}>
-        <div className="relative w-[270px] mx-auto ">
+      <DialogHeader className={'hidden'}>
+        <DialogTitle>🎉 Congratulations!</DialogTitle>
+        <DialogDescription>You have won the following reward</DialogDescription>
+      </DialogHeader>
+      <DialogContent
+        className={
+          "bg-white rounded-3xl border-4 border-yellow-400 shadow-xl overflow-hidden"
+        }
+      >
+        <div className="relative  mx-auto ">
           {/* Badge */}
           <div className="flex justify-center mt-10">
             <div className="relative">
-              <div className={`w-28 h-28  rounded-full flex items-center justify-center shadow-lg border-${isLose ? "gray" : "yellow"}-400 bg-${isLose ? "gray" : "yellow"}-400 shadow-lg`}>
-                <div className={`w-14 h-14  rounded-full flex items-center justify-center border-${isLose ? "gray" : "yellow"}-400 bg-${isLose ? "gray" : "yellow"}-100 shadow-lg`}>
+              <div
+                className={`w-28 h-28  rounded-full flex items-center justify-center shadow-lg border-${
+                  isLose ? "gray" : "yellow"
+                }-400 bg-${isLose ? "gray" : "yellow"}-400 shadow-lg`}
+              >
+                <div
+                  className={`w-14 h-14  rounded-full flex items-center justify-center border-${
+                    isLose ? "gray" : "yellow"
+                  }-400 bg-${isLose ? "gray" : "yellow"}-100 shadow-lg`}
+                >
                   ⭐
                 </div>
               </div>
@@ -42,9 +65,11 @@ export default function ResultDialog({ open, onOpenChange , result }) {
             <DialogClose asChild>
               <Button variant="outline">Close</Button>
             </DialogClose>
-            {
-                !isLose && <Button>Claim</Button>
-            }
+            {!isLose && (
+              <DialogClose asChild>
+                <Button>Claim</Button>
+              </DialogClose>
+            )}
           </div>
         </div>
       </DialogContent>

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Gift, Sparkles } from "lucide-react";
 import ResultDialog from "@/components/custom-component/dialogs-cs/result-dialog";
+import { toast } from "sonner";
+import { postHandler } from "@/services/api.services";
 
 function getItemByProbability(items) {
   // Step 1: Calculate total probability
@@ -73,11 +75,39 @@ const ExplosionParticle = ({ id }) => {
   );
 };
 
-export default function GiftBox({ rewards }) {
-  const [stage, setStage] = useState("idle"); // idle, shaking, exploding, exploded
+export default function GiftBox({ rewards, phone,onConsume, setRewaredData }) {
+  const [stage, setStage] = useState("idle");
   const [reward, setReward] = useState(null);
   const [showDialog, setShowDialog] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
+
+  const handleClaimReward = (payload) => {
+    toast.promise(
+      postHandler(
+        "/reward/claim",
+        {
+          phone,
+          title: payload.label,
+          type: "unknown",
+          value: payload.label,
+        },
+        {
+          "Content-Type": "application/json",
+        }
+      ),
+      {
+        loading: "Claiming reward...",
+        success: (response) => {
+          setRewaredData(response.data);
+          onConsume();
+          return response.message || "Reward claimed successfully 🎉";
+        },
+        error: (error) => {
+          return error?.message || "Something went wrong!";
+        },
+      }
+    );
+  };
 
   const handleClick = () => {
     if (stage === "idle") {
@@ -95,6 +125,7 @@ export default function GiftBox({ rewards }) {
         setTimeout(() => {
           setStage("exploded");
           setShowDialog(true);
+          handleClaimReward(randomReward);
         }, 800);
       }, 1500);
     }
