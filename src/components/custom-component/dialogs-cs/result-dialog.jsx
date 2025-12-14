@@ -7,15 +7,45 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { postHandler } from "@/services/api.services";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
-export default function ResultDialog({ open, onOpenChange, result }) {
-  if (!result) return null;
+export default function ResultDialog({ open, onOpenChange, result , phone }) {
+  if (!result.label) return null;
 
-  const isLose = result.includes("Better Luck");
+  const isLose = result.label.includes("Better Luck");
 
+  const handleClaimReward = async (payload) => {
+    toast.loading("Claiming reward...");
+    try {
+      const response = await postHandler(
+        "/reward/claim",
+        {
+          phone,
+          title: payload.label,
+          type: "unknown",
+          value: payload.label,
+        },
+        {
+          "Content-Type": "application/json",
+        }
+      );
+      toast.dismiss();
+      toast.success(response.message || "Reward claimed successfully 🎉");
+    } catch (error) {
+      console.error("Failed to claim reward:", error);
+      toast.dismiss();
+      toast.error(error?.message || "Something went wrong!");
+    }
+  };
+
+  useEffect(() => {
+    handleClaimReward(result);
+  }, []);
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogHeader className={'hidden'}>
+      <DialogHeader className={"hidden"}>
         <DialogTitle>🎉 Congratulations!</DialogTitle>
         <DialogDescription>You have won the following reward</DialogDescription>
       </DialogHeader>
@@ -56,7 +86,7 @@ export default function ResultDialog({ open, onOpenChange, result }) {
             <p className="text-gray-500 mt-2 text-sm leading-relaxed">
               {isLose
                 ? "Don't be discouraged! Try spinning the wheel again for another chance at winning exciting rewards."
-                : `You've won: ${result}! Our team will reach out to you with more details soon.`}
+                : `You've won: ${result.label}! Our team will reach out to you with more details soon.`}
             </p>
           </div>
 

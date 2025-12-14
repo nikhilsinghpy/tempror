@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Gift, Sparkles } from "lucide-react";
 import ResultDialog from "@/components/custom-component/dialogs-cs/result-dialog";
-import { toast } from "sonner";
-import { postHandler } from "@/services/api.services";
+
 
 function getItemByProbability(items) {
   // Step 1: Calculate total probability
@@ -81,51 +80,34 @@ export default function GiftBox({ rewards, phone, onConsume, setRewaredData }) {
   const [showDialog, setShowDialog] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
 
-  const handleClaimReward = (payload) => {
-    toast.promise(
-      postHandler(
-        "/reward/claim",
-        {
-          phone,
-          title: payload.label,
-          type: "unknown",
-          value: payload.label,
-        },
-        {
-          "Content-Type": "application/json",
-        }
-      ),
-      {
-        loading: "Claiming reward...",
-        success: (response) => {
-          setRewaredData(response.data);
-          setShowDialog(true);
-          setTimeout(() => {
-            onConsume();
-          }, 300);
-          return response.message || "Reward claimed successfully 🎉";
-        },
-        error: (error) => {
-          return error?.message || "Something went wrong!";
-        },
-      }
-    );
+
+
+  const handleDialogClose = (open) => {
+    setShowDialog(open);
+    // Only call onConsume when dialog is manually closed
+    if (!open) {
+      setTimeout(() => {
+        onConsume();
+      }, 300);
+    }
   };
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (stage === "idle") {
       // Start shaking
       setStage("shaking");
 
       // After shaking, explode
-      setTimeout(() => {
+      setTimeout(async () => {
         setStage("exploding");
         const randomReward = getItemByProbability(rewards);
         setReward(randomReward);
         setShowConfetti(true);
-        setTimeout(() => {
+        
+        setTimeout(async () => {
           setStage("exploded");
-          handleClaimReward(randomReward);
+          setShowConfetti(false);
+          setShowDialog(true);
         }, 800);
       }, 1500);
     }
@@ -295,8 +277,9 @@ export default function GiftBox({ rewards, phone, onConsume, setRewaredData }) {
       {showDialog && reward && (
         <ResultDialog
           open={showDialog}
-          onOpenChange={setShowDialog}
-          result={reward.label}
+          onOpenChange={handleDialogClose}
+          result={reward}
+          phone={phone}
         />
       )}
     </>
