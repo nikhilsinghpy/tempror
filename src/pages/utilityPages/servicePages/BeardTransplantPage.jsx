@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import processHero from "../../../assets/images/hairprocess1.webp";
 import vectorbg from "../../../assets/images/vectorbg.jpg";
 import { Button } from "@/components/ui/button";
@@ -6,6 +6,7 @@ import { CarouselItem } from "@/components/ui/carousel";
 import { CrouselCs } from "@/components/custom-component/crouselcs/crousel-cs";
 import DoctorCard from "@/components/custom-component/card/doctor-card";
 import CallToAction from "@/components/custom-component/CallToAction/call-to-action";
+import { getHandler } from "@/services/api.services";
 
 const beardTransplantSteps = [
   {
@@ -66,6 +67,22 @@ const beardTreatmentMethods = [
 ];
 
 export default function BeardTransplantPage() {
+  const [doctors, setDoctors] = useState([]);
+
+  const fetchDoctors = async () => {
+    try {
+      const response = await getHandler("/doctor/get");
+      setDoctors(response.data);
+    } catch (error) {
+      toast.dismiss();
+      toast.error(error.message || "Something went wrong!");
+    }
+  };
+
+  useEffect(() => {
+    fetchDoctors();
+  }, []);
+
   return (
     <div className="p-4 space-y-8">
       {/* Hero Section */}
@@ -171,19 +188,22 @@ export default function BeardTransplantPage() {
           Meet Our Beard Restoration Specialists
         </p>
         <CrouselCs>
-          {Array.from({ length: 5 }).map((_, index) => (
+          {doctors.map((doctor, index) => (
             <CarouselItem key={index} className="lg:basis-1/3 py-4">
               <DoctorCard
-                name="Dr. Rohan Mehta"
-                specialty="Beard Transplant Surgeon"
-                hospital="Belleza Clinic"
-                rating={4.9}
-                reviewsCount={410}
-                experienceYears={10}
-                location="Rohini, Delhi"
-                avatarUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxFfJHSPwz9vE7pdOdeyxspvQfshgziqS9VQ&s"
-                bio={`Dr. Mehta is a certified beard and hair transplant expert specializing in FUE and DHI with over 10 years of facial hair restoration success.`}
-                onBook={() => (window.location.href = "/book-appointment")}
+                key={index}
+                name={doctor?.name}
+                specialty={doctor?.speciality}
+                hospital={doctor?.branch?.title}
+                rating={doctor?.rating}
+                reviewsCount={doctor?.totalReviews}
+                experienceYears={doctor?.experience}
+                location={doctor?.branch?.contact?.address}
+                avatarUrl={doctor?.profile?.secure_url}
+                bio={doctor?.bio}
+                onBook={() => {
+                  window.location.href = "/book-appointment";
+                }}
               />
             </CarouselItem>
           ))}

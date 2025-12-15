@@ -68,6 +68,7 @@ const navigationData = [
 export default function Header() {
   const navigate = useNavigate();
   const [login, setLogin] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
   const [menu, setMenu] = useState([
     { label: "Home", href: "/", simpleLink: true },
     {
@@ -96,6 +97,7 @@ export default function Header() {
     { label: "Results", href: "/results", simpleLink: true },
     { label: "About", href: "/about-us", simpleLink: true },
     { label: "Contact", href: "/contact-us", simpleLink: true },
+    { label: "Reward", href: "/rewards", simpleLink: true },
   ]);
   const { user } = useUser();
 
@@ -145,7 +147,14 @@ export default function Header() {
   return (
     <header className="fixed w-full z-50 top-0 flex items-center justify-between bg-white border-b py-4 px-4 md:px-8">
       <Link to={"/"}>
-        <img src={"https://res.cloudinary.com/dlfpme2sn/image/upload/v1765022631/logo_ojc0cv.png"} alt="Belleza Rohini" className="w-28 h-full" loading="lazy" />
+        <img
+          src={
+            "https://res.cloudinary.com/dlfpme2sn/image/upload/v1765022631/logo_ojc0cv.png"
+          }
+          alt="Belleza Rohini"
+          className="w-28 h-full"
+          loading="lazy"
+        />
       </Link>
       <NavigationMenu viewport={false} className="hidden md:flex">
         <NavigationMenuList>
@@ -198,9 +207,13 @@ export default function Header() {
         </Button>
       )}
 
-      <Sheet>
+      <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
         <SheetTrigger asChild>
-          <Button variant="outline" className={"md:hidden"}   aria-label="Open menu">
+          <Button
+            variant="outline"
+            className={"md:hidden"}
+            aria-label="Open menu"
+          >
             <MenuIcon className="h-4 w-4" />
           </Button>
         </SheetTrigger>
@@ -217,6 +230,7 @@ export default function Header() {
                 <Link
                   key={index}
                   to={item.href}
+                  onClick={() => setSheetOpen(false)}
                   className="border p-2 rounded-sm hover:bg-slate-100"
                 >
                   {item.label}
@@ -231,6 +245,7 @@ export default function Header() {
                       <Link
                         to={link.href}
                         key={index}
+                        onClick={() => setSheetOpen(false)}
                         className="border p-2 rounded-sm hover:bg-slate-100"
                       >
                         {link.title}

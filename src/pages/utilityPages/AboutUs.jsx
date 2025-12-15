@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import aboutus1 from "../../assets/images/aboutus1.png";
 import vectorbg from "../../assets/images/vectorbg.jpg";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,7 @@ import { CarouselItem } from "@/components/ui/carousel";
 import DoctorCard from "@/components/custom-component/card/doctor-card";
 import { CrouselCs } from "@/components/custom-component/crouselcs/crousel-cs";
 import CallToAction from "@/components/custom-component/CallToAction/call-to-action";
+import { getHandler } from "@/services/api.services";
 
 const ourStory = [
   {
@@ -134,6 +135,19 @@ const whyChooseUs = {
 };
 
 export default function AboutUs() {
+  const [doctors, setDoctors] = useState([]);
+  const fetchDoctors = async () => {
+    try {
+      const response = await getHandler("/doctor/get");
+      setDoctors(response.data);
+    } catch (error) {
+      toast.dismiss();
+      toast.error(error.message || "Something went wrong!");
+    }
+  }
+  useEffect(() => {
+    fetchDoctors();
+  }, []);
   return (
     <div className="p-4 space-y-8">
       <div
@@ -285,18 +299,19 @@ export default function AboutUs() {
           Meet Our Expert Doctors and Dedicated Clinic Team
         </p>
         <CrouselCs>
-          {Array.from({ length: 5 }).map((_, index) => (
+          {doctors.map((doctor, index) => (
             <CarouselItem key={index} className="lg:basis-1/3 py-4">
               <DoctorCard
-                name="Dr. Ananya Sharma"
-                specialty="Cardiologist"
-                hospital="City Heart Institute"
-                rating={4.9}
-                reviewsCount={342}
-                experienceYears={12}
-                location="Rohini, Delhi"
-                avatarUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRripLcqGUKIBfgbtmux6U1UY9UkgezqzJzFw&s"
-                bio={`Dr. Ananya Sharma is a senior cardiologist with 12+ years of experience in interventional cardiology. She focuses on patient-centred care and minimally invasive procedures.`}
+                key={index}
+                name={doctor?.name}
+                specialty={doctor?.speciality}
+                hospital={doctor?.branch?.title}
+                rating={doctor?.rating}
+                reviewsCount={doctor?.totalReviews}
+                experienceYears={doctor?.experience}
+                location={doctor?.branch?.contact?.address}
+                avatarUrl={doctor?.profile?.secure_url}
+                bio={doctor?.bio}
                 onBook={() => {
                   window.location.href = "/book-appointment";
                 }}
