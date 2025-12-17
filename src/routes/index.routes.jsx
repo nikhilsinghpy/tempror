@@ -53,41 +53,7 @@ const AccountSettingsUser = lazy(() => import("@/pages/userPages/Setting.user"))
 // Components
 const AddPrpForm = lazy(() => import("@/components/custom-component/forms/add-Prp-form"));
 const PatientFrom = lazy(() => import("@/components/custom-component/forms/patient-from"));
-// import ClientListPageAdmin from "@/pages/AdminPages/ClientListPage.admin";
-// import ClientPayemntPageAdmin from "@/pages/AdminPages/ClientPayemntPage.admin";
-// import ClientPRPPageAdmin from "@/pages/AdminPages/ClientPRPPage.admin";
-// import DoctorPageAdmin from "@/pages/AdminPages/DoctorPage.admin";
-// import HeroBannerAdmin from "@/pages/AdminPages/HeroBanner.admin";
-// import HeroSectionAdmin from "@/pages/AdminPages/HeroSection.admin";
-// import AdminHomePage from "@/pages/AdminPages/HomePage.admin";
-// import ManageReviewAdmin from "@/pages/AdminPages/ManageReview.admin";
-// import PostClinicVideoPageAdmin from "@/pages/AdminPages/PostClinicVideoPage.admin";
-// import PostResultAdmin from "@/pages/AdminPages/PostResult.admin";
-// import QueryListAdmin from "@/pages/AdminPages/QueryList.admin";
-// import ForgotPassword from "@/pages/authPages/ForgotPassword";
-// import Login from "@/pages/authPages/Login";
-// import ResetPassword from "@/pages/authPages/ResetPassword";
-// import SignUp from "@/pages/authPages/SignUp";
-// import VerifyOtp from "@/pages/authPages/VerifyOtp";
-// import BranchPage from "@/pages/BranchPage/BranchPage";
-// import HomePage from "@/pages/homePage/HomePage";
-// import AccountPageUser from "@/pages/userPages/AccountPage.user";
-// import AboutUs from "@/pages/utilityPages/AboutUs";
-// import AppointmentPage from "@/pages/utilityPages/AppointmentPage";
-// import ContactUs from "@/pages/utilityPages/ContactUs";
-// import ResultPage from "@/pages/utilityPages/ResultPage";
-// import BeardTransplantPage from "@/pages/utilityPages/servicePages/BeardTransplantPage";
-// import EyebrowTransplantPage from "@/pages/utilityPages/servicePages/EyebrowTransplantPage";
-// import HairTransplantPage from "@/pages/utilityPages/servicePages/HairTransplantPage";
-// import AccountDetailUser from "@/pages/userPages/AccountDetailPage.user";
-// import AppointmentPageUser from "@/pages/userPages/AppointmentPage.user";
-// import QueryPageUser from "@/pages/userPages/QueryPage.user";
-// import DietChartPageUser from "@/pages/userPages/DietChartPage.user";
-// import PaymentPageUser from "@/pages/userPages/PaymentPage.user";
-// import PRPPageUser from "@/pages/userPages/PRPPage.user";
-// import AccountSettingsUser from "@/pages/userPages/Setting.user";
-// import AddPrpForm from "@/components/custom-component/forms/add-Prp-form";
-// import PatientFrom from "@/components/custom-component/forms/patient-from";
+
 
 
 
