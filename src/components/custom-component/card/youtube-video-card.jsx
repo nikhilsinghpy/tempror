@@ -7,8 +7,6 @@ export default function YouTubeCard({ videoUrl, title = "Video Title" }) {
   const thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
   const videoLink = `https://www.youtube.com/watch?v=${videoId}`;
 
-  // For now, using a placeholder title. You can fetch the real title using YouTube API.
-
   return (
     <a
       href={videoLink}

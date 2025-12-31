@@ -85,7 +85,6 @@ export default function BeardTransplantPage() {
 
   return (
     <div className="p-4 space-y-8">
-      {/* Hero Section */}
       <div
         className="w-full min-h-[50vh] rounded-lg flex flex-col justify-center items-center gap-4"
         style={{

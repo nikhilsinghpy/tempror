@@ -164,7 +164,7 @@ export default function HomePage() {
         <CrouselCs autoPlayEnabled={true}>
           {surgeryResults?.map((result, index) => (
             <CarouselItem
-              key={result._id || index} // Prefer unique ID if available
+              key={result._id || index} 
               className="w-full md:basis-1/3 lg:basis-1/4 py-4"
             >
               <ResultCard data={result} />
