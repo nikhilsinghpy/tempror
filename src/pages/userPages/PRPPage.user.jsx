@@ -1,8 +1,9 @@
 import React from "react";
 import { Separator } from "@/components/ui/separator";
-import { CalendarCheck, User } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Calendar, CalendarCheck, Clock, Scissors, User } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useUser } from "@/hooks/use-user";
+import { Badge } from "@/components/ui/badge";
 
 export default function PRPPageUser() {
   const { user, loading } = useUser();
@@ -34,24 +35,48 @@ export default function PRPPageUser() {
           </p>
         ) : (
           <div className="relative border-l-4 border-amber-600 ml-4 space-y-10">
-            {user?.PRP?.map((item) => (
-              <div key={item.id} className="relative pl-10">
+            {user?.PRP?.map((data) => (
+              <div key={data.id} className="relative pl-10">
                 {/* Timeline Dot */}
                 <div className="absolute left-[-11px] top-1 w-5 h-5 bg-amber-600 rounded-full border-4 border-white shadow-md"></div>
-                <Card>
-                  <CardContent>
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-lg font-semibold">{item.session}</h3>
-                      <p className="text-sm text-gray-600 flex items-center gap-2">
-                        <CalendarCheck className="w-4 h-4 text-gray-400" />
-                        {item.date} - {item.time}
-                      </p>
+                <Card className="w-full max-w-md rounded-2xl shadow-sm hover:shadow-md transition">
+                  <CardHeader className="flex flex-row items-center justify-between">
+                    <CardTitle className="flex items-center gap-2 text-lg">
+                      <Scissors className="w-5 h-5 text-primary" />
+                      PRP Session #{data.sessionId}
+                    </CardTitle>
+
+                    <Badge
+                      variant={
+                        data.status === "SCHEDULED" ? "secondary" : "default"
+                      }
+                      className="uppercase"
+                    >
+                      {data.status}
+                    </Badge>
+                  </CardHeader>
+
+                  <CardContent className="space-y-3 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium text-foreground">
+                        Treatment:
+                      </span>
+                      {data.treatmentType.replace("-", " ").toUpperCase()}
                     </div>
-                    <div className="flex items-center gap-2 mt-2">
-                      <User className="w-4 h-4 text-gray-400" />
-                      <p className="text-sm text-gray-600">{item.doctor}</p>
+
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4" />
+                      {new Date(data.date).toLocaleDateString()}
                     </div>
-                    <p className="mt-2 text-sm text-gray-600">{item.note}</p>
+
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-4 h-4" />
+                      {data.time}
+                    </div>
+
+                    <div className="text-xs text-muted-foreground pt-2 border-t">
+                      Created on {new Date(data.createdAt).toLocaleDateString()}
+                    </div>
                   </CardContent>
                 </Card>
               </div>

@@ -72,22 +72,22 @@ export default function AppointmentPageUser() {
         ) : (
           user?.appointments?.map((appt) => (
             <Card
-              key={appt._id}
+              key={appt?._id}
               className="py-0 overflow-hidden rounded-2xl shadow-md  border border-gray-200 bg-white"
             >
               {/* Header */}
               <CardHeader className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-gradient-to-r from-amber-600 to-amber-400  p-5 border-b">
                 <div>
                   <CardTitle className="text-xl font-bold text-white">
-                    {appt.name.first} {appt.name.last}
+                    {appt?.patientId?.name?.first} {appt?.patientId?.name?.last}
                   </CardTitle>
                   <p className="text-sm text-gray-100 capitalize mt-1">
-                    {appt.lookingFor.replace("-", " ")}
+                    {appt?.patientId?.lookingFor.replace("-", " ")}
                   </p>
                 </div>
 
                 {/* Status Badge */}
-                <div>{getStatusBadge(appt.status)}</div>
+                <div>{getStatusBadge(appt?.status)}</div>
               </CardHeader>
 
               {/* Content */}
@@ -97,7 +97,7 @@ export default function AppointmentPageUser() {
                   <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg">
                     <Calendar className="w-5 h-5 text-gray-600" />
                     <span>
-                      {new Date(appt.date).toLocaleDateString("en-IN", {
+                      {new Date(appt?.date).toLocaleDateString("en-IN", {
                         day: "2-digit",
                         month: "short",
                         year: "numeric",
@@ -106,18 +106,18 @@ export default function AppointmentPageUser() {
                   </div>
                   <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg">
                     <Clock className="w-5 h-5 text-gray-600" />
-                    <span>{appt.time}</span>
+                    <span>{appt?.time}</span>
                   </div>
                   <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg">
                     <MapPin className="w-5 h-5 text-gray-600" />
                     <span>
-                      {appt.city}, {appt.state}
+                      {appt?.city}, {appt?.state}
                     </span>
                   </div>
                   <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg">
                     <Phone className="w-5 h-5 text-gray-600" />
-                    <span>{appt.phone}</span>
-                    {appt.isPhoneVerified ? (
+                    <span>{appt?.patientId?.phone}</span>
+                    {appt?.patientId?.isPhoneVerified ? (
                       <CheckCircle className="w-5 h-5 text-green-600" />
                     ) : (
                       <XCircle className="w-5 h-5 text-red-500" />
@@ -125,7 +125,7 @@ export default function AppointmentPageUser() {
                   </div>
                   <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg">
                     <Mail className="w-5 h-5 text-gray-600" />
-                    <span>{appt.email}</span>
+                    <span>{appt?.patientId?.email}</span>
                   </div>
                 </div>
 
@@ -136,19 +136,19 @@ export default function AppointmentPageUser() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg font-medium">
                       <MapPin className="w-5 h-5 text-amber-600" />
-                      <span>{appt?.branch?.title}</span>
+                      <span>{appt?.patientId?.branch?.title}</span>
                     </div>
                     <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg">
                       <Mail className="w-5 h-5 text-amber-600" />
-                      <span>{appt?.branch?.contact?.email}</span>
+                      <span>{appt?.patientId?.branch?.contact?.email}</span>
                     </div>
                     <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg">
                       <Phone className="w-5 h-5 text-amber-600" />
-                      <span>{appt?.branch?.contact?.phone}</span>
+                      <span>{appt?.patientId?.branch?.contact?.phone}</span>
                     </div>
                     <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg">
                       <MapPin className="w-5 h-5 text-amber-600" />
-                      <span>{appt?.branch?.contact?.address}</span>
+                      <span>{appt?.patientId?.branch?.contact?.address}</span>
                     </div>
                   </div>
                 </div>
@@ -156,14 +156,14 @@ export default function AppointmentPageUser() {
                 <div className="space-y-1">
                   <p className="text-sm font-semibold text-gray-500">Message</p>
                   <p className="text-gray-700 bg-gray-50 p-4 rounded-lg border border-gray-200">
-                    {appt.message}
+                    {appt?.message}
                   </p>
                 </div>
 
                 {/* Footer */}
                 <div className="flex justify-end text-xs text-gray-400">
                   Booked on:{" "}
-                  {new Date(appt.createdAt).toLocaleDateString("en-IN", {
+                  {new Date(appt?.createdAt).toLocaleDateString("en-IN", {
                     day: "2-digit",
                     month: "short",
                     year: "numeric",
